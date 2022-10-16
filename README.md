@@ -1,6 +1,11 @@
 
 # blog-csr
 
+> [RealWorld](https://realworld-docs.netlify.app/)  
+> > [Demo](https://demo.realworld.io/#/)  
+> > [参考](https://www.jianshu.com/p/6014a9fefabd)  
+> > [Api](https://github.com/gothinkster/realworld/tree/main/api#json-objects-returned-by-api) [swagger](https://editor.swagger.io/)  
+
 ## 使用前必读  
 
 1. 使用技术栈：父项目使用 [rush](https://rushjs.io/zh-cn/) 和 [pnpm](https://www.pnpm.cn/)，子项目 `client vue3` 和 `server koa`。
