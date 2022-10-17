@@ -72,4 +72,7 @@ common/autoinstallers/*/.npmrc
 .history
 
 # config
-server/env
+# server/env
+
+# log
+server/app

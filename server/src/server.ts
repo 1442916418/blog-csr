@@ -1,58 +1,47 @@
 import Koa from 'koa'
 import cors from '@koa/cors'
 import bodyParser from 'koa-bodyparser'
+import helmet from 'koa-helmet'
 
 import 'reflect-metadata'
 
+import { createContainer, AwilixContainer, asValue } from 'awilix'
+import { scopePerRequest, loadControllers } from 'awilix-koa'
+
+import SecurityService from './services/security-service'
+import errorMiddleware from './middleware/error-middleware'
 import { AppDataSource } from './dataSource'
-import { unprotectedRouter } from './routes'
 import logger from './middleware/logger/logger'
-import { getErrorResponseResult, getResponseResult } from './common/utils'
-import { HttpStatus } from './common/enums'
 
 const config = require('../env/index')
 
 const isDev = process.env.NODE_ENV === 'development'
+const log = console.log
 
-// TODO: 错误抛出分级
 const init = async () => {
-  AppDataSource.initialize()
-    .then(() => {
-      // 初始化 Koa 应用实例
-      const app = new Koa()
+  const connect = await AppDataSource.initialize().catch((err: string) => {
+    logger.error(`TypeORM initialize error: ${err}`)
+  })
 
-      // 注册中间件
-      app.use(cors())
-      app.use(bodyParser())
+  if (connect) {
+    const app = new Koa()
+    const securityService: SecurityService = new SecurityService()
 
-      app.use(async (ctx, next) => {
-        try {
-          logger.info(`next() before: ${JSON.stringify(ctx)}`)
-
-          await next()
-
-          if (ctx.status === 404) {
-            logger.error(`next() ctx.status 404: ${JSON.stringify(ctx)}`)
-
-            ctx.status = HttpStatus.OK
-            ctx.body = getResponseResult(HttpStatus.NOT_FOUND)
-          }
-        } catch (err) {
-          ctx.status = HttpStatus.OK
-          ctx.body = getErrorResponseResult(err.status, err.message)
-
-          logger.info(`next() after: ${JSON.stringify(ctx)}`)
-        }
-      })
-
-      app.use(unprotectedRouter.routes()).use(unprotectedRouter.allowedMethods())
-
-      // 运行服务器
-      app.listen(config.port)
+    const container: AwilixContainer = createContainer().register({
+      securityService: asValue(securityService),
+      connection: asValue(AppDataSource)
     })
-    .catch((err: string) => {
-      logger.error(`TypeORM initialize error: ${err}`)
-    })
+
+    app
+      .use(cors())
+      .use(bodyParser())
+      .use(helmet())
+      .use(scopePerRequest(container))
+      .use(errorMiddleware)
+      .use(loadControllers('controller/*.{ts,js}', { cwd: __dirname }))
+
+    app.listen(config.port)
+  }
 }
 
 isDev && init()
