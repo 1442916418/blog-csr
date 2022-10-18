@@ -3,8 +3,9 @@ import { StatusCodes } from 'http-status-codes'
 import { Context } from 'koa'
 import joi from 'joi'
 
-import { Repository } from 'typeorm'
 import { AppDataSource } from '../dataSource'
+
+import { UserRepository } from '../repositories/user'
 
 import { User } from '../model/entity/user'
 
@@ -20,12 +21,12 @@ interface CParams {
 
 @route('/api')
 export default class UserController {
-  private _userRepository: Repository<User>
+  private _userRepository: typeof UserRepository
   private _securityService: SecurityService
 
   // 注入依赖
   constructor({ connection, securityService }: CParams) {
-    this._userRepository = connection.getRepository(User)
+    this._userRepository = UserRepository
     this._securityService = securityService
   }
 

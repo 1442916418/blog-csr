@@ -38,7 +38,8 @@
     "joi": "~17.6.3",
     "jsonwebtoken": "~8.5.1",
     "koa-helmet": "~6.1.0",
-    "mysql2": "~2.3.3"
+    "mysql2": "~2.3.3",
+    "slugify": "~1.6.5"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",

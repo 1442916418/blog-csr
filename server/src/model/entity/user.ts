@@ -1,9 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Index, Column, OneToMany } from 'typeorm'
-// import { Article } from './Article';
-// import { Comment } from './Comment';
-// import { Follow } from './Follow';
-// import { Favorite } from './Favorite';
+import { Article } from './article'
+import { Comment } from './comment'
+import { Follow } from './follow'
+import { Favorite } from './favorite'
 
+/**
+ * 用户实体类
+ */
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -26,20 +29,20 @@ export class User {
   @Column()
   password!: string
 
-  // @OneToMany(() => Article, (article: Article) => article.author)
-  // articles!: Article[];
+  @OneToMany(() => Article, (article: Article) => article.author)
+  articles!: Article[]
 
-  // @OneToMany(() => Comment, (comment: Comment) => comment.author)
-  // comments!: Comment[];
+  @OneToMany(() => Comment, (comment: Comment) => comment.author)
+  comments!: Comment[]
 
-  // @OneToMany(() => Favorite, (favorite: Favorite) => favorite.user)
-  // favorites!: Favorite[];
+  @OneToMany(() => Favorite, (favorite: Favorite) => favorite.user)
+  favorites!: Favorite[]
 
-  // @OneToMany(() => Follow, (follow: Follow) => follow.follower)
-  // followers!: Follow[];
+  @OneToMany(() => Follow, (follow: Follow) => follow.follower)
+  followers!: Follow[]
 
-  // @OneToMany(() => Follow, (follow: Follow) => follow.following)
-  // following!: Follow[];
+  @OneToMany(() => Follow, (follow: Follow) => follow.following)
+  following!: Follow[]
 
   toUserJSON(token: string) {
     return {
