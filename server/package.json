@@ -5,16 +5,14 @@
   "description": "blog-csr server",
   "scripts": {
     "start": "cross-env NODE_ENV=development nodemon --watch src -e ts --exec ts-node src/server.ts",
-    "build:dev": "npm run log:dev && npm run c-build && npm run upload:dev",
-    "build:prod": "npm run log:prod && npm run c-build && npm run upload:prod",
+    "build:dev": "npm run log:dev && npm run c-build",
+    "build:prod": "npm run log:prod && npm run c-build",
     "c-build": "cross-env NODE_ENV=production node ./build/start && tsc && node ./build/end",
     "obfuscator": "npm run build && node ./build/encryption",
     "tsc": "tsc",
     "prettier:src": "npx prettier --write ./src",
-    "log:dev": "y-cli build-log -b dev-revision -e development -s dev",
-    "log:prod": "y-cli build-log -b dev-revision -e production -s prod",
-    "upload:dev": "cross-env UPLOAD_CONFIG_PATH=D:\\code\\A_1\\web-collection\\config\\upload.dev.json y-cli upload",
-    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=D:\\code\\A_1\\web-collection\\config\\upload.prod.json y-cli upload -e production"
+    "unit:test": "jest  --collectCoverage --testPathPattern=tests/unit/controllers/user.spec.ts --no-cache",
+    "unit:test:watch": "jest --watchAll --testPathPattern=tests/unit/controllers/user.spec.ts --no-cache"
   },
   "keywords": [
     "koa",
@@ -39,7 +37,8 @@
     "jsonwebtoken": "~8.5.1",
     "koa-helmet": "~6.1.0",
     "mysql2": "~2.3.3",
-    "slugify": "~1.6.5"
+    "slugify": "~1.6.5",
+    "dotenv": "~16.0.3"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
@@ -54,12 +53,48 @@
     "ts-node": "~10.7.0",
     "typescript": "~4.5.5",
     "@types/node": "~17.0.33",
-    "@types/jsonwebtoken": "~8.5.9"
+    "@types/jsonwebtoken": "~8.5.9",
+    "supertest": "~6.3.0",
+    "@types/supertest": "~2.0.12",
+    "random-int": "~3.0.0",
+    "sinon": "~14.0.1",
+    "@types/sinon": "~10.0.13",
+    "jest": "~29.2.1",
+    "@types/jest": "~29.2.0",
+    "ts-jest": "~29.0.3",
+    "@types/mocha": "~10.0.0"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "./src/**": "prettier --write --ignore-unknown"
-  }
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ],
+    "collectCoverageFrom": [
+      "./src/**/*.ts",
+      "!./src/model/entity/*.ts"
+    ],
+    "transform": {
+      "\\.ts$": "ts-jest"
+    },
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "build",
+    "coverage",
+    "scripts"
+  ]
 }

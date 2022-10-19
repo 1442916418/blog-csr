@@ -18,7 +18,7 @@ module.exports = {
     database: 'blog',
     timezone: '+08:00',
     synchronize: true,
-    entities: [`src/model/entity/*.${ext}`, `src/model/entity/**/*.${ext}`],
+    entities: ['src/model/entity/*.{js,ts}'],
     cli: {
       entitiesDir: 'src/model/entity'
     },
