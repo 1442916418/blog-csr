@@ -21,16 +21,36 @@ export const useUserStore = defineStore('user', {
   getters: {
     userName: (state) => state?.username ?? '',
     userImage: (state) => state?.image ?? '',
-    userToken: (state) => state?.token ?? '',
+    userToken: (state) => {
+      if (state.token) {
+        return state.token
+      }
+
+      const localToken = window.localStorage.getItem('token')
+
+      if (localToken) {
+        return localToken
+      }
+
+      return ''
+    },
     isUser: (state) => !!state.token
   },
   actions: {
     setUser(params: User) {
+      const token = params?.token ?? undefined
+
       this.email = params?.email ?? undefined
       this.username = params?.username ?? undefined
       this.bio = params?.bio ?? undefined
       this.image = params?.image ?? undefined
-      this.token = params?.token ?? undefined
+      this.token = token
+
+      if (token) {
+        window.localStorage.setItem('token', token)
+      } else {
+        window.localStorage.removeItem('token')
+      }
     }
   }
 })
