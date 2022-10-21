@@ -1,9 +1,9 @@
 <template>
   <div class="header-container">
-    <div class="header-container-left" @click="handleHome">BLOG</div>
+    <div class="header-container-left" @click="jumpPage('/')">BLOG</div>
     <div class="header-container-right">
       <template v-if="user.isUser">
-        <el-button type="info" :icon="Edit" link>创建新文章</el-button>
+        <el-button type="info" :icon="Edit" link @click="jumpPage('/articles')">创建新文章</el-button>
         <el-button type="info" :icon="Setting" link>用户配置</el-button>
 
         <div class="avatar">
@@ -34,11 +34,11 @@ const handleAccount = (status: Status) => {
   account.setStatus(status)
 
   if (route.path !== '/account') {
-    router.push({ path: '/account' })
+    jumpPage('/account')
   }
 }
 
-const handleHome = () => router.push({ path: '/' })
+const jumpPage = (path: string) => router.push({ path })
 </script>
 
 <style lang="scss" scoped>

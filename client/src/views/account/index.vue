@@ -22,12 +22,11 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="ruleForm.password" type="password" autocomplete="off" placeholder="请输入密码" />
         </el-form-item>
-        <el-form-item>
-          <div class="operation">
-            <el-button @click="resetForm(ruleFormRef)" :disabled="loading">重 置</el-button>
-            <el-button type="primary" @click="submitForm(ruleFormRef)" :loading="loading">提 交</el-button>
-          </div>
-        </el-form-item>
+
+        <div class="operation">
+          <el-button @click="resetForm(ruleFormRef)" :disabled="loading">重 置</el-button>
+          <el-button type="primary" @click="submitForm(ruleFormRef)" :loading="loading">提 交</el-button>
+        </div>
       </el-form>
     </div>
   </div>
