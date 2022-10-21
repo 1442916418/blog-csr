@@ -2,14 +2,14 @@
   <div class="header-container">
     <div class="header-container-left" @click="handleHome">BLOG</div>
     <div class="header-container-right">
-      <template v-if="isUser">
+      <template v-if="user.isUser">
         <el-button type="info" :icon="Edit" link>创建新文章</el-button>
         <el-button type="info" :icon="Setting" link>用户配置</el-button>
 
-        <span>
-          <el-avatar :icon="User" :src="userImage" />
-          <el-button type="info" link>{{ userName }}</el-button>
-        </span>
+        <div class="avatar">
+          <el-avatar :icon="User" :src="user.userImage" />
+          <el-button type="info" link>{{ user.userName }}</el-button>
+        </div>
       </template>
       <template v-else>
         <el-button type="info" :icon="User" link @click="handleAccount(Status.SIGN_IN)">登 录</el-button>
@@ -25,7 +25,7 @@ import { useUserStore } from '@/stores/user'
 import { Edit, Setting, User, Plus } from '@element-plus/icons-vue'
 import { Status, useAccountStore } from '@/stores/account'
 
-const { isUser, userName, userImage } = useUserStore()
+const user = useUserStore()
 const account = useAccountStore()
 const router = useRouter()
 const route = useRoute()
@@ -59,6 +59,12 @@ const handleHome = () => router.push({ path: '/' })
 
   &-right {
     display: flex;
+
+    .avatar {
+      margin-left: 16px;
+      display: flex;
+      place-content: center;
+    }
   }
 }
 </style>

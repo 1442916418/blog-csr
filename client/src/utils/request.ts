@@ -1,63 +1,85 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
-const MSG = '开小差啦'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-const service = axios.create({
-  // @ts-ignore
-  baseURL: process.env.VITE_APP_BASE,
-  timeout: 10000
-})
+import { MESSAGES } from '@/utils/constant'
 
-service.interceptors.request.use(
-  (config: any) => {
-    const token = window.localStorage.getItem('token')
-
-    if (token) {
-      config.headers['Authorization'] = 'token ' + token
-    }
-    return config
-  },
-  (error: any) => {
-    return Promise.reject(error)
+/**
+ * 请求类
+ * @description 用来自定义传递配置来创建实例
+ */
+export class Request {
+  /** axios 实例 */
+  instance: AxiosInstance
+  /** 基础配置，url 和超时时间 */
+  baseConfig: AxiosRequestConfig = {
+    baseURL: `${import.meta.env.VITE_APP_BASE_URL}${import.meta.env.VITE_APP_BASE_API_PATH}`,
+    timeout: 60000
   }
-)
 
-service.interceptors.response.use(
-  (response) => {
-    const { status } = response
+  constructor(config: AxiosRequestConfig) {
+    // 使用 axios.create 创建 axios 实例
+    this.instance = axios.create(Object.assign(this.baseConfig, config))
 
-    if (status === 200) {
-      const errors = response?.data?.errors
+    this.instance.interceptors.request.use(
+      (config: AxiosRequestConfig) => {
+        const token = window.localStorage.getItem('token')
 
-      if (errors) {
-        ElMessage({
-          message: errors.body || MSG,
-          type: 'error',
-          duration: 5000
-        })
+        if (token) {
+          config.headers!.Authorization = 'token ' + token
+        }
+
+        return config
+      },
+      (err: any) => {
+        ElMessage.error({ message: '请求错误' })
+        return Promise.reject(err)
       }
+    )
 
-      return Promise.resolve(response?.data ?? null)
-    } else {
-      ElMessage({
-        message: response.statusText || MSG,
-        type: 'error',
-        duration: 5000
-      })
+    this.instance.interceptors.response.use(
+      (res: AxiosResponse) => {
+        if (res?.data?.errors) {
+          const errorsBody = res.data.errors.body
+          const message = errorsBody instanceof Array ? errorsBody.toString() : errorsBody
 
-      return Promise.reject('error')
-    }
-  },
-  (error) => {
-    ElMessage({
-      message: error.message,
-      type: 'error',
-      duration: 5000
-    })
+          ElMessage.error({ message })
+        }
+        console.log('🚀 ~ file: request.ts ~ line 52 ~ Request ~ constructor ~ res', res)
+        return res
+      },
+      (err: any) => {
+        const { response } = err
+        const status = response?.status ?? 400
+        const message = MESSAGES[status] || response?.data?.message
 
-    return Promise.reject(error)
+        ElMessage.error({ message })
+
+        return Promise.reject(response)
+      }
+    )
   }
-)
 
-export default service
+  public request(config: AxiosRequestConfig): Promise<AxiosResponse> {
+    return this.instance.request(config)
+  }
+
+  public get<T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this.instance.get(url, config)
+  }
+
+  public post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this.instance.post(url, data, config)
+  }
+
+  public put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this.instance.put(url, data, config)
+  }
+
+  public delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return this.instance.delete(url, config)
+  }
+}
+
+export default new Request({})
