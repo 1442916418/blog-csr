@@ -1,5 +1,7 @@
-.article {
-  width: 50%;
+.articles {
+  min-width: 60%;
+  max-width: 80%;
+  margin: 0 auto;
 
   .operation {
     text-align: right;

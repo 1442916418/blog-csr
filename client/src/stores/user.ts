@@ -21,19 +21,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     userName: (state) => state?.username ?? '',
     userImage: (state) => state?.image ?? '',
-    userToken: (state) => {
-      if (state.token) {
-        return state.token
-      }
-
-      const localToken = window.localStorage.getItem('token')
-
-      if (localToken) {
-        return localToken
-      }
-
-      return ''
-    },
+    userToken: (state) => state?.token ?? '',
     isUser: (state) => !!state.token
   },
   actions: {
@@ -45,12 +33,9 @@ export const useUserStore = defineStore('user', {
       this.bio = params?.bio ?? undefined
       this.image = params?.image ?? undefined
       this.token = token
-
-      if (token) {
-        window.localStorage.setItem('token', token)
-      } else {
-        window.localStorage.removeItem('token')
-      }
     }
+  },
+  persist: {
+    enabled: true
   }
 })

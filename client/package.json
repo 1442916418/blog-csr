@@ -16,7 +16,9 @@
     "lodash-es": "~4.17.21",
     "pinia": "^2.0.21",
     "vue": "^3.2.38",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.1.5",
+    "md-editor-v3": "~2.3.0",
+    "pinia-plugin-persist": "~1.0.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

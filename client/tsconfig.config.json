@@ -3,6 +3,6 @@
   "include": ["vite.config.*", "vitest.config.*", "cypress.config.*"],
   "compilerOptions": {
     "composite": true,
-    "types": ["node", "element-plus/global"]
+    "types": ["node", "element-plus/global", "pinia-plugin-persist"]
   }
 }

@@ -1,6 +1,14 @@
 <template>
   <div class="articles">
-    <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" label-position="top">
+    <el-form
+      ref="ruleFormRef"
+      :rules="rules"
+      :model="ruleForm"
+      status-icon
+      size="large"
+      label-width="120px"
+      label-position="top"
+    >
       <el-form-item label="标题" prop="title">
         <el-input v-model="ruleForm.title" clearable placeholder="请输入标题" />
       </el-form-item>
@@ -8,12 +16,10 @@
         <el-input v-model="ruleForm.description" clearable placeholder="请输入描述" />
       </el-form-item>
       <el-form-item label="内容" prop="body">
-        <el-input v-model="ruleForm.body" />
+        <md-editor v-model="ruleForm.body" :preview="false" :toolbars-exclude="['github', 'save']"></md-editor>
       </el-form-item>
       <el-form-item label="标签" prop="tagList">
-        <el-select v-model="ruleForm" placeholder="请选择标签" clearable filterable>
-          <el-option v-for="item in tagDataList" :key="item" :label="item" :value="item"> </el-option>
-        </el-select>
+        <el-input v-model="tags" clearable placeholder="请输入标签，中文逗号分隔多个" />
       </el-form-item>
 
       <div class="operation">
@@ -25,16 +31,16 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 
-import { getTags } from '@/apis'
+import { createArticle } from '@/apis'
 
-import type { FormInstance } from 'element-plus'
+import { ElMessage, type FormInstance } from 'element-plus'
 import type { CreateArticle } from '@/types/request-types'
 
 const ruleFormRef = ref<FormInstance>()
-const tagDataList = ref<string[]>([])
 const loading = ref(false)
+const tags = ref('')
 
 const ruleForm = reactive<CreateArticle>({
   title: '',
@@ -51,41 +57,50 @@ const rules = reactive({
   description: [
     { required: true, message: '请输入描述', trigger: 'change' },
     { min: 1, max: 100, message: '长度 1 - 100 之间', trigger: 'change' }
-  ],
-  body: [{ required: true, message: '请输入内容', trigger: 'change' }],
-  tagList: [{ required: true, message: '请选择标签', trigger: 'change' }]
+  ]
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
+
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      if (!ruleForm.body) {
+        ElMessage.warning({ message: '请输入内容' })
+        return false
+      }
+      if (!tags.value) {
+        ElMessage.warning({ message: '请输入标签' })
+        return false
+      }
+
+      handleCreate()
     } else {
-      console.log('error submit!')
       return false
     }
   })
+}
+
+const handleCreate = async () => {
+  loading.value = true
+
+  ruleForm.tagList = tags.value.split('，')
+
+  const res = await createArticle({ article: ruleForm })
+
+  // TODO: 跳转到文章详情页
+  if (res) {
+    loading.value = false
+    ElMessage.success({ message: '创建成功' })
+  } else {
+    loading.value = false
+  }
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
 }
-
-const handleGetTags = () => {
-  getTags()
-    .then((res) => {
-      tagDataList.value = res.data?.tags ?? []
-    })
-    .catch(() => {
-      tagDataList.value = []
-    })
-}
-
-onMounted(() => {
-  handleGetTags()
-})
 </script>
 
 <style lang="scss" scoped>

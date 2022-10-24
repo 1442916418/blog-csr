@@ -7,9 +7,10 @@
     <div class="account-body">
       <el-form
         ref="ruleFormRef"
+        :rules="accountParams.rules"
         :model="ruleForm"
         status-icon
-        :rules="accountParams.rules"
+        size="large"
         label-width="120px"
         label-position="top"
       >

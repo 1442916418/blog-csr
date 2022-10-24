@@ -17,7 +17,7 @@ export default class ProfileController {
     this._tagRepository = TagRepository
   }
 
-  @route('/')
+  @route('')
   @GET()
   async getTags(ctx: Context) {
     const tags: Tag[] = await this._tagRepository.find()
