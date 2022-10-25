@@ -6,10 +6,7 @@
         <el-button type="info" :icon="Edit" link @click="jumpPage('/articles')">创建新文章</el-button>
         <el-button type="info" :icon="Setting" link>用户配置</el-button>
 
-        <div class="avatar">
-          <el-avatar :icon="User" :src="user.userImage" />
-          <el-button type="info" link>{{ user.userName }}</el-button>
-        </div>
+        <avatar :user="userAvatar"></avatar>
       </template>
       <template v-else>
         <el-button type="info" :icon="User" link @click="handleAccount(Status.SIGN_IN)">登 录</el-button>
@@ -20,15 +17,27 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { Edit, Setting, User, Plus } from '@element-plus/icons-vue'
 import { Status, useAccountStore } from '@/stores/account'
 
+import avatar from '@/components/avatar/index.vue'
+
 const user = useUserStore()
 const account = useAccountStore()
 const router = useRouter()
 const route = useRoute()
+
+const userAvatar = computed(() => {
+  return {
+    username: user.userName,
+    image: user.userImage,
+    bio: '',
+    following: false
+  }
+})
 
 const handleAccount = (status: Status) => {
   account.setStatus(status)
@@ -44,8 +53,6 @@ const jumpPage = (path: string) => router.push({ path })
 <style lang="scss" scoped>
 .header-container {
   height: 100%;
-  padding-left: 10%;
-  padding-right: 10%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,12 +66,6 @@ const jumpPage = (path: string) => router.push({ path })
 
   &-right {
     display: flex;
-
-    .avatar {
-      margin-left: 16px;
-      display: flex;
-      place-content: center;
-    }
   }
 }
 </style>

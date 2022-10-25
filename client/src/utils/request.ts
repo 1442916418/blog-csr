@@ -46,7 +46,6 @@ export class Request {
 
           ElMessage.error({ message })
         }
-        console.log('🚀 ~ file: request.ts ~ line 52 ~ Request ~ constructor ~ res', res)
         return res
       },
       (err: any) => {

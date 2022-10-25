@@ -1,7 +1,11 @@
-:deep(.el-header) {
+:deep(.el-header),
+:deep(.el-main),
+:deep(.el-footer) {
+  width: 60%;
+  margin: 0 auto;
   padding: 0;
 }
 
-:deep(.el-footer) {
-  padding: 0;
+:deep(.el-main) {
+  width: 100%;
 }

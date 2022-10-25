@@ -15,3 +15,11 @@ export const MESSAGES: { [k: number]: string } = {
   504: '网络超时',
   505: 'HTTP版本不受支持'
 }
+
+/**
+ * 首页 - 默认 Tab 分类
+ */
+export const DEFAULT_TAB = {
+  my: '0',
+  all: '1'
+}

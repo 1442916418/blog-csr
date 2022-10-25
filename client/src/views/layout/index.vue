@@ -1,19 +1,17 @@
 <template>
-  <div class="common-layout">
-    <el-container>
-      <el-header>
-        <header-container />
-      </el-header>
+  <el-container>
+    <el-header>
+      <header-container />
+    </el-header>
 
-      <el-main>
-        <router-view />
-      </el-main>
+    <el-main>
+      <router-view />
+    </el-main>
 
-      <el-footer>
-        <footer-container />
-      </el-footer>
-    </el-container>
-  </div>
+    <el-footer>
+      <footer-container />
+    </el-footer>
+  </el-container>
 </template>
 
 <script lang="ts" setup>

@@ -16,6 +16,7 @@ module.exports = {
     username: isDev ? 'root' : '',
     password: isDev ? 'root' : '',
     database: 'blog',
+    // TODO: 时间格式错误
     timezone: '+08:00',
     synchronize: true,
     entities: ['src/model/entity/*.{js,ts}'],
