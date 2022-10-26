@@ -33,6 +33,13 @@ export const useUserStore = defineStore('user', {
       this.bio = params?.bio ?? undefined
       this.image = params?.image ?? undefined
       this.token = token
+    },
+    resetUser() {
+      this.email = undefined
+      this.username = undefined
+      this.bio = undefined
+      this.image = undefined
+      this.token = undefined
     }
   },
   persist: {

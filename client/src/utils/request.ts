@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-
 import { MESSAGES } from '@/utils/constant'
+import { useUserStore } from '@/stores/user'
+
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 /**
  * 请求类
@@ -24,10 +25,10 @@ export class Request {
 
     this.instance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
-        const token = window.localStorage.getItem('token')
+        const user = useUserStore()
 
-        if (token) {
-          config.headers!.Authorization = 'token ' + token
+        if (user?.userToken) {
+          config.headers!.Authorization = 'token ' + user.userToken
         }
 
         return config

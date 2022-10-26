@@ -1,7 +1,7 @@
 <template>
   <div class="articles-list">
     <template v-if="list && list.length">
-      <template v-for="article in list" :key="article.slug">
+      <template v-for="(article, i) in list" :key="article.slug + i">
         <articles-list-item
           :item="article"
           @click-avatar="handleClickAvatar"
@@ -31,7 +31,7 @@ const props = defineProps({
 
 const emits = defineEmits<{
   (e: 'clickItemAvatar', data: AuthorResult): void
-  (e: 'clickItemFavorite', data: string): void
+  (e: 'clickItemFavorite', data: ArticleResult): void
   (e: 'clickItemDetails', data: ArticleResult): void
 }>()
 
@@ -40,7 +40,7 @@ const handleClickAvatar = (data: AuthorResult) => {
   emits('clickItemAvatar', data)
 }
 /** 点击收藏 */
-const handleClickFavorite = (data: string) => {
+const handleClickFavorite = (data: ArticleResult) => {
   emits('clickItemFavorite', data)
 }
 /** 详情 */

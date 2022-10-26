@@ -1,0 +1,58 @@
+{
+	// Place your blog-csr 工作区 snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	"外部方法代码片段": {
+		"prefix": "b-use",
+		"body": [
+			"/** Use of external methods */",
+		],
+		"description": "外部方法代码片段"
+	},
+	"变量代码片段": {
+		"prefix": "b-var",
+		"body": [
+			"/** Variable */",
+		],
+		"description": "变量代码片段"
+	},
+	"监听代码片段": {
+		"prefix": "b-watch",
+		"body": [
+			"/** Watch */",
+		],
+		"description": "监听代码片段"
+	},
+	"计算代码片段": {
+		"prefix": "b-compute",
+		"body": [
+			"/** Compute */",
+		],
+		"description": "计算代码片段"
+	},
+	"操作代码片段": {
+		"prefix": "b-operation",
+		"body": [
+			"/** Operation */",
+		],
+		"description": "操作代码片段"
+	},
+	"Api 代码片段": {
+		"prefix": "b-api",
+		"body": [
+			"/** Api */",
+		],
+		"description": "Api 代码片段"
+	},
+	"生命周期代码片段": {
+		"prefix": "b-lifecycle",
+		"body": [
+			"/** Lifecycle Hooks */",
+		],
+		"description": "生命周期代码片段"
+	},
+}

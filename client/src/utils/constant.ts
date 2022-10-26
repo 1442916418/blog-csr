@@ -19,7 +19,11 @@ export const MESSAGES: { [k: number]: string } = {
 /**
  * 首页 - 默认 Tab 分类
  */
-export const DEFAULT_TAB = {
+export const DEFAULT_TAB = Object.freeze({
+  /** 0: 我的/我关注的 */
   my: '0',
-  all: '1'
-}
+  /** 1: 全部 */
+  all: '1',
+  /** 2: 我喜欢的 */
+  like: '2'
+})

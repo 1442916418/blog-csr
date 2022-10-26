@@ -1,12 +1,14 @@
 <template>
   <div class="header-container">
-    <div class="header-container-left" @click="jumpPage('/')">BLOG</div>
+    <div class="header-container-left" @click="jumpPage('main')">BLOG</div>
     <div class="header-container-right">
       <template v-if="user.isUser">
-        <el-button type="info" :icon="Edit" link @click="jumpPage('/articles')">创建新文章</el-button>
+        <el-button type="info" :icon="Edit" link @click="jumpPage('articles')">创建新文章</el-button>
         <el-button type="info" :icon="Setting" link>用户配置</el-button>
 
         <avatar :user="userAvatar"></avatar>
+
+        <el-button type="danger" link @click="handleLogout">登 出</el-button>
       </template>
       <template v-else>
         <el-button type="info" :icon="User" link @click="handleAccount(Status.SIGN_IN)">登 录</el-button>
@@ -25,11 +27,13 @@ import { Status, useAccountStore } from '@/stores/account'
 
 import avatar from '@/components/avatar/index.vue'
 
+/** Use of external methods */
 const user = useUserStore()
 const account = useAccountStore()
 const router = useRouter()
 const route = useRoute()
 
+/** Compute */
 const userAvatar = computed(() => {
   return {
     username: user.userName,
@@ -39,15 +43,20 @@ const userAvatar = computed(() => {
   }
 })
 
+/** Operation */
+const handleLogout = () => {
+  user.resetUser()
+  window.sessionStorage.clear()
+  jumpPage('main')
+}
 const handleAccount = (status: Status) => {
   account.setStatus(status)
 
-  if (route.path !== '/account') {
-    jumpPage('/account')
+  if (route.path !== 'account') {
+    jumpPage('account')
   }
 }
-
-const jumpPage = (path: string) => router.push({ path })
+const jumpPage = (name: string) => router.push({ name })
 </script>
 
 <style lang="scss" scoped>
@@ -56,7 +65,6 @@ const jumpPage = (path: string) => router.push({ path })
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #dcdfe6;
 
   &-left {
     font-size: 20px;

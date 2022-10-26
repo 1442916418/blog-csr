@@ -11,10 +11,7 @@ export const FollowRepository = AppDataSource.getRepository(Follow).extend({
    * @returns boolean
    */
   async following(follower: User, following: User): Promise<boolean> {
-    // TODO: 待定
-    const [findFollow, count] = await this.findAndCount({ relations: ['follower', 'following'] })
-
-    console.log('FollowRepository: ', findFollow, count)
+    const [findFollow, count] = await this.findAndCount({ follower, following })
 
     return !!count
   }

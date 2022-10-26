@@ -98,7 +98,7 @@ export default class ArticleController {
       .createQueryBuilder('article')
       .select(['article.id'])
       .leftJoin('article.author', 'author')
-      .where('article."authorId" IN (:...authors)', {
+      .where('article.authorId IN (:...authors)', {
         authors: following.map((follow: Follow) => follow.following.id)
       })
 
@@ -127,7 +127,7 @@ export default class ArticleController {
       const user: User | null = await this._userRepository.findOne({ where: { username: name } })
 
       if (user) {
-        filterQuery.andWhere('favorites."userId" = :userId', { userId: user.id })
+        filterQuery.andWhere('favorites.userId = :userId', { userId: user.id })
       }
     }
 

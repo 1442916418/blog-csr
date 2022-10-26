@@ -29,12 +29,12 @@ export const getUserProfile = (params: req.ApiRequestProfile) => {
 
 /** 关注用户 */
 export const followUser = (params: req.ApiRequestProfile) => {
-  return http.post<res.ApiResponseProfileResult>(`/profiles/${params.username}follow`)
+  return http.post<res.ApiResponseProfileResult>(`/profiles/${params.username}/follow`)
 }
 
 /** 取消关注用户 */
 export const deleteFollowUser = (params: req.ApiRequestProfile) => {
-  return http.delete<res.ApiResponseProfileResult>(`/profiles/${params.username}follow`)
+  return http.delete<res.ApiResponseProfileResult>(`/profiles/${params.username}/follow`)
 }
 
 /** 当前用户，关注的用户那里获取最新的文章(分页查询) */

@@ -10,7 +10,7 @@
           type="primary"
           :plain="!item.favorited"
           :icon="Star"
-          @click.stop="emits('clickFavorite', item.slug)"
+          @click.stop="emits('clickFavorite', item)"
           >{{ item.favoritesCount || '' }}</el-button
         >
       </template>
@@ -49,7 +49,7 @@ const props = defineProps({
 
 const emits = defineEmits<{
   (e: 'clickAvatar', data: AuthorResult): void
-  (e: 'clickFavorite', data: string): void
+  (e: 'clickFavorite', data: ArticleResult): void
   (e: 'clickDetails', data: ArticleResult): void
 }>()
 </script>

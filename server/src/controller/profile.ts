@@ -10,7 +10,7 @@ import { FollowRepository } from '../repositories/follow'
 import { User } from '../model/entity/user'
 import { Follow } from '../model/entity/follow'
 
-import AuthenticationMiddleware from '../middleware/authentication-middleware'
+import AuthenticationMiddleware, { OptionalAuthenticationMiddleware } from '../middleware/authentication-middleware'
 
 @route('/api/profiles')
 export default class ProfileController {
@@ -24,7 +24,7 @@ export default class ProfileController {
 
   @route('/:username')
   @GET()
-  @before([inject(AuthenticationMiddleware)])
+  @before([inject(OptionalAuthenticationMiddleware)])
   async getProfile(ctx: Context) {
     // 被关注者
     const user: User | null = await this._userRepository.findOne({ where: { username: ctx.params.username } })
@@ -78,8 +78,8 @@ export default class ProfileController {
 
     const followerUser: User = ctx.state.user
 
-    // TODO: 待定
-    await this._followRepository.delete(followerUser)
+    // @ts-ignore
+    await this._followRepository.delete({ following: user, follower: followerUser })
 
     ctx.body = { profile: user.toProfileJSON(false) }
     ctx.status = StatusCodes.OK
