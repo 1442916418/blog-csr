@@ -1,0 +1,42 @@
+.article-details {
+  &-header {
+    padding: 20px 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #909399;
+
+    &-title {
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    &-avatar {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+
+      .buts {
+        margin-left: 20px;
+      }
+
+      .avatar {
+        :deep(.el-button) {
+          color: white;
+        }
+      }
+    }
+  }
+
+  &-body {
+    width: 60%;
+    margin: 20px auto;
+
+    &-comments {
+      padding-left: 10%;
+      padding-right: 10%;
+    }
+  }
+}

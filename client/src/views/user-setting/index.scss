@@ -1,0 +1,17 @@
+.user-setting {
+  width: 60%;
+  margin: 20px auto;
+
+  &-title {
+    text-align: center;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  &-body {
+    .operation {
+      text-align: right;
+    }
+  }
+}

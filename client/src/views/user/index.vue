@@ -6,7 +6,7 @@
       </div>
       <div class="user-header-btn">
         <template v-if="user.userName === currentUserName">
-          <el-button type="primary" plain>用户配置</el-button>
+          <el-button type="primary" plain @click="router.push('/userSetting')">用户配置</el-button>
         </template>
         <template v-else>
           <el-button type="info" plain :icon="userProfile.following ? Minus : Plus" @click="handleClickFollow">{{

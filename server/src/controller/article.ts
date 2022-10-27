@@ -187,6 +187,7 @@ export default class ArticleController {
   @PUT()
   @before([inject(AuthenticationMiddleware)])
   async updateArticle(ctx: Context) {
+    // TODO: tagList 修改
     joi.assert(
       ctx.request.body,
       joi.object({
@@ -227,7 +228,7 @@ export default class ArticleController {
 
   @route('/:slug')
   @GET()
-  @before([inject(AuthenticationMiddleware)])
+  @before([inject(OptionalAuthenticationMiddleware)])
   async getArticle(ctx: Context) {
     const article: Article | null = await this._articleRepository.findOne({
       relations: ['tagList', 'author', 'favorites'],

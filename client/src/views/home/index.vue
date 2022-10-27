@@ -32,13 +32,7 @@
       <div class="home-body-right">
         <b>标签</b>
 
-        <div class="tags">
-          <template v-for="tag in tags" :key="tag">
-            <el-tag class="tag" type="info" size="small" effect="dark" round @click="handleClickTag(tag)">{{
-              tag
-            }}</el-tag>
-          </template>
-        </div>
+        <tags-component :list="tags" type="info" effect="dark" @click="handleClickTag"></tags-component>
       </div>
     </div>
   </div>
@@ -52,6 +46,7 @@ import { useAccountStore, Status } from '@/stores/account'
 import { DEFAULT_TAB } from '@/utils/constant'
 
 import articlesListComponent from '@/components/articles-list/index.vue'
+import tagsComponent from '@/components/tags/index.vue'
 
 import { getArticlesFeed, getArticles, getTags, favoriteArticles, deleteFavoriteArticles } from '@/apis'
 
@@ -96,11 +91,15 @@ const init = () => {
   getAllTagsData()
 }
 const handleClickTag = (tag: string) => {
-  if (tabs.length > 2) {
-    tabs.length = 2
+  const data = handleTabData('#' + tag, tag)
+  const len = user.isUser ? 2 : 1
+
+  if (tabs.length === len) {
+    tabs.push(data)
+  } else {
+    tabs[len] = data
   }
 
-  tabs.push(handleTabData('#' + tag, tag))
   tabName.value = tag
 
   resetQueryParams()
@@ -119,14 +118,10 @@ const handleUserArticles = () => {
     resetArticlesData()
     getMyFollowArticlesData()
   } else {
-    const findAllTabIndex = tabs.findIndex((t) => t.name === DEFAULT_TAB.all)
+    tabs.shift()
+    tabName.value = DEFAULT_TAB.all
 
-    if (!findAllTabIndex) {
-      tabs.shift()
-      tabName.value = DEFAULT_TAB.all
-
-      init()
-    }
+    init()
   }
 }
 const handlePagination = (index: number) => {
@@ -167,7 +162,9 @@ const handlerClickItemFavorite = async (data: ArticleResult) => {
   }
 }
 const handlerClickItemDetails = (data: ArticleResult) => {
-  console.log('🚀 ~ file: index.vue ~ line 103 ~ handlerClickItemDetails ~ data', data)
+  if (data.slug) {
+    router.push({ path: '/articleDetails/' + data.slug })
+  }
 }
 const handleClickTab = (tab: TabsPaneContext) => {
   const { name } = tab.props

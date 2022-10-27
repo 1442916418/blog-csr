@@ -18,7 +18,7 @@ export const getCurrentUser = () => {
 }
 
 /** 更新当前用户 */
-export const updateCurrentUser = (data: res.UserResult) => {
+export const updateCurrentUser = (data: req.ApiRequestUserUpdate) => {
   return http.put<res.ApiResponseUserResult>('/user', data)
 }
 
@@ -58,7 +58,7 @@ export const getArticleBySlug = (query: req.ApiRequestSlug) => {
 }
 
 /** 更新文章 */
-export const updateArticleBySlug = (query: req.ApiRequestSlug, data: req.CreateArticle) => {
+export const updateArticleBySlug = (query: req.ApiRequestSlug, data: req.ApiRequestCreateArticle) => {
   return http.put<res.ApiResponseArticleResult>(`/articles/${query.slug}`, data)
 }
 

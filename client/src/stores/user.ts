@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 export interface User {
   email?: string
   username?: string
+  /** 描述 */
   bio?: string
   image?: string
   token?: string
@@ -22,6 +23,8 @@ export const useUserStore = defineStore('user', {
     userName: (state) => state?.username ?? '',
     userImage: (state) => state?.image ?? '',
     userToken: (state) => state?.token ?? '',
+    userDescribe: (state) => state?.bio ?? '',
+    userEmail: (state) => state?.email ?? '',
     isUser: (state) => !!state.token
   },
   actions: {

@@ -45,6 +45,22 @@ export type ApiRequestUserRegister = {
   }
 }
 
+/** api 请求 - /user - PUT */
+export type ApiRequestUserUpdate = {
+  user: {
+    /** 邮箱 */
+    email: string
+    /** 密码 */
+    password?: string
+    /** 用户名 */
+    username: string
+    /** 描述 */
+    bio?: string
+    /** 头像地址 */
+    image?: string
+  }
+}
+
 /** api 请求 - Profile */
 export type ApiRequestProfile = {
   /** 用户名 */
@@ -64,7 +80,7 @@ export type CreateArticle = {
   /** 内容 */
   body: string
   /** 标签 */
-  tagList: string[]
+  tagList?: string[]
 }
 
 /** api 请求 - 创建评论 */

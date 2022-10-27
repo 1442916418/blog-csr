@@ -19,7 +19,7 @@
         <md-editor v-model="ruleForm.body" :preview="false" :toolbars-exclude="['github', 'save']"></md-editor>
       </el-form-item>
       <el-form-item label="标签" prop="tagList">
-        <el-input v-model="tags" clearable placeholder="请输入标签，中文逗号分隔多个" />
+        <el-input v-model="tags" clearable placeholder="请输入标签，# 分隔多个" />
       </el-form-item>
 
       <div class="operation">
@@ -31,24 +31,30 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
-import { createArticle } from '@/apis'
+import { createArticle, getArticleBySlug, updateArticleBySlug } from '@/apis'
 
 import { ElMessage, type FormInstance } from 'element-plus'
 import type { CreateArticle } from '@/types/request-types'
 
+/** Use of external methods */
+const router = useRouter()
+const route = useRoute()
+
+/** Variable */
+let isSlug = ref('')
+
 const ruleFormRef = ref<FormInstance>()
 const loading = ref(false)
 const tags = ref('')
-
 const ruleForm = reactive<CreateArticle>({
   title: '',
   description: '',
   body: '',
   tagList: []
 })
-
 const rules = reactive({
   title: [
     { required: true, message: '请输入标题', trigger: 'change' },
@@ -60,6 +66,16 @@ const rules = reactive({
   ]
 })
 
+/** Operation */
+const init = () => {
+  const slug = route.params?.slug ?? ''
+
+  isSlug.value = slug as string
+
+  if (slug) {
+    getArticleDetailsData()
+  }
+}
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
@@ -74,33 +90,70 @@ const submitForm = (formEl: FormInstance | undefined) => {
         return false
       }
 
-      handleCreate()
+      handleSubmitArticleData()
     } else {
       return false
     }
   })
 }
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
 
-const handleCreate = async () => {
+  formEl.resetFields()
+}
+
+/** Api */
+const handleSubmitArticleData = async () => {
   loading.value = true
 
-  ruleForm.tagList = tags.value.split('，')
+  ruleForm.tagList = tags.value.split('#')
 
-  const res = await createArticle({ article: ruleForm })
+  let res = null
 
-  // TODO: 跳转到文章详情页
-  if (res) {
+  if (isSlug.value) {
+    delete ruleForm.tagList
+
+    res = await updateArticleBySlug({ slug: isSlug.value }, { article: ruleForm })
+  } else {
+    res = await createArticle({ article: ruleForm })
+  }
+
+  const article = res?.data?.article || {}
+
+  if (article) {
     loading.value = false
-    ElMessage.success({ message: '创建成功' })
+    ElMessage.success({ message: `${isSlug.value ? '修改' : '创建'}成功` })
+
+    if (article?.slug) {
+      router.push({ path: '/articleDetails/' + article.slug })
+    }
   } else {
     loading.value = false
   }
 }
+const getArticleDetailsData = async () => {
+  if (!isSlug.value) return
 
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
+  const { data } = await getArticleBySlug({ slug: isSlug.value })
+
+  if (data?.article) {
+    const { title, description, body, tagList } = data.article
+
+    tags.value = tagList.join('#')
+
+    Object.assign(ruleForm, {
+      title,
+      description,
+      body,
+      tagList: tagList
+    })
+  }
 }
+
+/** Lifecycle Hooks */
+onMounted(() => {
+  init()
+})
 </script>
 
 <style lang="scss" scoped>

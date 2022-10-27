@@ -22,9 +22,7 @@
         {{ item.description }}
       </el-descriptions-item>
       <el-descriptions-item align="right">
-        <template v-for="tag in item.tagList" :key="tag">
-          <el-tag size="small" effect="plain" round class="tag">{{ tag }}</el-tag>
-        </template>
+        <tags :list="item.tagList"></tags>
       </el-descriptions-item>
     </el-descriptions>
 
@@ -36,6 +34,7 @@
 import { Star } from '@element-plus/icons-vue'
 
 import avatar from '@/components/avatar/index.vue'
+import tags from '@/components/tags/index.vue'
 
 import type { PropType } from 'vue'
 import type { ArticleResult, AuthorResult } from '@/types/response-types'

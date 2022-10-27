@@ -5,7 +5,7 @@
     <div class="avatar-info">
       <el-button type="info" link>{{ user.username }}</el-button>
 
-      <span v-show="date">{{ date }}</span>
+      <span v-show="date" class="date">{{ date }}</span>
     </div>
   </div>
 </template>
@@ -52,7 +52,7 @@ const styles = computed(() => {
   const { direction } = props
   return {
     direction: direction,
-    ml: direction === 'row' ? '12px' : 0,
+    ml: direction === 'row' ? '8px' : 0,
     mt: direction === 'row' ? 0 : '12px'
   }
 })

@@ -17,6 +17,7 @@ export type UserResult = {
   password: string
   /** 用户名 */
   username: string
+  /** 描述 */
   bio?: string
   /** 头像地址 */
   image?: string

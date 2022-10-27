@@ -42,7 +42,7 @@ export class Request {
     this.instance.interceptors.response.use(
       (res: AxiosResponse) => {
         if (res?.data?.errors) {
-          const errorsBody = res.data.errors.body
+          const errorsBody = res?.data?.errors?.body ?? ''
           const message = errorsBody instanceof Array ? errorsBody.toString() : errorsBody
 
           ElMessage.error({ message })
@@ -52,7 +52,8 @@ export class Request {
       (err: any) => {
         const { response } = err
         const status = response?.status ?? 400
-        const message = MESSAGES[status] || response?.data?.message
+        const statusName = MESSAGES[status] || (response?.data?.errors?.body ?? '')
+        const message = statusName instanceof Array ? statusName.toString() : statusName
 
         ElMessage.error({ message })
 

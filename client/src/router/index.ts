@@ -9,7 +9,7 @@ const router = createRouter({
       path: '/',
       name: 'main',
       component: layout,
-      redirect: '/home',
+      redirect: { name: 'home' },
       children: [
         {
           path: 'home',
@@ -22,7 +22,7 @@ const router = createRouter({
           component: () => import('@/views/account/index.vue')
         },
         {
-          path: 'articles',
+          path: 'articles/:slug?',
           name: 'articles',
           component: () => import('@/views/articles/index.vue')
         },
@@ -30,6 +30,16 @@ const router = createRouter({
           path: 'user/:username',
           name: 'user',
           component: () => import('@/views/user/index.vue')
+        },
+        {
+          path: 'userSetting',
+          name: 'userSetting',
+          component: () => import('@/views/user-setting/index.vue')
+        },
+        {
+          path: 'articleDetails/:slug',
+          name: 'articleDetails',
+          component: () => import('@/views/article-details/index.vue')
         }
       ]
     }
