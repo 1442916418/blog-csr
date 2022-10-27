@@ -18,7 +18,9 @@ module.exports = {
     database: 'blog',
     // TODO: 时间格式错误
     timezone: '+08:00',
-    synchronize: true,
+    // TODO: 生产数据库关闭此选项
+    // TODO: 开启数据库迁移，migrations cli:migrationsDir
+    synchronize: isDev ? true : false,
     entities: ['src/model/entity/*.{js,ts}'],
     cli: {
       entitiesDir: 'src/model/entity'
