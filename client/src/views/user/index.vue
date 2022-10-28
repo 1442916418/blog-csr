@@ -2,7 +2,7 @@
   <div class="user">
     <div class="user-header">
       <div class="user-header-avatar">
-        <avatar :avatar-size="60" :user="userProfile" direction="column"></avatar>
+        <avatar :avatar-size="80" :user="userProfile" direction="column"></avatar>
       </div>
       <div class="user-header-btn">
         <template v-if="user.userName === currentUserName">
@@ -47,8 +47,16 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { DEFAULT_TAB } from '@/utils/constant'
+import { useAccountStore, Status } from '@/stores/account'
 
-import { getArticles, getUserProfile, followUser, deleteFollowUser } from '@/apis'
+import {
+  getArticles,
+  getUserProfile,
+  followUser,
+  deleteFollowUser,
+  deleteFavoriteArticles,
+  favoriteArticles
+} from '@/apis'
 
 import avatar from '@/components/avatar/index.vue'
 import articlesListComponent from '@/components/articles-list/index.vue'
@@ -61,6 +69,7 @@ import type { ArticleResult, AuthorResult } from '@/types/response-types'
 const route = useRoute()
 const router = useRouter()
 const user = useUserStore()
+const account = useAccountStore()
 
 /** Variable */
 let articlesList = ref<ArticleResult[]>([])
@@ -100,8 +109,17 @@ const init = () => {
     getDefaultArticlesData()
   }
 }
+const handleIsSignIn = () => {
+  if (!user.isUser) {
+    account.setStatus(Status.SIGN_IN)
+    router.push({ name: 'account' })
+    return false
+  }
+
+  return true
+}
 const handleClickFollow = () => {
-  if (!currentUserName.value) return
+  if (!currentUserName.value || !handleIsSignIn()) return
 
   const { following } = userProfile
 
@@ -122,11 +140,30 @@ const handlerClickItemAvatar = (data: AuthorResult) => {
     })
   }
 }
-const handlerClickItemFavorite = (data: string) => {
-  console.log('🚀 ~ file: index.vue ~ line 100 ~ handlerClickItemFavorite ~ data', data)
+// TODO: 收藏，接口错误
+const handlerClickItemFavorite = async (data: ArticleResult) => {
+  if (!handleIsSignIn()) return
+
+  const { favorited, slug } = data
+
+  if (favorited) {
+    const res = await deleteFavoriteArticles({ slug })
+
+    if (res.data?.article) {
+      Object.assign(data, res.data.article)
+    }
+  } else {
+    const res = await favoriteArticles({ slug })
+
+    if (res.data?.article) {
+      Object.assign(data, res.data.article)
+    }
+  }
 }
 const handlerClickItemDetails = (data: ArticleResult) => {
-  console.log('🚀 ~ file: index.vue ~ line 103 ~ handlerClickItemDetails ~ data', data)
+  if (data.slug) {
+    router.push({ path: '/articleDetails/' + data.slug })
+  }
 }
 const handleClickTab = (tab: TabsPaneContext) => {
   const { name } = tab.props

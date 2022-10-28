@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import { reactive, ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 import { useAccountStore, Status } from '@/stores/account'
 import { useUserStore } from '@/stores/user'
@@ -45,10 +45,13 @@ import { userLogin, userRegister } from '@/apis'
 import type { FormInstance } from 'element-plus'
 import { validateEmail } from '@/utils/constant'
 
+/** Use of external methods */
 const router = useRouter()
+const route = useRoute()
 const user = useUserStore()
 const account = useAccountStore()
 
+/** Variable */
 const loading = ref(false)
 const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
@@ -80,6 +83,7 @@ const validateRules = reactive({
   }
 })
 
+/** Compute */
 const accountParams = computed(() => {
   return {
     title: account.isSignIn ? '登录' : '注册',
@@ -88,17 +92,16 @@ const accountParams = computed(() => {
   }
 })
 
+/** Operation */
 const changeAccountStatus = () => {
   resetForm(ruleFormRef.value)
   account.setStatus(account.isSignIn ? Status.SIGN_UP : Status.SIGN_IN)
 }
-
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
   formEl.resetFields()
 }
-
 const handleSignIn = async () => {
   try {
     loading.value = true
@@ -110,18 +113,14 @@ const handleSignIn = async () => {
       user.setUser(data.user)
       ElMessage.success({ message: '登录成功' })
 
-      setTimeout(() => {
-        router.push({ path: '/' })
-      }, 500)
+      handleRedirect()
     }
 
     loading.value = false
   } catch (error) {
-    console.log('🚀 ~ file: index.vue ~ line 120 ~ handleSignIn ~ error', error)
     loading.value = false
   }
 }
-
 const handleSignUp = async () => {
   try {
     loading.value = true
@@ -132,18 +131,14 @@ const handleSignUp = async () => {
       user.setUser(data.user)
       ElMessage.success({ message: '注册并登录成功' })
 
-      setTimeout(() => {
-        router.push({ path: '/' })
-      }, 500)
+      handleRedirect()
     }
 
     loading.value = false
   } catch (error) {
-    console.log('🚀 ~ file: index.vue ~ line 141 ~ handleSignUp ~ error', error)
     loading.value = false
   }
 }
-
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
@@ -158,6 +153,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
       return false
     }
   })
+}
+const handleRedirect = () => {
+  const redirect = (route?.query.redirect ?? '') as string
+
+  router.push({ path: redirect ? redirect : '/' })
 }
 </script>
 

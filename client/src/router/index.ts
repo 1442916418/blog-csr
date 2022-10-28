@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 import layout from '@/views/layout/index.vue'
 
@@ -44,6 +46,20 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  NProgress.start()
+
+  if (to.path === '/account' && JSON.stringify(to.query) === '{}') {
+    next({ path: '/account', query: { redirect: from.path } })
+  } else {
+    next()
+  }
+})
+
+router.afterEach(() => {
+  NProgress.done()
 })
 
 export default router

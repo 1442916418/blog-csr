@@ -14,9 +14,10 @@
 
 <style lang="scss" scoped>
 .box {
-  background-color: #f7f7f7;
-  border: 1px solid #dcdfe6;
   border-radius: 5px;
+  border: 1px solid #dcdfe6;
+  background-color: #f7f7f7;
+  overflow: hidden;
 
   &-body {
     background-color: white;
@@ -26,6 +27,7 @@
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-top: 1px solid #dcdfe6;
   }
 }

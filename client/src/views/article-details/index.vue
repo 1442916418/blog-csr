@@ -33,6 +33,18 @@
       </div>
     </div>
     <div class="article-details-body">
+      <el-collapse accordion>
+        <el-collapse-item name="1">
+          <template #title>
+            <div class="description-title">
+              <span>描述</span>
+              <el-icon><Document /></el-icon>
+            </div>
+          </template>
+          <div>{{ details.description }}</div>
+        </el-collapse-item>
+      </el-collapse>
+
       <md-editor v-model="details.body" :previewOnly="true"></md-editor>
 
       <tags-component :list="details.tagList"></tags-component>
@@ -40,7 +52,7 @@
       <el-divider direction="horizontal"></el-divider>
 
       <div class="article-details-body-comments">
-        <box-component>
+        <box-component class="send-comment">
           <el-input
             v-model="commentBody"
             :autosize="{ minRows: 3, maxRows: 15 }"
@@ -50,14 +62,37 @@
           />
 
           <template v-slot:fl>
-            <el-icon><Comment /></el-icon>
+            <el-icon :size="18" color="#606266"><Comment /></el-icon>
           </template>
           <template v-slot:fr>
             <el-button type="primary" size="small" @click="handleClickSendComment">提交评论</el-button>
           </template>
         </box-component>
 
-        <template> </template>
+        <template v-for="(comment, i) in comments" :key="comment.id">
+          <box-component class="comment">
+            <div class="comment-body">
+              {{ comment.body }}
+            </div>
+
+            <template v-slot:fl>
+              <avatar-component
+                :user="comment.author"
+                :date="comment.createdAt"
+                @click="handleClickAvatar"
+              ></avatar-component>
+            </template>
+            <template v-slot:fr>
+              <el-icon
+                v-if="isCurrentUserArticle"
+                :size="18"
+                color="#606266"
+                @click="handleClickDeleteComment(comment.id, i)"
+                ><DeleteFilled
+              /></el-icon>
+            </template>
+          </box-component>
+        </template>
       </div>
     </div>
   </div>
@@ -69,16 +104,28 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
 
-import { ElButton, ElDivider, ElIcon, ElInput, ElMessage } from 'element-plus'
-import { Star, Plus, Edit, Delete, Comment } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { Star, Plus, Edit, Delete, Comment, Document, DeleteFilled } from '@element-plus/icons-vue'
 import avatarComponent from '@/components/avatar/index.vue'
 import tagsComponent from '@/components/tags/index.vue'
 import boxComponent from '@/components/box/index.vue'
 
-import { deleteFavoriteArticles, deleteFollowUser, favoriteArticles, followUser, getArticleBySlug } from '@/apis'
+import {
+  deleteFavoriteArticles,
+  deleteFollowUser,
+  favoriteArticles,
+  followUser,
+  getArticleBySlug,
+  deleteArticleBySlug,
+  createComment,
+  deleteComment,
+  getComments
+} from '@/apis'
 
-import type { ArticleResult, CommentResult } from '@/types/response-types'
-import MdEditor from 'md-editor-v3'
+import type { ArticleResult, CommentResult, UserResult } from '@/types/response-types'
+
+// TODO: 导入报错
+// import { StatusCodes } from 'http-status-codes'
 
 /** Use of external methods */
 const user = useUserStore()
@@ -124,8 +171,9 @@ const init = () => {
   currentSlug.value = slug as string
 
   getArticleDetailsData()
+  getCommentsData()
 }
-const handleIsUser = () => {
+const handleIsSignIn = () => {
   if (!user.isUser) {
     account.setStatus(Status.SIGN_IN)
     router.push({ name: 'account' })
@@ -134,15 +182,15 @@ const handleIsUser = () => {
 
   return true
 }
-const handleClickAvatar = () => {
-  const username = details?.author?.username ?? ''
+const handleClickAvatar = (user: UserResult) => {
+  const username = user?.username ?? ''
 
   if (username) {
     router.push({ path: '/user/' + username })
   }
 }
 const handleClickFavorite = async () => {
-  if (!handleIsUser()) return
+  if (!handleIsSignIn()) return
 
   const { favorited, slug } = details
 
@@ -161,7 +209,7 @@ const handleClickFavorite = async () => {
   }
 }
 const handleClickFollow = () => {
-  if (!handleIsUser()) return
+  if (!handleIsSignIn()) return
 
   const { username, following } = details.author
 
@@ -178,8 +226,45 @@ const handleClickEdit = () => {
     router.push({ path: '/articles/' + details.slug })
   }
 }
-const handleClickDelete = () => {}
-const handleClickSendComment = () => {}
+const handleClickDelete = () => {
+  if (!details.slug) return
+
+  ElMessageBox.confirm('确定删除此文章吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'error'
+  }).then(() => {
+    deleteArticleBySlugData(details.slug)
+  })
+}
+const handleClickSendComment = async () => {
+  if (!handleIsSignIn() || !details.slug) return
+
+  if (!commentBody.value) {
+    ElMessage.warning({ message: '请输入评论内容' })
+    return
+  }
+
+  const { data } = await createComment({ slug: details.slug }, { comment: { body: commentBody.value } })
+
+  if (data.comment) {
+    ElMessage.success('评论成功')
+
+    commentBody.value = ''
+    comments.unshift(data.comment)
+  }
+}
+const handleClickDeleteComment = async (id: number, index: number) => {
+  if (!details.slug || !id) return
+
+  const { data } = await deleteComment({ slug: details.slug, id })
+
+  if (data.result === 200) {
+    ElMessage.success('删除成功')
+
+    comments.splice(index, 1)
+  }
+}
 
 /** Api */
 const getArticleDetailsData = async () => {
@@ -205,6 +290,24 @@ const deleteFollowUserData = async (username: string) => {
   if (data?.profile) {
     Object.assign(details.author, data.profile)
     ElMessage.success({ message: '取消成功' })
+  }
+}
+const deleteArticleBySlugData = async (slug: string) => {
+  const { data } = await deleteArticleBySlug({ slug })
+
+  if (data.result === 200) {
+    ElMessage.success({ message: '删除成功' })
+
+    router.push({ path: '/' })
+  }
+}
+const getCommentsData = async () => {
+  if (!currentSlug.value) return
+
+  const { data } = await getComments({ slug: currentSlug.value })
+
+  if (data.comments) {
+    comments.push(...data.comments)
   }
 }
 

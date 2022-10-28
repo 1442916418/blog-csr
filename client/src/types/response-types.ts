@@ -1,8 +1,15 @@
+import type { StatusCodes } from 'http-status-codes'
+
 /** api 响应 - 默认错误结果 */
 export type ApiResponseErrorResult = {
   errors: {
     body: string | string[]
   }
+}
+
+/** api 响应 - 默认删除结果 */
+export type ApiResponseDeleteResult = {
+  result: StatusCodes.OK
 }
 
 /** api 响应 - 用户接口返回结果 */

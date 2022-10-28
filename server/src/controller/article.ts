@@ -258,9 +258,10 @@ export default class ArticleController {
       return
     }
 
-    await this._articleRepository.delete(article.id)
+    await this._articleRepository.remove(article)
 
     ctx.status = StatusCodes.OK
+    ctx.body = { result: StatusCodes.OK }
   }
 
   @route('/:slug/comments')
@@ -298,7 +299,7 @@ export default class ArticleController {
 
   @route('/:slug/comments')
   @GET()
-  @before([inject(AuthenticationMiddleware)])
+  @before([inject(OptionalAuthenticationMiddleware)])
   async getComments(ctx: Context) {
     const article: Article | null = await this._articleRepository.findOne({ where: { slug: ctx.params.slug } })
 
@@ -331,6 +332,7 @@ export default class ArticleController {
     await this._commentRepository.delete(ctx.params.id)
 
     ctx.status = StatusCodes.OK
+    ctx.body = { result: StatusCodes.OK }
   }
 
   @route('/:slug/favorite')

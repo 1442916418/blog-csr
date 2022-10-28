@@ -42,7 +42,9 @@ export class Article {
   @OneToMany(() => Comment, (comment: Comment) => comment.article)
   comments!: Comment[]
 
-  @OneToMany(() => Favorite, (favorite: Favorite) => favorite.article)
+  @OneToMany(() => Favorite, (favorite: Favorite) => favorite.article, {
+    createForeignKeyConstraints: false
+  })
   favorites!: Favorite[]
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

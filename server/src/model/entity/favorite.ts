@@ -8,7 +8,9 @@ export class Favorite {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @ManyToOne(() => Article, (article: Article) => article.favorites)
+  @ManyToOne(() => Article, (article: Article) => article.favorites, {
+    createForeignKeyConstraints: false
+  })
   article!: Article
 
   @ManyToOne(() => User, (user: User) => user.favorites)

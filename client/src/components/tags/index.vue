@@ -52,6 +52,7 @@ const elTagProps = computed(() => {
   .tag {
     margin-right: 6px;
     margin-bottom: 6px;
+    cursor: pointer;
 
     &:last-child {
       margin-right: 0;

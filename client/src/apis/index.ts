@@ -62,10 +62,9 @@ export const updateArticleBySlug = (query: req.ApiRequestSlug, data: req.ApiRequ
   return http.put<res.ApiResponseArticleResult>(`/articles/${query.slug}`, data)
 }
 
-// TODO: 删除返回格式？
 /** 删除文章  */
 export const deleteArticleBySlug = (query: req.ApiRequestSlug) => {
-  return http.delete(`/articles/${query.slug}`)
+  return http.delete<res.ApiResponseDeleteResult>(`/articles/${query.slug}`)
 }
 
 /** 获取评论 */
@@ -78,10 +77,9 @@ export const createComment = (query: req.ApiRequestSlug, data: req.ApiRequestCre
   return http.post<res.ApiResponseCommentResult>(`/articles/${query.slug}/comments`, data)
 }
 
-// TODO: 删除返回格式？
 /** 删除评论 */
 export const deleteComment = (query: req.ApiRequestSlug & req.ApiRequestId) => {
-  return http.delete(`/articles/${query.slug}/comments/${query.id}`)
+  return http.delete<res.ApiResponseDeleteResult>(`/articles/${query.slug}/comments/${query.id}`)
 }
 
 /** 收藏文章  */
