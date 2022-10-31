@@ -37,7 +37,7 @@ export default class UserController {
       ctx.request.body,
       joi.object({
         user: joi.object({
-          username: joi.string().min(5).max(30).required(),
+          username: joi.string().min(1).max(30).required(),
           email: joi.string().email().required(),
           password: joi.string().min(5).max(30).required(),
           bio: joi.string().max(1000),

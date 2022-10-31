@@ -78,7 +78,7 @@ const validateRules = reactive({
   signUp: {
     username: [
       { required: true, message: '请输入账户名', trigger: 'change' },
-      { min: 5, max: 30, message: '长度 5 - 30 之间', trigger: 'change' }
+      { min: 1, max: 30, message: '长度 1 - 30 之间', trigger: 'change' }
     ]
   }
 })

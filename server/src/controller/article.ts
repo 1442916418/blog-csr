@@ -40,6 +40,7 @@ export default class ArticleController {
     this._userRepository = UserRepository
   }
 
+  // TODO: .md 格式内容保存错误
   @route('')
   @POST()
   @before([inject(AuthenticationMiddleware)])
@@ -353,6 +354,11 @@ export default class ArticleController {
 
     const existingFavorite = await this._favoriteRepository.getExistingFavorite(article, stateUser)
 
+    console.log(
+      '🚀 ~ file: article.ts ~ line 355 ~ ArticleController ~ favoriteArticle ~ existingFavorite',
+      existingFavorite
+    )
+
     if (!existingFavorite) {
       const favorite: Favorite = new Favorite()
       favorite.article = article
@@ -364,6 +370,7 @@ export default class ArticleController {
     }
 
     const following: boolean = await this._followRepository.following(ctx.state.user, article.author)
+    console.log('🚀 ~ file: article.ts ~ line 373 ~ ArticleController ~ favoriteArticle ~ following', following)
 
     ctx.status = StatusCodes.CREATED
     ctx.body = { article: article.toJSON(following, true) }
@@ -383,12 +390,16 @@ export default class ArticleController {
       return
     }
 
-    // TODO: 待定
-    // await this._favoriteRepository.delete({
-    //   article,
-    //   user: ctx.state.user
-    // })
+    const deleteResult = await this._favoriteRepository
+      .createQueryBuilder('favorite')
+      .delete()
+      .where('articleId = :articleId', { articleId: article.id })
+      .andWhere('userId = :userId', { userId: ctx.state.user.id })
+      .execute()
 
+    console.log('🚀 ~ file: article.ts ~ line 402 ~ ArticleController ~ unfavoriteArticle ~ deleteResult', deleteResult)
+
+    // TODO: ???
     article.favorites.pop()
 
     const following: boolean = await this._followRepository.following(ctx.state.user, article.author)

@@ -29,7 +29,7 @@ export class Article {
   @Column({ default: '' })
   description!: string
 
-  @Column({ default: '' })
+  @Column({ type: 'longtext' })
   body!: string
 
   @ManyToMany(() => Tag, (tag: Tag) => tag.articles, { cascade: true })
@@ -58,6 +58,12 @@ export class Article {
     this.updatedAt = new Date()
   }
 
+  /**
+   * 文章 JSON 数据
+   * @param following 是否关注
+   * @param favorited 是否收藏
+   * @returns Article JSON
+   */
   toJSON(following: boolean, favorited: boolean) {
     return {
       slug: this.slug,

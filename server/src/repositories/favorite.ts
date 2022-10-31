@@ -11,9 +11,16 @@ export const FavoriteRepository = AppDataSource.getRepository(Favorite).extend({
 
     return !!count
   },
-  // TODO:
+  // TODO: 查询错误
+  /**
+   * 获取文章是否被当前用户收藏
+   * @param article 文章实体
+   * @param user 用户实体
+   * @returns 数量
+   */
   async getExistingFavorite(article: Article, user: User) {
     const [findFavorited, count] = await this.findAndCount({ article, user })
+    console.log('🚀 ~ file: favorite.ts ~ line 22 ~ getExistingFavorite ~ findFavorited, count', findFavorited, count)
 
     return count
   }

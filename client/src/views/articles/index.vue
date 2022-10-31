@@ -16,7 +16,12 @@
         <el-input v-model="ruleForm.description" clearable placeholder="请输入描述" />
       </el-form-item>
       <el-form-item label="内容" prop="body">
-        <md-editor v-model="ruleForm.body" :preview="false" :toolbars-exclude="['github', 'save']"></md-editor>
+        <md-editor
+          v-model="ruleForm.body"
+          :preview="false"
+          :toolbars-exclude="['github', 'save']"
+          @onHtmlChanged="handleEditorHtml"
+        ></md-editor>
       </el-form-item>
       <el-form-item label="标签" prop="tagList">
         <el-input v-model="tags" clearable placeholder="请输入标签，# 分隔多个" />
@@ -45,6 +50,7 @@ const route = useRoute()
 
 /** Variable */
 let isSlug = ref('')
+let htmlBody = ref('')
 
 const ruleFormRef = ref<FormInstance>()
 const loading = ref(false)
@@ -90,7 +96,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
         return false
       }
 
-      handleSubmitArticleData()
+      try {
+        handleSubmitArticleData()
+      } finally {
+        loading.value = false
+      }
     } else {
       return false
     }
@@ -100,22 +110,34 @@ const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
 
   formEl.resetFields()
+  htmlBody.value = ''
+}
+const handleEditorHtml = (html: string) => {
+  htmlBody.value = html
 }
 
 /** Api */
 const handleSubmitArticleData = async () => {
   loading.value = true
 
-  ruleForm.tagList = tags.value.split('#')
+  const formResult = Object.assign({}, ruleForm, {
+    body: htmlBody.value,
+    tagList: tags.value.split('#')
+  })
 
   let res = null
 
   if (isSlug.value) {
-    delete ruleForm.tagList
+    // @ts-ignore
+    delete formResult.tagList
 
-    res = await updateArticleBySlug({ slug: isSlug.value }, { article: ruleForm })
+    res = await updateArticleBySlug({ slug: isSlug.value }, { article: formResult }).finally(() => {
+      loading.value = false
+    })
   } else {
-    res = await createArticle({ article: ruleForm })
+    res = await createArticle({ article: formResult }).finally(() => {
+      loading.value = false
+    })
   }
 
   const article = res?.data?.article || {}
