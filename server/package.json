@@ -22,7 +22,6 @@
   "dependencies": {
     "@koa/cors": "^3.3.0",
     "@koa/router": "^8.0.8",
-    "crypto-js": "^4.1.1",
     "dayjs": "^1.11.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
@@ -37,7 +36,6 @@
     "jsonwebtoken": "~8.5.1",
     "koa-helmet": "~6.1.0",
     "mysql2": "~2.3.3",
-    "slugify": "~1.6.5",
     "dotenv": "~16.0.3"
   },
   "devDependencies": {

@@ -2,7 +2,6 @@ import { route, POST, before, inject, DELETE, PUT, GET } from 'awilix-koa'
 import { StatusCodes } from 'http-status-codes'
 import { Context } from 'koa'
 import joi from 'joi'
-import slugify from 'slugify'
 
 import { SelectQueryBuilder, In } from 'typeorm'
 
@@ -20,6 +19,7 @@ import { Favorite } from '../model/entity/favorite'
 import { Comment } from '../model/entity/comment'
 import { User } from '../model/entity/user'
 import { Follow } from '../model/entity/follow'
+import { randomNumber } from '../utils'
 
 @route('/api/articles')
 export default class ArticleController {
@@ -37,6 +37,7 @@ export default class ArticleController {
     this._userRepository = UserRepository
   }
 
+  // TODO: body 长度
   @route('')
   @POST()
   @before([inject(AuthenticationMiddleware)])
@@ -57,7 +58,7 @@ export default class ArticleController {
     article.title = ctx.request.body.article.title
     article.description = ctx.request.body.article.description
     article.body = ctx.request.body.article.body
-    article.slug = slugify(article.title, { lower: true })
+    article.slug = `_${randomNumber()}`
     article.author = ctx.state.user
     article.tagList = ctx.request.body.article.tagList.map((tagLabel: string) => {
       const tag: Tag = new Tag()
@@ -206,7 +207,7 @@ export default class ArticleController {
     Object.assign(article, ctx.request.body.article)
 
     if (ctx.request.body.article.title) {
-      article.slug = slugify(article.title, { lower: true })
+      article.slug = `_${randomNumber()}`
     }
 
     await this._articleRepository.update(article.id, article)

@@ -143,8 +143,6 @@ const handlerClickItemFavorite = async (data: ArticleResult) => {
     return
   }
 
-  console.log(' ~ file: index.vue ~ line 100 ~ handlerClickItemFavorite ~ data', data)
-
   const { favorited, slug } = data
 
   if (favorited) {
