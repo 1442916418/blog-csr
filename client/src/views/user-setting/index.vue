@@ -19,9 +19,9 @@
         <el-form-item label="账户名" prop="username">
           <el-input v-model="ruleForm.username" placeholder="请输入账户名" />
         </el-form-item>
-        <!-- <el-form-item label="新密码" prop="password">
+        <el-form-item label="新密码" prop="password">
           <el-input v-model="ruleForm.password" type="password" autocomplete="off" placeholder="请输入新密码" />
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="描述" prop="bio">
           <el-input
             v-model="ruleForm.bio"
@@ -50,15 +50,18 @@ import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 
 import { useUserStore } from '@/stores/user'
+import { useAccountStore, Status } from '@/stores/account'
 import { updateCurrentUser } from '@/apis'
 
 import { validateEmail } from '@/utils/constant'
+import { handleRequestParam } from '@/utils/common'
 
 import type { FormInstance } from 'element-plus'
 
 /** Use of external methods */
 const router = useRouter()
 const user = useUserStore()
+const account = useAccountStore()
 
 /** Variable */
 const loading = ref(false)
@@ -67,13 +70,13 @@ const ruleForm = reactive({
   username: '',
   email: '',
   image: '',
-  bio: ''
-  // password: ''
+  bio: '',
+  password: ''
 })
 const validateRules = reactive({
   username: [
     { required: true, message: '请输入账户名', trigger: 'change' },
-    { min: 5, max: 30, message: '长度 5 - 30 之间', trigger: 'change' }
+    { min: 1, max: 30, message: '长度 1 - 30 之间', trigger: 'change' }
   ],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'change' },
@@ -114,14 +117,24 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 /** Api */
 const updateCurrentUserData = async () => {
-  const { data } = await updateCurrentUser({ user: ruleForm })
+  const userParams = handleRequestParam(ruleForm)
+  const { data } = await updateCurrentUser({ user: userParams })
 
   if (data.user) {
     user.setUser(data.user)
 
-    ElMessage.success('保存成功')
+    const isPassword = userParams?.password ?? undefined
 
-    router.push({ path: '/user/' + data.user.username })
+    ElMessage.success(`保存成功${isPassword ? '，请重新登录' : ''}`)
+
+    if (isPassword) {
+      user.resetUser()
+      window.sessionStorage.clear()
+      account.setStatus(Status.SIGN_IN)
+      router.replace({ path: '/account' })
+    } else {
+      router.push({ path: '/user/' + data.user.username })
+    }
   }
 }
 

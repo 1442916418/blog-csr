@@ -2,8 +2,6 @@ import { route, GET, before, inject, POST, DELETE } from 'awilix-koa'
 import { StatusCodes } from 'http-status-codes'
 import { Context } from 'koa'
 
-import { AppDataSource } from '../dataSource'
-
 import { UserRepository } from '../repositories/user'
 import { FollowRepository } from '../repositories/follow'
 
@@ -17,7 +15,7 @@ export default class ProfileController {
   private _userRepository: typeof UserRepository
   private _followRepository: typeof FollowRepository
 
-  constructor({ connection }: { connection: typeof AppDataSource }) {
+  constructor() {
     this._userRepository = UserRepository
     this._followRepository = FollowRepository
   }
@@ -34,7 +32,7 @@ export default class ProfileController {
       return
     }
 
-    const following: boolean = await this._followRepository.following(ctx.state.user, user)
+    const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, user)
 
     ctx.body = { profile: user.toProfileJSON(following) }
     ctx.status = StatusCodes.OK
@@ -51,7 +49,7 @@ export default class ProfileController {
       return
     }
 
-    const following: boolean = await this._followRepository.following(ctx.state.user, user)
+    const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, user)
 
     if (!following) {
       const follow: Follow = new Follow()

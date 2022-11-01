@@ -10,9 +10,13 @@ export const FollowRepository = AppDataSource.getRepository(Follow).extend({
    * @param following 被关注者
    * @returns boolean
    */
-  async following(follower: User, following: User): Promise<boolean> {
-    const [findFollow, count] = await this.findAndCount({ follower, following })
-    console.log('🚀 ~ file: follow.ts ~ line 15 ~ following ~ findFollow, count', findFollow, count)
+  async getIsFollowing(follower: User, following: User): Promise<boolean> {
+    if (!follower?.id || !following?.id) return false
+
+    const count = await this.createQueryBuilder('follow')
+      .where('follow.followerId = :followerId', { followerId: follower.id })
+      .andWhere('follow.followingId = :followingId', { followingId: following.id })
+      .getOne()
 
     return !!count
   }

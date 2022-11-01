@@ -5,7 +5,6 @@ import joi from 'joi'
 import slugify from 'slugify'
 
 import { SelectQueryBuilder, In } from 'typeorm'
-import { AppDataSource } from '../dataSource'
 
 import { ArticleRepository } from '../repositories/article'
 import { FavoriteRepository } from '../repositories/favorite'
@@ -22,8 +21,6 @@ import { Comment } from '../model/entity/comment'
 import { User } from '../model/entity/user'
 import { Follow } from '../model/entity/follow'
 
-const log = console.log
-
 @route('/api/articles')
 export default class ArticleController {
   private _articleRepository: typeof ArticleRepository
@@ -32,7 +29,7 @@ export default class ArticleController {
   private _commentRepository: typeof CommentRepository
   private _userRepository: typeof UserRepository
 
-  constructor({ connection }: { connection: typeof AppDataSource }) {
+  constructor() {
     this._articleRepository = ArticleRepository
     this._favoriteRepository = FavoriteRepository
     this._followRepository = FollowRepository
@@ -40,7 +37,6 @@ export default class ArticleController {
     this._userRepository = UserRepository
   }
 
-  // TODO: .md 格式内容保存错误
   @route('')
   @POST()
   @before([inject(AuthenticationMiddleware)])
@@ -174,8 +170,8 @@ export default class ArticleController {
 
     await Promise.all(
       filteredArticles.map(async (article: Article) => {
-        const favorited: boolean = await this._favoriteRepository.favorited(article, ctx.state.user)
-        const following: boolean = await this._followRepository.following(ctx.state.user, article.author)
+        const favorited: boolean = await this._favoriteRepository.getIsFavorited(article, ctx.state.user)
+        const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
         articles.push(article.toJSON(following, favorited))
       })
     )
@@ -220,8 +216,8 @@ export default class ArticleController {
       where: { slug: article.slug }
     })
 
-    const favorited: boolean = await this._favoriteRepository.favorited(updatedArticle, ctx.state.user)
-    const following: boolean = await this._followRepository.following(ctx.state.user, updatedArticle.author)
+    const favorited: boolean = await this._favoriteRepository.getIsFavorited(updatedArticle, ctx.state.user)
+    const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, updatedArticle.author)
 
     ctx.body = { article: updatedArticle.toJSON(following, favorited) }
     ctx.status = StatusCodes.CREATED
@@ -241,8 +237,8 @@ export default class ArticleController {
       return
     }
 
-    const favorited: boolean = await this._favoriteRepository.favorited(article, ctx.state.user)
-    const following: boolean = await this._followRepository.following(ctx.state.user, article.author)
+    const favorited: boolean = await this._favoriteRepository.getIsFavorited(article, ctx.state.user)
+    const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
 
     ctx.body = { article: article.toJSON(following, favorited) }
     ctx.status = StatusCodes.OK
@@ -292,7 +288,7 @@ export default class ArticleController {
 
     await this._commentRepository.save(comment)
 
-    const following: boolean = await this._followRepository.following(ctx.state.user, article.author)
+    const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
 
     ctx.body = { comment: comment.toJSON(following) }
     ctx.status = StatusCodes.CREATED
@@ -309,11 +305,10 @@ export default class ArticleController {
       return
     }
 
-    // TODO:
     // @ts-ignore
     const comments: Comment[] = await this._commentRepository.find({ where: { article } })
 
-    const following: boolean = await this._followRepository.following(ctx.state.user, article.author)
+    const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
 
     ctx.body = { comments: comments.map((comment: Comment) => comment.toJSON(following)) }
     ctx.status = StatusCodes.OK
@@ -354,11 +349,6 @@ export default class ArticleController {
 
     const existingFavorite = await this._favoriteRepository.getExistingFavorite(article, stateUser)
 
-    console.log(
-      '🚀 ~ file: article.ts ~ line 355 ~ ArticleController ~ favoriteArticle ~ existingFavorite',
-      existingFavorite
-    )
-
     if (!existingFavorite) {
       const favorite: Favorite = new Favorite()
       favorite.article = article
@@ -369,8 +359,7 @@ export default class ArticleController {
       article.favorites.push(favorite)
     }
 
-    const following: boolean = await this._followRepository.following(ctx.state.user, article.author)
-    console.log('🚀 ~ file: article.ts ~ line 373 ~ ArticleController ~ favoriteArticle ~ following', following)
+    const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
 
     ctx.status = StatusCodes.CREATED
     ctx.body = { article: article.toJSON(following, true) }
@@ -390,19 +379,16 @@ export default class ArticleController {
       return
     }
 
-    const deleteResult = await this._favoriteRepository
+    await this._favoriteRepository
       .createQueryBuilder('favorite')
       .delete()
       .where('articleId = :articleId', { articleId: article.id })
       .andWhere('userId = :userId', { userId: ctx.state.user.id })
       .execute()
 
-    console.log('🚀 ~ file: article.ts ~ line 402 ~ ArticleController ~ unfavoriteArticle ~ deleteResult', deleteResult)
-
-    // TODO: ???
     article.favorites.pop()
 
-    const following: boolean = await this._followRepository.following(ctx.state.user, article.author)
+    const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
 
     ctx.status = StatusCodes.OK
     ctx.body = { article: article.toJSON(following, false) }

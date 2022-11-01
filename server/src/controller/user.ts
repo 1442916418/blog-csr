@@ -3,8 +3,6 @@ import { StatusCodes } from 'http-status-codes'
 import { Context } from 'koa'
 import joi from 'joi'
 
-import { AppDataSource } from '../dataSource'
-
 import { UserRepository } from '../repositories/user'
 
 import { User } from '../model/entity/user'
@@ -12,12 +10,7 @@ import { User } from '../model/entity/user'
 import SecurityService from '../services/security-service'
 import AuthenticationMiddleware from '../middleware/authentication-middleware'
 
-const log = console.log
-
-interface CParams {
-  connection: typeof AppDataSource
-  securityService: SecurityService
-}
+import { CParams } from '../types'
 
 @route('/api')
 export default class UserController {
@@ -25,7 +18,7 @@ export default class UserController {
   private _securityService: SecurityService
 
   // 注入依赖
-  constructor({ connection, securityService }: CParams) {
+  constructor({ securityService }: CParams) {
     this._userRepository = UserRepository
     this._securityService = securityService
   }
@@ -101,20 +94,45 @@ export default class UserController {
   @PUT()
   @before([inject(AuthenticationMiddleware)])
   async updateUser(ctx: Context) {
+    const { body } = ctx.request
+    const isPassword = body.user?.password ?? void 0
+    const isBio = body.user?.bio ?? void 0
+    const isImage = body.user?.image ?? void 0
+
+    let userObject = joi.object({
+      username: joi.string().min(1).max(30),
+      email: joi.string().email()
+    })
+
+    if (isPassword) {
+      userObject = userObject.append({
+        password: joi.string().min(5).max(30)
+      })
+    }
+    if (isBio) {
+      userObject = userObject.append({
+        bio: joi.string().max(1000)
+      })
+    }
+    if (isImage) {
+      userObject = userObject.append({
+        image: joi.string().max(1000)
+      })
+    }
+
     joi.assert(
-      ctx.request.body,
+      body,
       joi.object({
-        user: joi.object({
-          username: joi.string().min(5).max(30),
-          email: joi.string().email(),
-          bio: joi.string().max(1000),
-          image: joi.string().max(1000)
-        })
+        user: userObject
       })
     )
 
     const user: User = ctx.state.user
-    Object.assign(user, ctx.request.body.user)
+    Object.assign(user, body.user)
+
+    if (isPassword) {
+      SecurityService.hashPassword(user)
+    }
 
     await this._userRepository.update(user.id, user)
 

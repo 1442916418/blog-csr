@@ -2,8 +2,6 @@ import { route, GET } from 'awilix-koa'
 import { StatusCodes } from 'http-status-codes'
 import { Context } from 'koa'
 
-import { AppDataSource } from '../dataSource'
-
 import { TagRepository } from '../repositories/tag'
 
 import { Tag } from '../model/entity/tag'
@@ -13,7 +11,7 @@ export default class ProfileController {
   private _tagRepository: typeof TagRepository
 
   // 可以在此处注入注册到容器的任何依赖项
-  constructor({ connection }: { connection: typeof AppDataSource }) {
+  constructor() {
     this._tagRepository = TagRepository
   }
 

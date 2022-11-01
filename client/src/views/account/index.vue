@@ -62,23 +62,23 @@ const ruleForm = reactive({
 const validateRules = reactive({
   signIn: {
     email: [
-      { required: true, message: '请输入邮箱', trigger: 'change' },
+      { required: true, message: '请输入邮箱', trigger: 'blur' },
       {
         type: 'string',
         pattern: validateEmail,
         message: '请输入正确的邮箱',
-        trigger: 'change'
+        trigger: 'blur'
       }
     ],
     password: [
-      { required: true, message: '请输入密码', trigger: 'change' },
-      { min: 5, max: 30, message: '长度 5 - 30 之间', trigger: 'change' }
+      { required: true, message: '请输入密码', trigger: 'blur' },
+      { min: 5, max: 30, message: '长度 5 - 30 之间', trigger: 'blur' }
     ]
   },
   signUp: {
     username: [
-      { required: true, message: '请输入账户名', trigger: 'change' },
-      { min: 1, max: 30, message: '长度 1 - 30 之间', trigger: 'change' }
+      { required: true, message: '请输入账户名', trigger: 'blur' },
+      { min: 1, max: 30, message: '长度 1 - 30 之间', trigger: 'blur' }
     ]
   }
 })
