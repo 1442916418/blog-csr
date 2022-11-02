@@ -140,7 +140,6 @@ const handlerClickItemAvatar = (data: AuthorResult) => {
     })
   }
 }
-// TODO: 收藏，接口错误
 const handlerClickItemFavorite = async (data: ArticleResult) => {
   if (!handleIsSignIn()) return
 

@@ -6,3 +6,22 @@
     text-align: right;
   }
 }
+
+.tags {
+  &-new {
+    margin-bottom: 16px;
+  }
+
+  &-list {
+    .tag {
+      margin-right: 6px;
+      margin-bottom: 6px;
+      cursor: pointer;
+
+      &:last-child {
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+}

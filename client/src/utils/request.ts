@@ -6,7 +6,6 @@ import { useUserStore } from '@/stores/user'
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-// TODO: catch 错误
 /**
  * 请求类
  * @description 用来自定义传递配置来创建实例

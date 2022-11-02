@@ -24,11 +24,23 @@
         ></md-editor>
       </el-form-item>
       <el-form-item label="标签" prop="tagList">
-        <el-input v-model="tags" clearable placeholder="请输入标签，# 分隔多个" />
+        <div class="tags">
+          <div class="tags-new" v-if="!isSlug">
+            <el-input v-model="newTagValue" class="ml-1 w-20" placeholder="新增一个标签/选择点击选择标签" />
+          </div>
+          <div class="tags-list">
+            <template v-for="tag in tagList" :key="tag">
+              <el-tag class="tag" :effect="tags.includes(tag) ? 'dark' : 'plain'" @click="handleClickTag(tag)">{{
+                tag
+              }}</el-tag>
+            </template>
+          </div>
+        </div>
       </el-form-item>
 
       <div class="operation">
-        <el-button @click="resetForm(ruleFormRef)" :disabled="loading">重 置</el-button>
+        <el-button @click="handleGoBack" :disabled="loading">返回</el-button>
+        <el-button type="warning" @click="resetForm(ruleFormRef)" :disabled="loading">重 置</el-button>
         <el-button type="primary" @click="submitForm(ruleFormRef)" :loading="loading">提 交</el-button>
       </div>
     </el-form>
@@ -36,12 +48,13 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
-import { createArticle, getArticleBySlug, updateArticleBySlug } from '@/apis'
+import { createArticle, getArticleBySlug, getTags, updateArticleBySlug } from '@/apis'
 
-import { ElMessage, type FormInstance } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import type { FormInstance, ElInput } from 'element-plus'
 import type { CreateArticle } from '@/types/request-types'
 
 /** Use of external methods */
@@ -51,10 +64,12 @@ const route = useRoute()
 /** Variable */
 let isSlug = ref('')
 let htmlBody = ref('')
+let tagList = ref<string[]>([])
+let newTagValue = ref('')
 
 const ruleFormRef = ref<FormInstance>()
 const loading = ref(false)
-const tags = ref('')
+const tags = ref<string[]>([])
 const ruleForm = reactive<CreateArticle>({
   title: '',
   description: '',
@@ -72,8 +87,17 @@ const rules = reactive({
   ]
 })
 
+/** Compute */
+const formTags = computed(() => {
+  if (tags.value && newTagValue.value) return []
+
+  return [...tags.value, newTagValue.value]
+})
+
 /** Operation */
 const init = () => {
+  getAllTagsData()
+
   const slug = route.params?.slug ?? ''
 
   isSlug.value = slug as string
@@ -91,7 +115,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         ElMessage.warning({ message: '请输入内容' })
         return false
       }
-      if (!tags.value) {
+      if (!formTags.value.length) {
         ElMessage.warning({ message: '请输入标签' })
         return false
       }
@@ -115,6 +139,14 @@ const resetForm = (formEl: FormInstance | undefined) => {
 const handleEditorHtml = (html: string) => {
   htmlBody.value = html
 }
+const handleClickTag = (tag: string) => {
+  if (tags.value.includes(tag)) {
+    tags.value = tags.value.filter((t) => t !== tag)
+  } else {
+    tags.value.push(tag)
+  }
+}
+const handleGoBack = () => router.back()
 
 /** Api */
 const handleSubmitArticleData = async () => {
@@ -122,12 +154,13 @@ const handleSubmitArticleData = async () => {
 
   const formResult = Object.assign({}, ruleForm, {
     body: htmlBody.value,
-    tagList: tags.value.split('#')
+    tagList: formTags.value
   })
 
   let res = null
 
   if (isSlug.value) {
+    // TODO: tagList 修改
     // @ts-ignore
     delete formResult.tagList
 
@@ -161,7 +194,7 @@ const getArticleDetailsData = async () => {
   if (data?.article) {
     const { title, description, body, tagList } = data.article
 
-    tags.value = tagList.join('#')
+    tags.value = tagList
 
     Object.assign(ruleForm, {
       title,
@@ -170,6 +203,11 @@ const getArticleDetailsData = async () => {
       tagList: tagList
     })
   }
+}
+const getAllTagsData = async () => {
+  const { data } = await getTags()
+
+  tagList.value = data.tags
 }
 
 /** Lifecycle Hooks */
