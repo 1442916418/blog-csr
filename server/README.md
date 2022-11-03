@@ -13,12 +13,4 @@
 
 ## 使用
 
-```bash
-npm install
-```
-
 确保 MySQL 数据库实例已在运行。然后打开服务器：
-
-```bash
-npm start
-```
