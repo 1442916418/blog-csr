@@ -1,7 +1,8 @@
 <template>
-  <div class="header-container">
-    <div class="header-container-left" @click="jumpPage('/')">BLOG</div>
-    <div class="header-container-right">
+  <header class="header">
+    <div class="flex-1 text-left font-bold" @click="jumpPage('/')">BLOG</div>
+    <div class="flex-1 text-right">
+      <button class="button-box">Add</button>
       <template v-if="user.isUser">
         <el-button type="info" :icon="Edit" link @click="jumpPage('/articles')">创建新文章</el-button>
         <el-button type="info" :icon="Setting" link @click="jumpPage('/userSetting')">用户配置</el-button>
@@ -15,7 +16,7 @@
         <el-button type="info" :icon="Plus" link @click="handleAccount(Status.SIGN_UP)">注 册</el-button>
       </template>
     </div>
-  </div>
+  </header>
 </template>
 
 <script lang="ts" setup>
@@ -70,21 +71,16 @@ const jumpPage = (path: string, params?: RouteParamsRaw) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.header-container {
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+<style scoped>
+@tailwind components;
 
-  &-left {
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
+@layer components {
+  .header {
+    @apply px-4 py-2 h-12 flex justify-center items-center;
   }
 
-  &-right {
-    display: flex;
+  .button-box {
+    @apply flex items-center rounded-md text-sm font-medium px-4 py-2;
   }
 }
 </style>

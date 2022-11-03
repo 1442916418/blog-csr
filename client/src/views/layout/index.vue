@@ -1,17 +1,11 @@
 <template>
-  <el-container>
-    <el-header>
-      <header-container />
-    </el-header>
+  <div class="container-box">
+    <header-container />
 
-    <el-main>
-      <router-view />
-    </el-main>
+    <router-view />
 
-    <el-footer>
-      <footer-container />
-    </el-footer>
-  </el-container>
+    <footer-container />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -20,6 +14,8 @@ import headerContainer from '@/components/header/index.vue'
 import footerContainer from '@/components/footer/index.vue'
 </script>
 
-<style lang="scss" scoped>
-@import '@/views/layout/index.scss';
+<style scoped>
+.container-box {
+  @apply xl:mx-60 2xl:mx-80;
+}
 </style>
