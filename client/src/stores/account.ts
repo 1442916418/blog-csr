@@ -1,6 +1,4 @@
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 
 export enum Status {
   SIGN_IN,

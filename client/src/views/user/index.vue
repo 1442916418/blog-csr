@@ -2,7 +2,7 @@
   <div class="user">
     <div class="user-header">
       <div class="user-header-avatar">
-        <avatar :avatar-size="80" :user="userProfile" direction="column"></avatar>
+        <avatar :user="userProfile" direction="column"></avatar>
       </div>
       <div class="user-header-btn">
         <template v-if="user.userName === currentUserName">

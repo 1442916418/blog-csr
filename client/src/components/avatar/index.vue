@@ -1,9 +1,14 @@
 <template>
   <div class="avatar" @click.stop="emits('click', user)">
-    <el-avatar :icon="User" :src="user.image" :size="avatarSize" />
+    <template v-if="user.image">
+      <img :src="user.image" :title="user.username" class="inset-0 w-16 h-16 object-cover bg-gray-100 sm:rounded-lg" />
+    </template>
+    <template v-else>
+      <div class="inset-0 w-16 h-16 rounded-lg bg-gray-200 align-middle"></div>
+    </template>
 
     <div class="avatar-info">
-      <el-button type="info" link>{{ user.username }}</el-button>
+      <y-button type="info" link>{{ user.username }}</y-button>
 
       <span v-show="date" class="date">{{ date }}</span>
     </div>
@@ -11,10 +16,10 @@
 </template>
 
 <script lang="ts" setup>
-import { User } from '@element-plus/icons-vue'
-
 import { computed, type PropType } from 'vue'
 import type { AuthorResult } from '@/types/response-types'
+
+import yButton from '@/components/custom/button/button.vue'
 
 const props = defineProps({
   user: {
@@ -24,15 +29,6 @@ const props = defineProps({
   date: {
     type: String,
     default: ''
-  },
-  avatarSize: {
-    type: [String, Number],
-    default: 'default',
-    validator(value: string | number) {
-      if (typeof value === 'number') return true
-
-      return ['large', 'small', 'default'].includes(value)
-    }
   },
   direction: {
     type: String,
