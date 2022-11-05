@@ -1,61 +1,81 @@
 <template>
-  <div class="articles">
-    <el-form
-      ref="ruleFormRef"
-      :rules="rules"
-      :model="ruleForm"
-      status-icon
-      size="large"
-      label-width="120px"
-      label-position="top"
-    >
-      <el-form-item label="标题" prop="title">
-        <el-input v-model="ruleForm.title" clearable placeholder="请输入标题" />
-      </el-form-item>
-      <el-form-item label="描述" prop="description">
-        <el-input v-model="ruleForm.description" clearable placeholder="请输入描述" />
-      </el-form-item>
-      <el-form-item label="内容" prop="body">
+  <div class="w-4/5 my-5 mx-auto">
+    <ul class="list-disc list-inside my-5 space-y-2">
+      <template v-for="rule in validateRules" :key="rule">
+        <li class="text-red-600">{{ rule }}</li>
+      </template>
+    </ul>
+
+    <form action="" id="articleForm" class="my-5 flex flex-col space-y-4">
+      <div>
+        <label for="title">标题</label><br />
+        <input
+          class="w-full mt-2"
+          type="text"
+          name="title"
+          id="title"
+          placeholder="请输入标题"
+          @input="handleInputValue($event, 'title')"
+        />
+      </div>
+      <div>
+        <label for="description">描述</label><br />
+        <input
+          class="w-full mt-2"
+          type="text"
+          name="description"
+          id="description"
+          placeholder="请输入描述"
+          @input="handleInputValue($event, 'description')"
+        />
+      </div>
+      <div class="w-full mt-2">
         <md-editor
           v-model="ruleForm.body"
           :preview="false"
           :toolbars-exclude="['github', 'save']"
           @onHtmlChanged="handleEditorHtml"
         ></md-editor>
-      </el-form-item>
-      <el-form-item label="标签" prop="tagList">
-        <div class="tags">
-          <div class="tags-new" v-if="!isSlug">
-            <el-input v-model="newTagValue" class="ml-1 w-20" placeholder="新增一个标签/选择点击选择标签" />
+      </div>
+      <div class="w-full mt-2">
+        <div>
+          <div class="mb-4" v-if="!isSlug">
+            <input
+              class="ml-1 w-2/4"
+              type="text"
+              id="newTagInput"
+              placeholder="新增一个标签/选择点击选择标签"
+              @input="handleInputValue($event, 'newTagValue')"
+            />
           </div>
-          <div class="tags-list">
+          <div class="space-x-2 space-y-2">
             <template v-for="tag in tagList" :key="tag">
-              <el-tag class="tag" :effect="tags.includes(tag) ? 'dark' : 'plain'" @click="handleClickTag(tag)">{{
-                tag
-              }}</el-tag>
+              <el-tag :effect="tags.includes(tag) ? 'dark' : 'plain'" @click="handleClickTag(tag)">{{ tag }}</el-tag>
             </template>
           </div>
         </div>
-      </el-form-item>
-
-      <div class="operation">
-        <el-button @click="handleGoBack" :disabled="loading">返回</el-button>
-        <el-button type="warning" @click="resetForm(ruleFormRef)" :disabled="loading">重 置</el-button>
-        <el-button type="primary" @click="submitForm(ruleFormRef)" :loading="loading">提 交</el-button>
       </div>
-    </el-form>
+    </form>
+
+    <div class="my-6 text-right space-x-2">
+      <y-button @click="handleGoBack" :disabled="loading">返回</y-button>
+      <y-button type="warning" @click="resetForm" :disabled="loading">重 置</y-button>
+      <y-button type="primary" @click="submitForm" :loading="loading">提 交</y-button>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted, computed } from 'vue'
+import { reactive, ref, onMounted, computed, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import htmlToMarkdown from '@wcj/html-to-markdown'
 
 import { createArticle, getArticleBySlug, getTags, updateArticleBySlug } from '@/apis'
 
 import { ElMessage } from 'element-plus'
-import type { FormInstance, ElInput } from 'element-plus'
 import type { CreateArticle } from '@/types/request-types'
+
+import yButton from '@/components/custom/button/button.vue'
 
 /** Use of external methods */
 const router = useRouter()
@@ -66,8 +86,8 @@ let isSlug = ref('')
 let htmlBody = ref('')
 let tagList = ref<string[]>([])
 let newTagValue = ref('')
+let validateRules = ref<string[]>([])
 
-const ruleFormRef = ref<FormInstance>()
 const loading = ref(false)
 const tags = ref<string[]>([])
 const ruleForm = reactive<CreateArticle>({
@@ -76,25 +96,28 @@ const ruleForm = reactive<CreateArticle>({
   body: '',
   tagList: []
 })
-const rules = reactive({
-  title: [
-    { required: true, message: '请输入标题', trigger: 'change' },
-    { min: 5, max: 50, message: '长度 5 - 50 之间', trigger: 'change' }
-  ],
-  description: [
-    { required: true, message: '请输入描述', trigger: 'change' },
-    { min: 1, max: 100, message: '长度 1 - 100 之间', trigger: 'change' }
-  ]
-})
 
 /** Compute */
 const formTags = computed(() => {
-  if (tags.value && newTagValue.value) return []
+  if (!tags.value.length && !newTagValue.value) return []
 
-  return [...tags.value, newTagValue.value]
+  const result = tags.value
+
+  if (newTagValue.value) {
+    result.push(newTagValue.value)
+  }
+
+  return result
 })
 
 /** Operation */
+const handleInputValue = (e: any, key: 'title' | 'description' | 'newTagValue') => {
+  if (key === 'newTagValue') {
+    newTagValue.value = e.target?.value
+  } else {
+    ruleForm[key] = e.target?.value ?? ''
+  }
+}
 const init = () => {
   getAllTagsData()
 
@@ -106,35 +129,49 @@ const init = () => {
     getArticleDetailsData()
   }
 }
-const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+const handleFormValidate = () => {
+  const { title, description, body } = ruleForm
+  const result = []
 
-  formEl.validate((valid) => {
-    if (valid) {
-      if (!ruleForm.body) {
-        ElMessage.warning({ message: '请输入内容' })
-        return false
-      }
-      if (!formTags.value.length) {
-        ElMessage.warning({ message: '请输入标签' })
-        return false
-      }
+  if (!title) {
+    result.push('请输入标题')
+  } else if (title.length < 5 || title.length > 50) {
+    result.push('标题长度 5 - 50 之间')
+  }
 
-      try {
-        handleSubmitArticleData()
-      } finally {
-        loading.value = false
-      }
-    } else {
-      return false
-    }
-  })
+  if (!description) {
+    result.push('请输入描述')
+  } else if (!description.length || description.length > 100) {
+    result.push('描述长度 1 - 100 之间')
+  }
+
+  if (!body) {
+    result.push('请输入内容')
+  }
+
+  if (!formTags.value.length) {
+    result.push('请输入/选择标签')
+  }
+
+  validateRules.value = result
 }
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+const submitForm = () => {
+  handleFormValidate()
 
-  formEl.resetFields()
+  if (validateRules.value.length) return
+
+  try {
+    handleSubmitArticleData()
+  } finally {
+    loading.value = false
+  }
+}
+const resetForm = () => {
+  const articleForm = document.querySelector('#articleForm') as HTMLFormElement
+  articleForm && articleForm.reset()
+
   htmlBody.value = ''
+  validateRules.value = []
 }
 const handleEditorHtml = (html: string) => {
   htmlBody.value = html
@@ -198,9 +235,25 @@ const getArticleDetailsData = async () => {
 
     Object.assign(ruleForm, {
       title,
-      description,
-      body,
-      tagList: tagList
+      description
+    })
+
+    if (body) {
+      htmlToMarkdown({ html: body })
+        .then((res) => {
+          ruleForm.body = res
+        })
+        .catch(() => {
+          ruleForm.body = ''
+        })
+    }
+
+    nextTick(() => {
+      const titleEle = document.querySelector('#title') as HTMLInputElement
+      const descriptionEle = document.querySelector('#description') as HTMLInputElement
+
+      titleEle.value = title
+      descriptionEle.value = description
     })
   }
 }
@@ -215,7 +268,3 @@ onMounted(() => {
   init()
 })
 </script>
-
-<style lang="scss" scoped>
-@import '@/views/articles/index.scss';
-</style>

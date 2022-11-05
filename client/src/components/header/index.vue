@@ -1,7 +1,7 @@
 <template>
   <header class="header">
-    <div class="flex-1 text-left font-bold" @click="jumpPage('/')">BLOG</div>
-    <div class="flex-1 text-right space-x-2">
+    <div class="flex-1 text-left font-bold cursor-pointer" @click="jumpPage('/')">BLOG</div>
+    <div class="flex-1 flex justify-end item-center space-x-2">
       <template v-if="user.isUser">
         <y-button type="info" link @click="jumpPage('/articles')">创建新文章</y-button>
         <y-button type="info" link @click="jumpPage('/userSetting')">用户配置</y-button>

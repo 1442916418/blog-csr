@@ -1,51 +1,84 @@
 <template>
-  <div class="user-setting">
-    <div class="user-setting-title">
-      <h1>设 置</h1>
+  <div class="w-2/3 my-5 mx-auto flex flex-col">
+    <div class="text-center">
+      <h1 class="tracking-widest font-bold text-2xl">设 置</h1>
     </div>
-    <div class="user-setting-body">
-      <el-form
-        ref="ruleFormRef"
-        :rules="validateRules"
-        :model="ruleForm"
-        status-icon
-        size="large"
-        label-width="120px"
-        label-position="top"
-      >
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="ruleForm.email" placeholder="请输入邮箱" />
-        </el-form-item>
-        <el-form-item label="账户名" prop="username">
-          <el-input v-model="ruleForm.username" placeholder="请输入账户名" />
-        </el-form-item>
-        <el-form-item label="新密码" prop="password">
-          <el-input v-model="ruleForm.password" type="password" autocomplete="off" placeholder="请输入新密码" />
-        </el-form-item>
-        <el-form-item label="描述" prop="bio">
-          <el-input
-            v-model="ruleForm.bio"
-            :autosize="{ minRows: 5, maxRows: 15 }"
-            placeholder="请输入个人描述"
-            maxlength="300"
-            type="textarea"
-          />
-        </el-form-item>
-        <el-form-item label="头像" prop="image">
-          <el-input v-model="ruleForm.image" placeholder="请输入头像链接" />
-        </el-form-item>
+    <div>
+      <ul class="list-disc list-inside my-5 space-y-2">
+        <template v-for="rule in validateRules" :key="rule">
+          <li class="text-red-600">{{ rule }}</li>
+        </template>
+      </ul>
 
-        <div class="operation">
-          <el-button @click="resetForm(ruleFormRef)" :disabled="loading">重 置</el-button>
-          <el-button type="primary" @click="submitForm(ruleFormRef)" :loading="loading">提 交</el-button>
+      <form action="" id="resetForm" class="my-5 flex flex-col space-y-4">
+        <div>
+          <label for="username">账户名</label><br />
+          <input
+            class="w-full mt-2"
+            type="text"
+            name="username"
+            id="username"
+            placeholder="请输入账户名"
+            @input="handleInputValue($event, 'username')"
+          />
         </div>
-      </el-form>
+        <div>
+          <label for="email">邮箱</label><br />
+          <input
+            class="w-full mt-2"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="请输入邮箱"
+            @input="handleInputValue($event, 'email')"
+          />
+        </div>
+        <div>
+          <label for="password">新密码</label><br />
+          <input
+            class="w-full mt-2"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="请输入新密码"
+            @input="handleInputValue($event, 'password')"
+          />
+        </div>
+        <div>
+          <label for="bio">描述</label><br />
+          <textarea
+            class="w-full mt-2"
+            name="bio"
+            id="bio"
+            cols="30"
+            rows="10"
+            placeholder="请输入描述"
+            @input="handleInputValue($event, 'bio')"
+          ></textarea>
+        </div>
+        <div>
+          <label for="image">头像</label><br />
+          <input
+            class="w-full mt-2"
+            type="text"
+            name="image"
+            id="image"
+            placeholder="请输入头像"
+            @input="handleInputValue($event, 'image')"
+          />
+        </div>
+      </form>
+
+      <div class="my-6 text-right space-x-2">
+        <y-button @click="resetForm" :disabled="loading">重 置</y-button>
+        <y-button type="primary" @click="submitForm" :loading="loading">提 交</y-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 
@@ -56,7 +89,7 @@ import { updateCurrentUser } from '@/apis'
 import { validateEmail } from '@/utils/constant'
 import { handleRequestParam } from '@/utils/common'
 
-import type { FormInstance } from 'element-plus'
+import yButton from '@/components/custom/button/button.vue'
 
 /** Use of external methods */
 const router = useRouter()
@@ -65,7 +98,6 @@ const account = useAccountStore()
 
 /** Variable */
 const loading = ref(false)
-const ruleFormRef = ref<FormInstance>()
 const ruleForm = reactive({
   username: '',
   email: '',
@@ -73,46 +105,71 @@ const ruleForm = reactive({
   bio: '',
   password: ''
 })
-const validateRules = reactive({
-  username: [
-    { required: true, message: '请输入账户名', trigger: 'change' },
-    { min: 1, max: 30, message: '长度 1 - 30 之间', trigger: 'change' }
-  ],
-  email: [
-    { required: true, message: '请输入邮箱', trigger: 'change' },
-    {
-      type: 'string',
-      pattern: validateEmail,
-      message: '请输入正确的邮箱',
-      trigger: 'change'
-    }
-  ]
-})
+let validateRules = ref<string[]>([])
 
 /** Operation */
+const handleInputValue = (e: any, key: 'username' | 'password' | 'email' | 'bio' | 'image') => {
+  ruleForm[key] = e.target?.value ?? ''
+}
 const init = () => {
+  const { userName, userEmail, userImage, userDescribe } = user
+
   Object.assign(ruleForm, {
-    username: user.userName || '',
-    email: user.userEmail || '',
-    image: user.userImage || '',
-    bio: user.userDescribe || ''
+    username: userName || '',
+    email: userEmail || '',
+    image: userImage || '',
+    bio: userDescribe || ''
+  })
+
+  nextTick(() => {
+    const userNameEle = document.querySelector('#username') as HTMLInputElement
+    const emailEle = document.querySelector('#email') as HTMLInputElement
+    const imageEle = document.querySelector('#image') as HTMLInputElement
+    const bioEle = document.querySelector('#bio') as HTMLInputElement
+
+    userNameEle.value = userName || ''
+    emailEle.value = userEmail || ''
+    imageEle.value = userImage || ''
+    bioEle.value = userDescribe || ''
   })
 }
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+const resetForm = () => {
+  const resetForm = document.querySelector('#resetForm') as HTMLFormElement
+  resetForm && resetForm.reset()
 
-  formEl.resetFields()
-}
-const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-
-  formEl.validate((valid) => {
-    if (valid) {
-      updateCurrentUserData()
-    } else {
-      return false
-    }
+  validateRules.value = []
+  Object.assign(ruleForm, {
+    username: '',
+    password: '',
+    email: '',
+    bio: '',
+    image: ''
   })
+}
+const handleFormValidate = () => {
+  const { username, email } = ruleForm
+  const result = []
+
+  if (!username) {
+    result.push('请输入账户名')
+  } else if (!username.length || username.length > 30) {
+    result.push('账户名长度 1 - 30 之间')
+  }
+
+  if (!email) {
+    result.push('请输入邮箱')
+  } else if (!validateEmail.test(email)) {
+    result.push('请输入正确的邮箱')
+  }
+
+  validateRules.value = result
+}
+const submitForm = () => {
+  handleFormValidate()
+
+  if (validateRules.value.length) return
+
+  updateCurrentUserData()
 }
 
 /** Api */
@@ -143,7 +200,3 @@ onMounted(() => {
   init()
 })
 </script>
-
-<style lang="scss" scoped>
-@import '@/views/user-setting/index.scss';
-</style>

@@ -1,40 +1,62 @@
 <template>
-  <div class="account">
-    <div class="account-header">
-      <h1>{{ accountParams.title }}</h1>
-      <el-button type="success" link @click="changeAccountStatus">{{ accountParams.subTitle }}</el-button>
+  <div class="w-1/3 my-5 mx-auto flex flex-col">
+    <div class="text-center">
+      <h1 class="tracking-widest font-bold text-2xl">{{ accountParams.title }}</h1>
+      <y-button type="success" link @click="changeAccountStatus">{{ accountParams.subTitle }}</y-button>
     </div>
-    <div class="account-body">
-      <el-form
-        ref="ruleFormRef"
-        :rules="accountParams.rules"
-        :model="ruleForm"
-        status-icon
-        size="large"
-        label-width="120px"
-        label-position="top"
-      >
-        <el-form-item label="账户名" prop="username" v-if="!account.isSignIn">
-          <el-input v-model="ruleForm.username" placeholder="请输入账户名" />
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="ruleForm.email" placeholder="请输入邮箱" />
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="ruleForm.password" type="password" autocomplete="off" placeholder="请输入密码" />
-        </el-form-item>
+    <div>
+      <ul class="list-disc list-inside my-5 space-y-2">
+        <template v-for="rule in validateRules" :key="rule">
+          <li class="text-red-600">{{ rule }}</li>
+        </template>
+      </ul>
 
-        <div class="operation">
-          <el-button @click="resetForm(ruleFormRef)" :disabled="loading">重 置</el-button>
-          <el-button type="primary" @click="submitForm(ruleFormRef)" :loading="loading">提 交</el-button>
+      <form action="" id="accountForm" class="my-5 flex flex-col space-y-4">
+        <div v-if="!account.isSignIn">
+          <label for="username">账户名</label><br />
+          <input
+            class="w-full mt-2"
+            type="text"
+            name="username"
+            id="username"
+            placeholder="请输入账户名"
+            @input="handleInputValue($event, 'username')"
+          />
         </div>
-      </el-form>
+        <div>
+          <label for="email">邮箱</label><br />
+          <input
+            class="w-full mt-2"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="请输入邮箱"
+            @input="handleInputValue($event, 'email')"
+          />
+        </div>
+        <div>
+          <label for="password">密码</label><br />
+          <input
+            class="w-full mt-2"
+            type="password"
+            name="password"
+            id="password"
+            placeholder="请输入密码"
+            @input="handleInputValue($event, 'password')"
+          />
+        </div>
+      </form>
+
+      <div class="my-6 text-right space-x-2">
+        <y-button @click="resetForm" :disabled="loading">重 置</y-button>
+        <y-button type="primary" @click="submitForm" :loading="loading">提 交</y-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -42,8 +64,9 @@ import { useAccountStore, Status } from '@/stores/account'
 import { useUserStore } from '@/stores/user'
 import { userLogin, userRegister } from '@/apis'
 
-import type { FormInstance } from 'element-plus'
 import { validateEmail } from '@/utils/constant'
+
+import yButton from '@/components/custom/button/button.vue'
 
 /** Use of external methods */
 const router = useRouter()
@@ -53,54 +76,47 @@ const account = useAccountStore()
 
 /** Variable */
 const loading = ref(false)
-const ruleFormRef = ref<FormInstance>()
+let validateRules = ref<string[]>([])
 const ruleForm = reactive({
   username: '',
   password: '',
   email: ''
-})
-const validateRules = reactive({
-  signIn: {
-    email: [
-      { required: true, message: '请输入邮箱', trigger: 'blur' },
-      {
-        type: 'string',
-        pattern: validateEmail,
-        message: '请输入正确的邮箱',
-        trigger: 'blur'
-      }
-    ],
-    password: [
-      { required: true, message: '请输入密码', trigger: 'blur' },
-      { min: 5, max: 30, message: '长度 5 - 30 之间', trigger: 'blur' }
-    ]
-  },
-  signUp: {
-    username: [
-      { required: true, message: '请输入账户名', trigger: 'blur' },
-      { min: 1, max: 30, message: '长度 1 - 30 之间', trigger: 'blur' }
-    ]
-  }
 })
 
 /** Compute */
 const accountParams = computed(() => {
   return {
     title: account.isSignIn ? '登录' : '注册',
-    subTitle: account.isSignIn ? '新建账户' : '已有账户，去登录',
-    rules: account.isSignIn ? validateRules.signIn : { ...validateRules.signUp, ...validateRules.signIn }
+    subTitle: account.isSignIn ? '新建账户' : '已有账户，去登录'
   }
 })
 
+/** Watch */
+watch(
+  () => account.isSignIn,
+  () => {
+    resetForm()
+  }
+)
+
 /** Operation */
+const handleInputValue = (e: any, key: 'username' | 'password' | 'email') => {
+  ruleForm[key] = e.target?.value ?? ''
+}
 const changeAccountStatus = () => {
-  resetForm(ruleFormRef.value)
+  resetForm()
   account.setStatus(account.isSignIn ? Status.SIGN_UP : Status.SIGN_IN)
 }
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+const resetForm = () => {
+  const accountForm = document.querySelector('#accountForm') as HTMLFormElement
+  accountForm && accountForm.reset()
 
-  formEl.resetFields()
+  validateRules.value = []
+  Object.assign(ruleForm, {
+    username: '',
+    password: '',
+    email: ''
+  })
 }
 const handleSignIn = async () => {
   try {
@@ -139,20 +155,42 @@ const handleSignUp = async () => {
     loading.value = false
   }
 }
-const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+const handleFormValidate = () => {
+  const { username, password, email } = ruleForm
+  const result = []
 
-  formEl.validate((valid) => {
-    if (valid) {
-      if (account.isSignIn) {
-        handleSignIn()
-      } else {
-        handleSignUp()
-      }
-    } else {
-      return false
+  if (!account.isSignIn) {
+    if (!username) {
+      result.push('请输入账户名')
+    } else if (!username.length || username.length > 30) {
+      result.push('账户名长度 1 - 30 之间')
     }
-  })
+  }
+
+  if (!email) {
+    result.push('请输入邮箱')
+  } else if (!validateEmail.test(email)) {
+    result.push('请输入正确的邮箱')
+  }
+
+  if (!password) {
+    result.push('请输入密码')
+  } else if (password.length < 5 || password.length > 30) {
+    result.push('密码长度 5 - 30 之间')
+  }
+
+  validateRules.value = result
+}
+const submitForm = () => {
+  handleFormValidate()
+
+  if (validateRules.value.length) return
+
+  if (account.isSignIn) {
+    handleSignIn()
+  } else {
+    handleSignUp()
+  }
 }
 const handleRedirect = () => {
   const redirect = (route?.query.redirect ?? '') as string
@@ -160,7 +198,3 @@ const handleRedirect = () => {
   router.push({ path: redirect ? redirect : '/' })
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/views/account/index.scss';
-</style>

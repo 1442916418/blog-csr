@@ -1,16 +1,22 @@
 <template>
-  <div class="avatar" @click.stop="emits('click', user)">
-    <template v-if="user.image">
-      <img :src="user.image" :title="user.username" class="inset-0 w-16 h-16 object-cover bg-gray-100 sm:rounded-lg" />
-    </template>
-    <template v-else>
-      <div class="inset-0 w-16 h-16 rounded-lg bg-gray-200 align-middle"></div>
-    </template>
+  <div class="inline-block" @click.stop="emits('click', user)">
+    <div class="avatar">
+      <template v-if="user.image">
+        <img
+          :src="user.image"
+          :title="user.username"
+          class="inset-0 w-10 h-10 object-cover bg-gray-100 sm:rounded-lg"
+        />
+      </template>
+      <template v-else>
+        <div class="inset-0 w-10 h-10 rounded-lg bg-gray-200 align-middle"></div>
+      </template>
 
-    <div class="avatar-info">
-      <y-button type="info" link>{{ user.username }}</y-button>
+      <div class="avatar-info">
+        <y-button type="info" link>{{ user.username }}</y-button>
 
-      <span v-show="date" class="date">{{ date }}</span>
+        <span v-show="date" class="date">{{ date }}</span>
+      </div>
     </div>
   </div>
 </template>
