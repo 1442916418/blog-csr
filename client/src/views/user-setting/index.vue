@@ -19,7 +19,7 @@
             name="username"
             id="username"
             placeholder="请输入账户名"
-            @input="handleInputValue($event, 'username')"
+            v-model="ruleForm.username"
           />
         </div>
         <div>
@@ -30,7 +30,7 @@
             name="email"
             id="email"
             placeholder="请输入邮箱"
-            @input="handleInputValue($event, 'email')"
+            v-model="ruleForm.email"
           />
         </div>
         <div>
@@ -41,7 +41,7 @@
             name="password"
             id="password"
             placeholder="请输入新密码"
-            @input="handleInputValue($event, 'password')"
+            v-model="ruleForm.password"
           />
         </div>
         <div>
@@ -53,7 +53,7 @@
             cols="30"
             rows="10"
             placeholder="请输入描述"
-            @input="handleInputValue($event, 'bio')"
+            v-model="ruleForm.bio"
           ></textarea>
         </div>
         <div>
@@ -64,7 +64,7 @@
             name="image"
             id="image"
             placeholder="请输入头像"
-            @input="handleInputValue($event, 'image')"
+            v-model="ruleForm.image"
           />
         </div>
       </form>
@@ -108,9 +108,6 @@ const ruleForm = reactive({
 let validateRules = ref<string[]>([])
 
 /** Operation */
-const handleInputValue = (e: any, key: 'username' | 'password' | 'email' | 'bio' | 'image') => {
-  ruleForm[key] = e.target?.value ?? ''
-}
 const init = () => {
   const { userName, userEmail, userImage, userDescribe } = user
 
@@ -120,23 +117,8 @@ const init = () => {
     image: userImage || '',
     bio: userDescribe || ''
   })
-
-  nextTick(() => {
-    const userNameEle = document.querySelector('#username') as HTMLInputElement
-    const emailEle = document.querySelector('#email') as HTMLInputElement
-    const imageEle = document.querySelector('#image') as HTMLInputElement
-    const bioEle = document.querySelector('#bio') as HTMLInputElement
-
-    userNameEle.value = userName || ''
-    emailEle.value = userEmail || ''
-    imageEle.value = userImage || ''
-    bioEle.value = userDescribe || ''
-  })
 }
 const resetForm = () => {
-  const resetForm = document.querySelector('#resetForm') as HTMLFormElement
-  resetForm && resetForm.reset()
-
   validateRules.value = []
   Object.assign(ruleForm, {
     username: '',

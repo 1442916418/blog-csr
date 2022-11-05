@@ -6,25 +6,18 @@
     </div>
     <div class="home-body">
       <div class="home-body-left">
-        <el-tabs v-model="tabName" @tab-click="handleClickTab">
-          <template v-for="item in tabs" :key="item.name">
-            <el-tab-pane :label="item.label" :name="item.name">
-              <articles-list-component
-                :list="articlesList"
-                @click-item-avatar="handlerClickItemAvatar"
-                @click-item-favorite="handlerClickItemFavorite"
-                @click-item-details="handlerClickItemDetails"
-              />
-            </el-tab-pane>
-          </template>
-        </el-tabs>
+        <y-tabs v-model="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
 
-        <el-pagination
-          background
-          hide-on-single-page
-          layout="prev, pager, next"
+        <articles-list-component
+          :list="articlesList"
+          @click-item-avatar="handlerClickItemAvatar"
+          @click-item-favorite="handlerClickItemFavorite"
+          @click-item-details="handlerClickItemDetails"
+        />
+
+        <y-pagination
           :total="articlesCountData"
-          @current-change="handlePagination"
+          @current-click="handlePagination"
           @prev-click="handlePagination"
           @next-click="handlePagination"
         />
@@ -47,11 +40,12 @@ import { DEFAULT_TAB } from '@/utils/constant'
 
 import articlesListComponent from '@/components/articles-list/index.vue'
 import tagsComponent from '@/components/tags/index.vue'
+import yTabs from '@/components/custom/tabs/tabs.vue'
+import yPagination from '@/components/custom/pagination/pagination.vue'
 
 import { getArticlesFeed, getArticles, getTags, favoriteArticles, deleteFavoriteArticles } from '@/apis'
 
 import type { ArticleResult, AuthorResult } from '@/types/response-types'
-import type { TabsPaneContext } from 'element-plus'
 
 /** Use of external methods */
 const user = useUserStore()
@@ -61,7 +55,7 @@ const account = useAccountStore()
 /** Variable */
 let articlesList = ref<ArticleResult[]>([])
 let articlesCountData = ref(0)
-let tabName = ref(DEFAULT_TAB.all)
+let tabName = ref('')
 let tags = ref<string[]>([])
 
 const queryParams = reactive({
@@ -71,7 +65,7 @@ const queryParams = reactive({
   author: '',
   favorited: ''
 })
-const tabs = reactive([{ label: '全部', name: DEFAULT_TAB.all }])
+const tabs = reactive<{ label: string; value: string }[]>([])
 
 /** Watch */
 watch(
@@ -89,6 +83,10 @@ const init = () => {
   getDefaultArticlesData()
 
   getAllTagsData()
+}
+const handleInitDefaultParams = () => {
+  tabName.value = DEFAULT_TAB.all
+  tabs.push({ label: '全部', value: DEFAULT_TAB.all })
 }
 const handleClickTag = (tag: string) => {
   const data = handleTabData('#' + tag, tag)
@@ -125,6 +123,8 @@ const handleUserArticles = () => {
   }
 }
 const handlePagination = (index: number) => {
+  console.log('index', index)
+
   queryParams.offset = index === 1 ? 0 : queryParams.limit * (index - 1)
   getDefaultArticlesData()
 }
@@ -163,24 +163,24 @@ const handlerClickItemDetails = (data: ArticleResult) => {
     router.push({ path: '/articleDetails/' + data.slug })
   }
 }
-const handleClickTab = (tab: TabsPaneContext) => {
-  const { name } = tab.props
+const handleClickTab = (value: string) => {
+  tabName.value = value
 
   resetQueryParams()
   resetArticlesData()
 
   // 我关注的 tab
-  if (name === DEFAULT_TAB.my) {
+  if (value === DEFAULT_TAB.my) {
     getMyFollowArticlesData()
   } else {
     // 排除全部 tab
-    if (name !== DEFAULT_TAB.all) {
-      Object.assign(queryParams, { tag: name })
+    if (value !== DEFAULT_TAB.all) {
+      Object.assign(queryParams, { tag: value })
     }
     getDefaultArticlesData()
   }
 }
-const handleTabData = (label: string, name: string) => ({ label, name })
+const handleTabData = (label: string, name: string) => ({ label, value: name })
 const resetQueryParams = () => {
   Object.assign(queryParams, {
     limit: 10,
@@ -230,6 +230,8 @@ const getAllTagsData = async () => {
 
 /** Lifecycle Hooks */
 onMounted(() => {
+  handleInitDefaultParams()
+
   if (user.isUser) {
     handleUserArticles()
     getAllTagsData()

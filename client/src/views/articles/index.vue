@@ -15,7 +15,7 @@
           name="title"
           id="title"
           placeholder="请输入标题"
-          @input="handleInputValue($event, 'title')"
+          v-model="ruleForm.title"
         />
       </div>
       <div>
@@ -26,7 +26,7 @@
           name="description"
           id="description"
           placeholder="请输入描述"
-          @input="handleInputValue($event, 'description')"
+          v-model="ruleForm.description"
         />
       </div>
       <div class="w-full mt-2">
@@ -45,7 +45,7 @@
               type="text"
               id="newTagInput"
               placeholder="新增一个标签/选择点击选择标签"
-              @input="handleInputValue($event, 'newTagValue')"
+              v-model="newTagValue"
             />
           </div>
           <div class="space-x-2 space-y-2">
@@ -111,13 +111,6 @@ const formTags = computed(() => {
 })
 
 /** Operation */
-const handleInputValue = (e: any, key: 'title' | 'description' | 'newTagValue') => {
-  if (key === 'newTagValue') {
-    newTagValue.value = e.target?.value
-  } else {
-    ruleForm[key] = e.target?.value ?? ''
-  }
-}
 const init = () => {
   getAllTagsData()
 
@@ -167,9 +160,6 @@ const submitForm = () => {
   }
 }
 const resetForm = () => {
-  const articleForm = document.querySelector('#articleForm') as HTMLFormElement
-  articleForm && articleForm.reset()
-
   htmlBody.value = ''
   validateRules.value = []
 }
@@ -247,14 +237,6 @@ const getArticleDetailsData = async () => {
           ruleForm.body = ''
         })
     }
-
-    nextTick(() => {
-      const titleEle = document.querySelector('#title') as HTMLInputElement
-      const descriptionEle = document.querySelector('#description') as HTMLInputElement
-
-      titleEle.value = title
-      descriptionEle.value = description
-    })
   }
 }
 const getAllTagsData = async () => {

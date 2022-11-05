@@ -20,7 +20,7 @@
             name="username"
             id="username"
             placeholder="请输入账户名"
-            @input="handleInputValue($event, 'username')"
+            v-model="ruleForm.username"
           />
         </div>
         <div>
@@ -31,7 +31,7 @@
             name="email"
             id="email"
             placeholder="请输入邮箱"
-            @input="handleInputValue($event, 'email')"
+            v-model="ruleForm.email"
           />
         </div>
         <div>
@@ -42,7 +42,7 @@
             name="password"
             id="password"
             placeholder="请输入密码"
-            @input="handleInputValue($event, 'password')"
+            v-model="ruleForm.password"
           />
         </div>
       </form>
@@ -100,17 +100,11 @@ watch(
 )
 
 /** Operation */
-const handleInputValue = (e: any, key: 'username' | 'password' | 'email') => {
-  ruleForm[key] = e.target?.value ?? ''
-}
 const changeAccountStatus = () => {
   resetForm()
   account.setStatus(account.isSignIn ? Status.SIGN_UP : Status.SIGN_IN)
 }
 const resetForm = () => {
-  const accountForm = document.querySelector('#accountForm') as HTMLFormElement
-  accountForm && accountForm.reset()
-
   validateRules.value = []
   Object.assign(ruleForm, {
     username: '',
