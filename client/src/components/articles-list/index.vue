@@ -1,19 +1,17 @@
 <template>
-  <div class="articles-list">
-    <template v-if="list && list.length">
-      <template v-for="(article, i) in list" :key="article.slug + i">
-        <articles-list-item
-          :item="article"
-          @click-avatar="handleClickAvatar"
-          @click-favorite="handleClickFavorite"
-          @click-details="handleClickDetails"
-        ></articles-list-item>
-      </template>
+  <template v-if="list && list.length">
+    <template v-for="(article, i) in list" :key="article.slug + i">
+      <articles-list-item
+        :item="article"
+        @click-avatar="handleClickAvatar"
+        @click-favorite="handleClickFavorite"
+        @click-details="handleClickDetails"
+      ></articles-list-item>
     </template>
-    <template v-else>
-      <el-empty description="无数据"></el-empty>
-    </template>
-  </div>
+  </template>
+  <template v-else>
+    <p class="py-8 text-center">无数据</p>
+  </template>
 </template>
 
 <script lang="ts" setup>
@@ -48,7 +46,3 @@ const handleClickDetails = (data: ArticleResult) => {
   emits('clickItemDetails', data)
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/components/articles-list/index.scss';
-</style>

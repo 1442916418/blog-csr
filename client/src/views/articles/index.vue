@@ -50,7 +50,12 @@
           </div>
           <div class="space-x-2 space-y-2">
             <template v-for="tag in tagList" :key="tag">
-              <el-tag :effect="tags.includes(tag) ? 'dark' : 'plain'" @click="handleClickTag(tag)">{{ tag }}</el-tag>
+              <y-button
+                size="small"
+                :type="tags.includes(tag) ? 'primary' : 'default'"
+                @click.prevent="handleClickTag(tag)"
+                >{{ tag }}</y-button
+              >
             </template>
           </div>
         </div>

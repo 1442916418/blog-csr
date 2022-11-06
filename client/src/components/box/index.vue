@@ -1,34 +1,11 @@
 <template>
-  <div class="box">
-    <div class="box-body">
+  <div class="rounded border-2 border-gray-200 bg-gray-100 overflow-hidden">
+    <div class="bg-white">
       <slot></slot>
     </div>
-    <div class="box-footer">
+    <div class="px-4 py-2 flex justify-between items-center border-t-2 border-gray-200">
       <slot name="fl"></slot>
       <slot name="fr"></slot>
     </div>
   </div>
 </template>
-
-<script lang="ts" setup></script>
-
-<style lang="scss" scoped>
-.box {
-  border-radius: 5px;
-  border: 1px solid #dcdfe6;
-  background-color: #f7f7f7;
-  overflow: hidden;
-
-  &-body {
-    background-color: white;
-  }
-
-  &-footer {
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #dcdfe6;
-  }
-}
-</style>

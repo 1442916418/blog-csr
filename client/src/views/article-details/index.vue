@@ -1,99 +1,74 @@
 <template>
-  <div class="article-details">
-    <div class="article-details-header">
-      <div class="article-details-header-title">
-        {{ details.title }}
-      </div>
-      <div class="article-details-header-avatar">
-        <avatar-component
-          :user="details.author"
-          :date="details.createdAt"
-          @click="handleClickAvatar"
-        ></avatar-component>
-
-        <div class="buts">
-          <template v-if="isCurrentUserArticle">
-            <el-button size="small" type="primary" :icon="Edit" @click="handleClickEdit">修 改</el-button>
-            <el-button size="small" type="danger" :icon="Delete" @click="handleClickDelete">删 除</el-button>
-          </template>
-          <template v-else>
-            <el-button
-              size="small"
-              type="primary"
-              :plain="!details.author.following"
-              :icon="Plus"
-              @click="handleClickFollow"
-              >关 注</el-button
-            >
-            <el-button size="small" type="primary" :plain="!details.favorited" :icon="Star" @click="handleClickFavorite"
-              >收 藏{{ details.favoritesCount || '' }}</el-button
-            >
-          </template>
-        </div>
-      </div>
+  <div class="p-5 flex flex-col items-start bg-gray-400">
+    <div class="text-white text-2xl font-bold mb-2">
+      {{ details.title }}
     </div>
-    <div class="article-details-body">
-      <el-collapse accordion>
-        <el-collapse-item name="1">
-          <template #title>
-            <div class="description-title">
-              <span>描述</span>
-              <el-icon><Document /></el-icon>
-            </div>
-          </template>
-          <div>{{ details.description }}</div>
-        </el-collapse-item>
-      </el-collapse>
+    <div class="py-4 flex items-center">
+      <avatar-component :user="details.author" :date="details.createdAt" @click="handleClickAvatar" />
 
-      <md-editor v-model="details.body" :previewOnly="true"></md-editor>
-
-      <tags-component :list="details.tagList"></tags-component>
-
-      <el-divider direction="horizontal"></el-divider>
-
-      <div class="article-details-body-comments">
-        <box-component class="send-comment">
-          <el-input
-            v-model="commentBody"
-            :autosize="{ minRows: 3, maxRows: 15 }"
-            placeholder="请输入个人描述"
-            maxlength="300"
-            type="textarea"
-          />
-
-          <template v-slot:fl>
-            <el-icon :size="18" color="#606266"><Comment /></el-icon>
-          </template>
-          <template v-slot:fr>
-            <el-button type="primary" size="small" @click="handleClickSendComment">提交评论</el-button>
-          </template>
-        </box-component>
-
-        <template v-for="(comment, i) in comments" :key="comment.id">
-          <box-component class="comment">
-            <div class="comment-body">
-              {{ comment.body }}
-            </div>
-
-            <template v-slot:fl>
-              <avatar-component
-                :user="comment.author"
-                :date="comment.createdAt"
-                @click="handleClickAvatar"
-              ></avatar-component>
-            </template>
-            <template v-slot:fr>
-              <el-icon
-                v-if="isCurrentUserArticle"
-                :size="18"
-                color="#606266"
-                @click="handleClickDeleteComment(comment.id, i)"
-                ><DeleteFilled
-              /></el-icon>
-            </template>
-          </box-component>
+      <div class="ml-5 space-x-2">
+        <template v-if="isCurrentUserArticle">
+          <y-button size="small" type="primary" @click="handleClickEdit">修 改</y-button>
+          <y-button size="small" type="danger" @click="handleClickDelete">删 除</y-button>
+        </template>
+        <template v-else>
+          <y-button size="small" type="primary" :plain="!details.author.following" @click="handleClickFollow"
+            >关 注
+          </y-button>
+          <y-button size="small" type="primary" :plain="!details.favorited" @click="handleClickFavorite">
+            收 藏{{ details.favoritesCount || '' }}</y-button
+          >
         </template>
       </div>
+    </div>
+  </div>
+  <div class="my-5">
+    <div class="mb-2">
+      <span class="text-sm text-gray-500">描述</span><br />
+
+      <div class="text-gray-400">{{ details.description }}</div>
+    </div>
+
+    <md-editor v-model="details.body" :previewOnly="true"></md-editor>
+
+    <tags-component :list="details.tagList"></tags-component>
+
+    <div class="my-5 border-b-2 border-gray-200"></div>
+
+    <div class="mx-auto w-3/5">
+      <box-component class="mb-5">
+        <textarea
+          class="w-full border-none"
+          name="commentBody"
+          id="commentBody"
+          cols="30"
+          rows="5"
+          placeholder="请输入评论内容"
+          v-model="commentBody"
+        ></textarea>
+
+        <template v-slot:fl> 评论 </template>
+        <template v-slot:fr>
+          <y-button type="primary" size="small" @click="handleClickSendComment">提交评论</y-button>
+        </template>
+      </box-component>
+
+      <template v-for="(comment, i) in comments" :key="comment.id">
+        <box-component class="mb-5">
+          <div class="p-3">
+            {{ comment.body }}
+          </div>
+
+          <template v-slot:fl>
+            <avatar-component :user="comment.author" :date="comment.createdAt" @click="handleClickAvatar" />
+          </template>
+          <template v-slot:fr>
+            <y-button v-if="isCurrentUserArticle" size="small" @click="handleClickDeleteComment(comment.id, i)"
+              >删除</y-button
+            >
+          </template>
+        </box-component>
+      </template>
     </div>
   </div>
 </template>
@@ -105,10 +80,10 @@ import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
 
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Star, Plus, Edit, Delete, Comment, Document, DeleteFilled } from '@element-plus/icons-vue'
 import avatarComponent from '@/components/avatar/index.vue'
 import tagsComponent from '@/components/tags/index.vue'
 import boxComponent from '@/components/box/index.vue'
+import yButton from '@/components/custom/button/button.vue'
 
 import {
   deleteFavoriteArticles,
@@ -316,7 +291,3 @@ onMounted(() => {
   init()
 })
 </script>
-
-<style lang="scss" scoped>
-@import '@/views/article-details/index.scss';
-</style>

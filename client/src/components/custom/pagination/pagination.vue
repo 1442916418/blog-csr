@@ -1,5 +1,5 @@
 <template>
-  <div :class="[css.b(_b)]" v-show="pageCount">
+  <div :class="[css.b(_b)]" v-show="pageCount && pageCount !== 1">
     <y-button @click="handleClick('prev')">&lt;</y-button>
     <template v-for="page in pageCount" :key="page">
       <y-button @click="handleClickCurrent(page)" :type="page === currentIndex ? 'primary' : 'default'">{{

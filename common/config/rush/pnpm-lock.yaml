@@ -40,6 +40,7 @@ importers:
       vue: ^3.2.38
       vue-router: ^4.1.5
       vue-tsc: ^0.40.7
+      vue3-simple-alert: ~1.0.4
     dependencies:
       '@element-plus/icons-vue': 2.0.10_vue@3.2.41
       '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.1
@@ -58,6 +59,7 @@ importers:
       tailwindcss: 3.2.1
       vue: 3.2.41
       vue-router: 4.1.5_vue@3.2.41
+      vue3-simple-alert: 1.0.4_vue@3.2.41
     devDependencies:
       '@rushstack/eslint-patch': 1.2.0
       '@types/lodash-es': 4.17.6
@@ -6360,6 +6362,10 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  /sweetalert2/8.19.0:
+    resolution: {integrity: sha512-nFL++N3bitkEkd487Tv4i5ZxusmnoAAXHjtk7lp603Opxb8wlvVnz3hqa7qiIw6QFL04JC810E6qVQNf8s0vYQ==}
+    dev: false
+
   /tailwindcss/3.2.1:
     resolution: {integrity: sha512-Uw+GVSxp5CM48krnjHObqoOwlCt5Qo6nw1jlCRwfGy68dSYb/LwS9ZFidYGRiM+w6rMawkZiu1mEMAsHYAfoLg==}
     engines: {node: '>=12.13.0'}
@@ -6958,6 +6964,15 @@ packages:
       '@vue/runtime-dom': 3.2.41
       '@vue/server-renderer': 3.2.41_vue@3.2.41
       '@vue/shared': 3.2.41
+    dev: false
+
+  /vue3-simple-alert/1.0.4_vue@3.2.41:
+    resolution: {integrity: sha512-AzYJr+sdPotsWvX7ykojyTxbkJBmKoPbgNGquRQd07ppkEMOTnLWvLKwqmV0Pb/Aa6nXjOlek3rMAoffTqU3TA==}
+    peerDependencies:
+      vue: 3.x
+    dependencies:
+      sweetalert2: 8.19.0
+      vue: 3.2.41
     dev: false
 
   /walker/1.0.8:

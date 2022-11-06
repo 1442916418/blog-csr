@@ -1,40 +1,30 @@
 <template>
-  <div class="articles-list-item">
-    <el-descriptions :column="1" size="large" @click="emits('clickDetails', item)">
-      <template #title>
-        <avatar :user="item.author" :date="item.createdAt" @click="emits('clickAvatar', item.author)"></avatar>
-      </template>
-      <template #extra>
-        <el-button
-          size="small"
-          type="primary"
-          :plain="!item.favorited"
-          :icon="Star"
-          @click.stop="emits('clickFavorite', item)"
-          >{{ item.favoritesCount || '' }}</el-button
-        >
-      </template>
+  <div
+    class="px-4 flex flex-col border-b-2 border-gray-200 cursor-pointer hover:bg-gray-50"
+    @click="emits('clickDetails', item)"
+  >
+    <div class="py-4 flex justify-between items-center">
+      <avatar :user="item.author" :date="item.createdAt" @click="emits('clickAvatar', item.author)"></avatar>
 
-      <el-descriptions-item>
-        <b>{{ item.title }}</b>
-      </el-descriptions-item>
-      <el-descriptions-item>
-        {{ item.description }}
-      </el-descriptions-item>
-      <el-descriptions-item align="right">
-        <tags :list="item.tagList"></tags>
-      </el-descriptions-item>
-    </el-descriptions>
+      <y-button size="small" type="primary" :plain="!item.favorited" @click.stop="emits('clickFavorite', item)"
+        >收藏{{ item.favoritesCount || '' }}</y-button
+      >
+    </div>
 
-    <el-divider />
+    <div class="py-4 text-base font-bold">{{ item.title }}</div>
+
+    <div class="py-2 text-sm line-clamp-3 text-gray-500">{{ item.description }}</div>
+
+    <div class="py-4 text-right">
+      <tags :list="item.tagList"></tags>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Star } from '@element-plus/icons-vue'
-
 import avatar from '@/components/avatar/index.vue'
 import tags from '@/components/tags/index.vue'
+import yButton from '@/components/custom/button/button.vue'
 
 import type { PropType } from 'vue'
 import type { ArticleResult, AuthorResult } from '@/types/response-types'
@@ -52,7 +42,3 @@ const emits = defineEmits<{
   (e: 'clickDetails', data: ArticleResult): void
 }>()
 </script>
-
-<style lang="scss" scoped>
-@import '@/components/articles-list-item/index.scss';
-</style>

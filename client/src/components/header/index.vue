@@ -75,7 +75,7 @@ const jumpPage = (path: string, params?: RouteParamsRaw) => {
 
 @layer components {
   .header {
-    @apply px-4 py-2 h-12 flex justify-center items-center;
+    @apply px-4 py-3 h-12 flex justify-center items-center;
   }
 }
 </style>

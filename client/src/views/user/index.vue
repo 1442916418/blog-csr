@@ -1,44 +1,34 @@
 <template>
-  <div class="user">
-    <div class="user-header">
-      <div class="user-header-avatar">
-        <avatar :user="userProfile" direction="column"></avatar>
-      </div>
-      <div class="user-header-btn">
-        <template v-if="user.userName === currentUserName">
-          <el-button type="primary" plain @click="router.push('/userSetting')">用户配置</el-button>
-        </template>
-        <template v-else>
-          <el-button type="info" plain :icon="userProfile.following ? Minus : Plus" @click="handleClickFollow">{{
-            userProfile.following ? '已关注' : '关 注'
-          }}</el-button>
-        </template>
-      </div>
-    </div>
-    <div class="user-body">
-      <el-tabs v-model="tabName" @tab-click="handleClickTab">
-        <template v-for="item in tabs" :key="item.name">
-          <el-tab-pane :label="item.label" :name="item.name">
-            <articles-list-component
-              :list="articlesList"
-              @click-item-avatar="handlerClickItemAvatar"
-              @click-item-favorite="handlerClickItemFavorite"
-              @click-item-details="handlerClickItemDetails"
-            />
-          </el-tab-pane>
-        </template>
-      </el-tabs>
+  <div class="p-8 flex flex-col bg-gray-100">
+    <avatar class="mb-3" :user="userProfile" direction="column"></avatar>
 
-      <el-pagination
-        background
-        hide-on-single-page
-        layout="prev, pager, next"
-        :total="articlesCountData"
-        @current-change="handlePagination"
-        @prev-click="handlePagination"
-        @next-click="handlePagination"
-      />
+    <div class="w-3/5 mx-auto text-right">
+      <template v-if="user.userName === currentUserName">
+        <y-button type="primary" plain @click="router.push('/userSetting')">用户配置</y-button>
+      </template>
+      <template v-else>
+        <y-button type="info" plain @click="handleClickFollow">{{
+          userProfile.following ? '已关注' : '关 注'
+        }}</y-button>
+      </template>
     </div>
+  </div>
+  <div class="w-3/5 mx-auto mt-5">
+    <y-tabs v-model="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
+
+    <articles-list-component
+      :list="articlesList"
+      @click-item-avatar="handlerClickItemAvatar"
+      @click-item-favorite="handlerClickItemFavorite"
+      @click-item-details="handlerClickItemDetails"
+    />
+
+    <y-pagination
+      :total="articlesCountData"
+      @current-click="handlePagination"
+      @prev-click="handlePagination"
+      @next-click="handlePagination"
+    />
   </div>
 </template>
 
@@ -60,9 +50,11 @@ import {
 
 import avatar from '@/components/avatar/index.vue'
 import articlesListComponent from '@/components/articles-list/index.vue'
+import yTabs from '@/components/custom/tabs/tabs.vue'
+import yPagination from '@/components/custom/pagination/pagination.vue'
+import yButton from '@/components/custom/button/button.vue'
 
-import { Plus, Minus } from '@element-plus/icons-vue'
-import { ElMessage, type TabsPaneContext } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import type { ArticleResult, AuthorResult } from '@/types/response-types'
 
 /** Use of external methods */
@@ -74,7 +66,7 @@ const account = useAccountStore()
 /** Variable */
 let articlesList = ref<ArticleResult[]>([])
 let articlesCountData = ref(0)
-let tabName = ref(DEFAULT_TAB.my)
+let tabName = ref('')
 let currentUserName = ref('')
 
 const userProfile = reactive<AuthorResult>({
@@ -91,12 +83,14 @@ const queryParams = reactive({
   favorited: ''
 })
 const tabs = reactive([
-  { label: '我的文章', name: DEFAULT_TAB.my },
-  { label: '喜欢的文章', name: DEFAULT_TAB.like }
+  { label: '我的文章', value: DEFAULT_TAB.my },
+  { label: '喜欢的文章', value: DEFAULT_TAB.like }
 ])
 
 /** Operation */
 const init = () => {
+  tabName.value = DEFAULT_TAB.my
+
   const username = route.params?.username ?? ''
 
   if (username) {
@@ -164,15 +158,13 @@ const handlerClickItemDetails = (data: ArticleResult) => {
     router.push({ path: '/articleDetails/' + data.slug })
   }
 }
-const handleClickTab = (tab: TabsPaneContext) => {
-  const { name } = tab.props
-
+const handleClickTab = (value: string) => {
   resetQueryParams()
   resetArticlesData()
 
-  if (name === DEFAULT_TAB.my) {
+  if (value === DEFAULT_TAB.my) {
     queryParams.author = currentUserName.value
-  } else if (name === DEFAULT_TAB.like) {
+  } else if (value === DEFAULT_TAB.like) {
     queryParams.favorited = currentUserName.value
   }
 
@@ -235,7 +227,3 @@ onMounted(() => {
   init()
 })
 </script>
-
-<style lang="scss" scoped>
-@import '@/views/user/index.scss';
-</style>

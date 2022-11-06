@@ -1,11 +1,11 @@
 <template>
   <div class="home">
-    <div class="home-header" v-if="!user.isUser">
-      <h1><b>主标题</b></h1>
+    <div class="py-6 text-center text-white bg-blue-600 shadow-inner" v-if="!user.isUser">
+      <h1 class="pt-3 text-3xl font-bold"><b>主标题</b></h1>
       <h2>这里是副标题</h2>
     </div>
-    <div class="home-body">
-      <div class="home-body-left">
+    <div class="w-full my-5 flex items-start">
+      <div class="flex-1">
         <y-tabs v-model="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
 
         <articles-list-component
@@ -16,14 +16,15 @@
         />
 
         <y-pagination
+          class="my-4 justify-center"
           :total="articlesCountData"
           @current-click="handlePagination"
           @prev-click="handlePagination"
           @next-click="handlePagination"
         />
       </div>
-      <div class="home-body-right">
-        <b>标签</b>
+      <div class="p-2 ml-2 w-48 h-auto rounded bg-gray-100">
+        <b class="block">标签</b>
 
         <tags-component :list="tags" type="info" effect="dark" @click="handleClickTag"></tags-component>
       </div>
@@ -123,8 +124,6 @@ const handleUserArticles = () => {
   }
 }
 const handlePagination = (index: number) => {
-  console.log('index', index)
-
   queryParams.offset = index === 1 ? 0 : queryParams.limit * (index - 1)
   getDefaultArticlesData()
 }
@@ -240,7 +239,3 @@ onMounted(() => {
   }
 })
 </script>
-
-<style lang="scss" scoped>
-@import '@/views/home/index.scss';
-</style>
