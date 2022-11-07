@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="py-6 text-center text-white bg-blue-600 shadow-inner" v-if="!user.isUser">
-      <h1 class="pt-3 text-3xl font-bold"><b>主标题</b></h1>
+      <h1 class="pt-3 text-3xl font-bold" @click="test = !test"><b>主标题</b></h1>
       <h2>这里是副标题</h2>
     </div>
     <div class="w-full my-5 flex items-start">
@@ -29,6 +29,8 @@
         <tags-component :list="tags" type="info" effect="dark" @click="handleClickTag"></tags-component>
       </div>
     </div>
+
+    <modal :show="test" @close="test = false" @confirm="test = false"> </modal>
   </div>
 </template>
 
@@ -48,12 +50,15 @@ import { getArticlesFeed, getArticles, getTags, favoriteArticles, deleteFavorite
 
 import type { ArticleResult, AuthorResult } from '@/types/response-types'
 
+import modal from '@/components/custom/modal/modal.vue'
+
 /** Use of external methods */
 const user = useUserStore()
 const router = useRouter()
 const account = useAccountStore()
 
 /** Variable */
+let test = ref(false)
 let articlesList = ref<ArticleResult[]>([])
 let articlesCountData = ref(0)
 let tabName = ref('')

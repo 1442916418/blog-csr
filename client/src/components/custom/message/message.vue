@@ -1,13 +1,15 @@
 <template>
-  <div v-show="visible" :class="[css.b(_b)]">
-    <div :class="[css.be(_b, 'content'), css.bm(css.be(_b, 'content'), type)]">
-      {{ message }}
+  <transition name="fade">
+    <div v-show="visible" :class="[css.b(_b)]" :style="customStyle">
+      <div :class="[css.be(_b, 'content'), css.bm(css.be(_b, 'content'), type)]">
+        {{ message }}
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useEventListener, useTimeoutFn } from '@vueuse/core'
 
 import { themeType } from '@/components/custom/utils/common'
@@ -36,7 +38,16 @@ const props = defineProps({
   duration: {
     type: Number,
     default: 3000
+  },
+  zIndex: {
+    type: Number,
+    default: 1
   }
+})
+
+/** Compute */
+const customStyle = computed(() => {
+  return { zIndex: props.zIndex }
 })
 
 /** Operation */
@@ -73,7 +84,12 @@ defineExpose({
 
 @layer components {
   .y-message {
-    @apply fixed inset-0 pt-12 flex justify-center items-start bg-transparent;
+    position: fixed;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    @apply pt-12 flex justify-center items-start bg-transparent;
+    transition: opacity 0.2s, transform 0.3s, top 0.3s;
   }
 
   .y-message__content {
@@ -92,5 +108,11 @@ defineExpose({
   .y-message__content--danger {
     @apply text-red-600 bg-red-50 border-red-200;
   }
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -100%);
 }
 </style>

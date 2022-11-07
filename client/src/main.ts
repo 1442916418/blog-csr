@@ -2,9 +2,6 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPersist from 'pinia-plugin-persist'
 
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-
 import App from './App.vue'
 import router from './router'
 
@@ -20,6 +17,6 @@ pinia.use(piniaPersist)
 
 app.component('mdEditor', mdEditor)
 
-app.use(pinia).use(router).use(ElementPlus)
+app.use(pinia).use(router)
 
 app.mount('#app')

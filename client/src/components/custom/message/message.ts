@@ -11,6 +11,7 @@ interface MessageProps {
   message: string
   type?: 'default' | 'success' | 'warning' | 'danger'
   duration?: number
+  zIndex?: number
 }
 
 export type MessageContext = {
@@ -59,11 +60,13 @@ export class Message {
     }
 
     const container = document.createElement('div')
-    const id = `y-message_${this.index++}`
+    const index = this.index++
+    const id = `y-message_${index}`
     const that = this
 
     const vNode = createVNode(MessageConstructor, {
       id,
+      zIndex: index,
       ...props,
       onClose: () => {
         that.closeMessage(instance)

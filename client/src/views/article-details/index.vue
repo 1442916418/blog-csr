@@ -71,6 +71,12 @@
       </template>
     </div>
   </div>
+
+  <Teleport to="body">
+    <y-modal :show="showModal" @close="showModal = false" @confirm="handleClickDeleteConfirm">
+      <template #body> 确定删除此文章吗? </template>
+    </y-modal>
+  </Teleport>
 </template>
 
 <script lang="ts" setup>
@@ -79,13 +85,13 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
 
-import { ElMessageBox } from 'element-plus'
 import { Message } from '@/components/custom/message/message'
 
 import avatarComponent from '@/components/avatar/index.vue'
 import tagsComponent from '@/components/tags/index.vue'
 import boxComponent from '@/components/box/index.vue'
 import yButton from '@/components/custom/button/button.vue'
+import yModal from '@/components/custom/modal/modal.vue'
 
 import {
   deleteFavoriteArticles,
@@ -110,16 +116,8 @@ const router = useRouter()
 const route = useRoute()
 const account = useAccountStore()
 
-/** Compute */
-const isCurrentUserArticle = computed(() => {
-  if (!user.userName) return false
-
-  if (!details?.author?.username) return false
-
-  return user.userName === details.author.username
-})
-
 /** Variable */
+let showModal = ref(false)
 let currentSlug = ref('')
 const details = reactive<ArticleResult>({
   slug: '',
@@ -140,6 +138,15 @@ const details = reactive<ArticleResult>({
 })
 const comments = reactive<CommentResult[]>([])
 const commentBody = ref('')
+
+/** Compute */
+const isCurrentUserArticle = computed(() => {
+  if (!user.userName) return false
+
+  if (!details?.author?.username) return false
+
+  return user.userName === details.author.username
+})
 
 /** Operation */
 const init = () => {
@@ -206,13 +213,10 @@ const handleClickEdit = () => {
 const handleClickDelete = () => {
   if (!details.slug) return
 
-  ElMessageBox.confirm('确定删除此文章吗?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'error'
-  }).then(() => {
-    deleteArticleBySlugData(details.slug)
-  })
+  showModal.value = true
+}
+const handleClickDeleteConfirm = () => {
+  deleteArticleBySlugData(details.slug)
 }
 const handleClickSendComment = async () => {
   if (!handleIsSignIn() || !details.slug) return
@@ -273,6 +277,7 @@ const deleteArticleBySlugData = async (slug: string) => {
   const { data } = await deleteArticleBySlug({ slug })
 
   if (data.result === 200) {
+    showModal.value = false
     Message.success('删除成功')
 
     router.push({ path: '/' })

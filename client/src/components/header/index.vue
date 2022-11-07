@@ -16,15 +16,21 @@
       </template>
     </div>
   </header>
+
+  <Teleport to="body">
+    <y-modal :show="showModal" @close="showModal = false" @confirm="handleConfirmLogout">
+      <template #body> 确认退出? </template>
+    </y-modal>
+  </Teleport>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { Status, useAccountStore } from '@/stores/account'
 
-import { ElMessageBox } from 'element-plus'
+import yModal from '@/components/custom/modal/modal.vue'
 import avatar from '@/components/avatar/index.vue'
 import yButton from '@/components/custom/button/button.vue'
 
@@ -35,6 +41,9 @@ const user = useUserStore()
 const account = useAccountStore()
 const router = useRouter()
 const route = useRoute()
+
+/** Variable */
+let showModal = ref(false)
 
 /** Compute */
 const userAvatar = computed(() => {
@@ -48,15 +57,14 @@ const userAvatar = computed(() => {
 
 /** Operation */
 const handleLogout = () => {
-  ElMessageBox.confirm('确认退出?', '提示', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
-    type: 'error'
-  }).then(() => {
-    user.resetUser()
-    window.sessionStorage.clear()
-    jumpPage('/')
-  })
+  showModal.value = true
+}
+const handleConfirmLogout = () => {
+  showModal.value = false
+
+  user.resetUser()
+  window.sessionStorage.clear()
+  jumpPage('/')
 }
 const handleAccount = (status: Status) => {
   account.setStatus(status)
