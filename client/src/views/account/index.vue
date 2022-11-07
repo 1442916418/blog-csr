@@ -57,7 +57,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref, computed, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { Message } from '@/components/custom/message/message'
 import { useRouter, useRoute } from 'vue-router'
 
 import { useAccountStore, Status } from '@/stores/account'
@@ -121,7 +121,7 @@ const handleSignIn = async () => {
 
     if (data.user) {
       user.setUser(data.user)
-      ElMessage.success({ message: '登录成功' })
+      Message.success('登录成功')
 
       handleRedirect()
     }
@@ -139,7 +139,7 @@ const handleSignUp = async () => {
 
     if (data.user) {
       user.setUser(data.user)
-      ElMessage.success({ message: '注册并登录成功' })
+      Message.success('注册并登录成功')
 
       handleRedirect()
     }

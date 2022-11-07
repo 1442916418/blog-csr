@@ -77,7 +77,7 @@ import htmlToMarkdown from '@wcj/html-to-markdown'
 
 import { createArticle, getArticleBySlug, getTags, updateArticleBySlug } from '@/apis'
 
-import { ElMessage } from 'element-plus'
+import { Message } from '@/components/custom/message/message'
 import type { CreateArticle } from '@/types/request-types'
 
 import yButton from '@/components/custom/button/button.vue'
@@ -209,7 +209,7 @@ const handleSubmitArticleData = async () => {
 
   if (article) {
     loading.value = false
-    ElMessage.success({ message: `${isSlug.value ? '修改' : '创建'}成功` })
+    Message.success(`${isSlug.value ? '修改' : '创建'}成功`)
 
     if (article?.slug) {
       router.push({ path: '/articleDetails/' + article.slug })

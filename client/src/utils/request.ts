@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
+import { Message } from '@/components/custom/message/message'
 
 import { MESSAGES } from '@/utils/constant'
 import { useUserStore } from '@/stores/user'
@@ -34,7 +34,7 @@ export class Request {
         return config
       },
       (err: any) => {
-        ElMessage.error({ message: '请求错误' })
+        Message.danger('请求错误')
         return Promise.reject(err)
       }
     )
@@ -45,7 +45,7 @@ export class Request {
           const errorsBody = res?.data?.errors?.body ?? ''
           const message = errorsBody instanceof Array ? errorsBody.toString() : errorsBody
 
-          ElMessage.error({ message })
+          Message.danger(message)
         }
         return res
       },
@@ -55,7 +55,7 @@ export class Request {
         const statusName = MESSAGES[status] || (response?.data?.errors?.body ?? '')
         const message = statusName instanceof Array ? statusName.toString() : statusName
 
-        ElMessage.error({ message })
+        Message.danger(message)
 
         return Promise.reject(response)
       }

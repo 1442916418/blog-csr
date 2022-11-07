@@ -79,7 +79,9 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
 
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
+import { Message } from '@/components/custom/message/message'
+
 import avatarComponent from '@/components/avatar/index.vue'
 import tagsComponent from '@/components/tags/index.vue'
 import boxComponent from '@/components/box/index.vue'
@@ -216,14 +218,14 @@ const handleClickSendComment = async () => {
   if (!handleIsSignIn() || !details.slug) return
 
   if (!commentBody.value) {
-    ElMessage.warning({ message: '请输入评论内容' })
+    Message.warning('请输入评论内容')
     return
   }
 
   const { data } = await createComment({ slug: details.slug }, { comment: { body: commentBody.value } })
 
   if (data.comment) {
-    ElMessage.success('评论成功')
+    Message.success('评论成功')
 
     commentBody.value = ''
     comments.unshift(data.comment)
@@ -235,7 +237,7 @@ const handleClickDeleteComment = async (id: number, index: number) => {
   const { data } = await deleteComment({ slug: details.slug, id })
 
   if (data.result === 200) {
-    ElMessage.success('删除成功')
+    Message.success('删除成功')
 
     comments.splice(index, 1)
   }
@@ -256,7 +258,7 @@ const followUserData = async (username: string) => {
 
   if (data?.profile) {
     Object.assign(details.author, data.profile)
-    ElMessage.success({ message: '关注成功' })
+    Message.success('关注成功')
   }
 }
 const deleteFollowUserData = async (username: string) => {
@@ -264,14 +266,14 @@ const deleteFollowUserData = async (username: string) => {
 
   if (data?.profile) {
     Object.assign(details.author, data.profile)
-    ElMessage.success({ message: '取消成功' })
+    Message.success('取消成功')
   }
 }
 const deleteArticleBySlugData = async (slug: string) => {
   const { data } = await deleteArticleBySlug({ slug })
 
   if (data.result === 200) {
-    ElMessage.success({ message: '删除成功' })
+    Message.success('删除成功')
 
     router.push({ path: '/' })
   }

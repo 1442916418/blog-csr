@@ -79,7 +79,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
+import { Message } from '@/components/custom/message/message'
 import { useRouter } from 'vue-router'
 
 import { useUserStore } from '@/stores/user'
@@ -164,7 +164,7 @@ const updateCurrentUserData = async () => {
 
     const isPassword = userParams?.password ?? undefined
 
-    ElMessage.success(`保存成功${isPassword ? '，请重新登录' : ''}`)
+    Message.success(`保存成功${isPassword ? '，请重新登录' : ''}`)
 
     if (isPassword) {
       user.resetUser()

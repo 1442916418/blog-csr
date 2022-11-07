@@ -54,7 +54,7 @@ import yTabs from '@/components/custom/tabs/tabs.vue'
 import yPagination from '@/components/custom/pagination/pagination.vue'
 import yButton from '@/components/custom/button/button.vue'
 
-import { ElMessage } from 'element-plus'
+import { Message } from '@/components/custom/message/message'
 import type { ArticleResult, AuthorResult } from '@/types/response-types'
 
 /** Use of external methods */
@@ -210,7 +210,7 @@ const followUserData = async () => {
 
   if (data?.profile) {
     Object.assign(userProfile, data.profile)
-    ElMessage.success({ message: '关注成功' })
+    Message.success('关注成功')
   }
 }
 const deleteFollowUserData = async () => {
@@ -218,7 +218,7 @@ const deleteFollowUserData = async () => {
 
   if (data?.profile) {
     Object.assign(userProfile, data.profile)
-    ElMessage.success({ message: '取消成功' })
+    Message.success('取消成功')
   }
 }
 

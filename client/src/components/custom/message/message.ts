@@ -25,16 +25,29 @@ export class Message {
   private static index = 1
   private static instances: MessageContext[] = shallowReactive([])
 
-  // BUG: 移除功能
   public static init = (props: MessageProps) => {
-    this.removeMessage()
+    this.instances.push(this.createMessage(props))
+  }
 
-    const instance = this.createMessage(props)
+  public static default = (message: string, duration?: number) => {
+    this.instances.push(this.createMessage({ type: 'default', message, duration }))
+  }
 
-    this.instances.push(instance)
+  public static success = (message: string, duration?: number) => {
+    this.instances.push(this.createMessage({ type: 'success', message, duration }))
+  }
+
+  public static warning = (message: string, duration?: number) => {
+    this.instances.push(this.createMessage({ type: 'warning', message, duration }))
+  }
+
+  public static danger = (message: string, duration?: number) => {
+    this.instances.push(this.createMessage({ type: 'danger', message, duration }))
   }
 
   private static createMessage = (props: MessageProps) => {
+    this.removeMessage()
+
     const body = document.querySelector('body')
 
     if (!body) {
@@ -91,16 +104,18 @@ export class Message {
 
   private static removeMessage = () => {
     const max = 5
-    const instances = this.instances
+    const instances = this.instances.map((v) => v.id)
 
     if (!instances.length || instances.length <= max) return
 
-    instances.forEach((v, i) => {
-      if (i < 5) {
-        const ele = document.getElementById(v.id)
-        console.log('🚀 ~ file: message.ts ~ line 100 ~ Message ~ instances.forEach ~ ele', ele)
+    instances.forEach((id, i) => {
+      if (i < max) {
+        const ele = document.querySelector('#' + id)
 
-        ele && document.body.removeChild(ele)
+        if (ele) {
+          document.body.removeChild(ele)
+          this.instances.shift()
+        }
       }
     })
   }
