@@ -73,7 +73,7 @@ const buttonClass = computed(() => {
     @apply px-5 py-3 text-lg;
   }
   .y-button--small {
-    @apply px-3 py-1 text-sm;
+    @apply px-2 py-1 text-xs;
   }
 
   .y-button--primary {

@@ -8,7 +8,7 @@ import { prefix } from '@/components/custom/utils/common'
  * @returns ClassName
  */
 const _bem = (block: string, element?: string, modifier?: string) => {
-  let cls = `${prefix}-${block}`
+  let cls = block[0] !== prefix ? `${prefix}-${block}` : block
   if (element) {
     cls += `__${element}`
   }
@@ -21,6 +21,8 @@ const _bem = (block: string, element?: string, modifier?: string) => {
 /**
  * 块元素类
  * @param block 块元素
+ * @example
+ *   .y-{block}
  * @returns ClassName
  */
 export const b = (block: string) => _bem(block)
@@ -29,6 +31,8 @@ export const b = (block: string) => _bem(block)
  * 块元素类 - 元素
  * @param block 块元素
  * @param element 元素
+ * @example
+ *   .y-{block}__{element}
  * @returns ClassName
  */
 export const be = (block: string, element: string) => _bem(block, element)
@@ -37,6 +41,8 @@ export const be = (block: string, element: string) => _bem(block, element)
  * 块元素类 - 修饰
  * @param block 块元素
  * @param modifier 修饰
+ * @example
+ *   .y-{block}--{modifier}
  * @returns ClassName
  */
 export const bm = (block: string, modifier: string) => _bem(block, '', modifier)

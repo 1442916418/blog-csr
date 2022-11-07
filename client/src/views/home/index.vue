@@ -44,6 +44,8 @@ import tagsComponent from '@/components/tags/index.vue'
 import yTabs from '@/components/custom/tabs/tabs.vue'
 import yPagination from '@/components/custom/pagination/pagination.vue'
 
+import { Message } from '@/components/custom/message/message'
+
 import { getArticlesFeed, getArticles, getTags, favoriteArticles, deleteFavoriteArticles } from '@/apis'
 
 import type { ArticleResult, AuthorResult } from '@/types/response-types'

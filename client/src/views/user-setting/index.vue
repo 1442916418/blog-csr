@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted, nextTick } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 
