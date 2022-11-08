@@ -8,14 +8,22 @@
 
       <div class="ml-5 flex space-x-2">
         <template v-if="isCurrentUserArticle">
-          <y-button size="small" type="primary" @click="handleClickEdit">修 改</y-button>
-          <y-button size="small" type="danger" @click="handleClickDelete">删 除</y-button>
+          <span class="hidden md:hidden lg:inline xl:inline 2xl:inline">
+            <y-button size="small" type="primary" @click="handleClickEdit"
+              ><i class="iconfont icon-edit"></i> 修 改</y-button
+            >
+          </span>
+          <y-button size="small" type="danger" @click="handleClickDelete"
+            ><i class="iconfont icon-delete"></i> 删 除</y-button
+          >
         </template>
         <template v-else>
-          <y-button size="small" type="primary" :plain="!details.author.following" @click="handleClickFollow"
-            >关 注
+          <y-button size="small" type="primary" :plain="!details.author.following" @click="handleClickFollow">
+            <i class="iconfont icon-add"></i>
+            关 注
           </y-button>
           <y-button size="small" type="primary" :plain="!details.favorited" @click="handleClickFavorite">
+            <i class="iconfont icon-favorite"></i>
             收 藏{{ details.favoritesCount || '' }}</y-button
           >
         </template>
@@ -24,14 +32,14 @@
   </div>
   <div class="m-5">
     <div class="mb-2">
-      <span class="text-sm text-gray-500">描述</span><br />
+      <span class="text-sm text-gray-500"> <i class="iconfont icon-text"></i> 描述 </span><br />
 
       <div class="text-gray-400">{{ details.description }}</div>
     </div>
 
     <md-editor v-model="details.body" :previewOnly="true"></md-editor>
 
-    <tags-component :list="details.tagList"></tags-component>
+    <tags-component class="mt-4" :list="details.tagList"></tags-component>
 
     <div class="my-5 border-b-2 border-gray-200"></div>
 
@@ -47,7 +55,10 @@
           v-model="commentBody"
         ></textarea>
 
-        <template v-slot:fl> 评论 </template>
+        <template v-slot:fl>
+          <i class="iconfont icon-comments"></i>
+          评论
+        </template>
         <template v-slot:fr>
           <y-button type="primary" size="small" @click="handleClickSendComment">提交评论</y-button>
         </template>
@@ -63,9 +74,11 @@
             <avatar-component :user="comment.author" :date="comment.createdAt" @click="handleClickAvatar" />
           </template>
           <template v-slot:fr>
-            <y-button v-if="isCurrentUserArticle" size="small" @click="handleClickDeleteComment(comment.id, i)"
-              >删除</y-button
-            >
+            <i
+              v-if="isCurrentUserArticle"
+              class="iconfont icon-delete"
+              @click="handleClickDeleteComment(comment.id, i)"
+            ></i>
           </template>
         </box-component>
       </template>

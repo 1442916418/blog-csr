@@ -55,4 +55,11 @@
 		],
 		"description": "生命周期代码片段"
 	},
+	"iconfont": {
+		"prefix": "b-iconfont",
+		"body": [
+			"<i class=\"iconfont icon-${1|text,category,close,comments,delete,edit,favorite,smile,success,warning,wrong,account,add,add-account|}\"></i>",
+		],
+		"description": "生命周期代码片段"
+	},
 }

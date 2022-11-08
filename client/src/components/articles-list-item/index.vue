@@ -6,9 +6,10 @@
     <div class="py-1 md:py-1 lg:py-4 xl:py-4 2xl:py-4 flex justify-between items-center">
       <avatar :user="item.author" :date="item.createdAt" @click="emits('clickAvatar', item.author)"></avatar>
 
-      <y-button size="small" type="primary" :plain="!item.favorited" @click.stop="emits('clickFavorite', item)"
-        >收藏{{ item.favoritesCount || '' }}</y-button
-      >
+      <y-button size="small" type="primary" :plain="!item.favorited" @click.stop="emits('clickFavorite', item)">
+        <i class="iconfont icon-favorite" :style="{ 'margin-right': item.favoritesCount ? '4px' : 0 }"></i
+        >{{ item.favoritesCount || '' }}
+      </y-button>
     </div>
 
     <div class="py-1 md:py-1 lg:py-4 xl:py-4 2xl:py-4 text-base font-bold">{{ item.title }}</div>

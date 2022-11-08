@@ -1,5 +1,5 @@
 <template>
-  <div class="w-2/3 my-5 mx-auto flex flex-col">
+  <div class="lg:w-2/3 xl:w-2/3 2xl:w-2/3 p-4 my-5 mx-auto flex flex-col">
     <div class="text-center">
       <h1 class="tracking-widest font-bold text-2xl">设 置</h1>
     </div>

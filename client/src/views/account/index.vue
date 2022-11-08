@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/3 my-5 mx-auto flex flex-col">
+  <div class="lg:w-1/3 xl:w-1/3 2xl:2-1/3 p-4 my-5 mx-auto flex flex-col">
     <div class="text-center">
       <h1 class="tracking-widest font-bold text-2xl">{{ accountParams.title }}</h1>
       <y-button type="success" link @click="changeAccountStatus">{{ accountParams.subTitle }}</y-button>

@@ -1,18 +1,32 @@
 <template>
   <header class="header">
-    <div class="flex-1 text-left font-bold cursor-pointer" @click="jumpPage('/')">BLOG</div>
+    <div class="text-left font-bold cursor-pointer" @click="jumpPage('/')">BLOG</div>
     <div class="flex-1 flex justify-end item-center space-x-2">
       <template v-if="user.isUser">
-        <y-button type="info" link @click="jumpPage('/articles')">创建新文章</y-button>
-        <y-button type="info" link @click="jumpPage('/userSetting')">用户配置</y-button>
+        <div class="hidden md:hidden lg:flex xl:flex 2xl:flex">
+          <y-button type="info" link @click="jumpPage('/articles')">
+            <i class="iconfont icon-add"></i>
+            创建新文章
+          </y-button>
+          <y-button type="info" link @click="jumpPage('/userSetting')">
+            <i class="iconfont icon-edit"></i>
+            用户配置
+          </y-button>
+        </div>
 
         <avatar :user="userAvatar" @click="jumpPage('/user/' + user.userName)"></avatar>
 
         <y-button type="danger" link @click="handleLogout">登 出</y-button>
       </template>
       <template v-else>
-        <y-button type="info" link @click="handleAccount(Status.SIGN_IN)">登 录</y-button>
-        <y-button type="info" link @click="handleAccount(Status.SIGN_UP)">注 册</y-button>
+        <y-button type="info" link @click="handleAccount(Status.SIGN_IN)">
+          <i class="iconfont icon-account"></i>
+          登 录
+        </y-button>
+        <y-button type="info" link @click="handleAccount(Status.SIGN_UP)">
+          <i class="iconfont icon-add-account"></i>
+          注 册
+        </y-button>
       </template>
     </div>
   </header>

@@ -60,7 +60,7 @@ useEventListener(document, 'keydown', keydown)
   }
 
   .y-modal__container {
-    @apply w-2/6 px-8 py-5 rounded bg-white shadow;
+    @apply w-3/4 md:w-2/5 lg:w-2/6 xl:w-2/6 2xl:w-2/6 px-8 py-5 rounded bg-white shadow;
     transition: all 0.3s ease;
   }
 

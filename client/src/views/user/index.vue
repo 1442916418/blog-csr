@@ -1,10 +1,10 @@
 <template>
   <div class="p-8 flex flex-col bg-gray-100">
-    <avatar class="mb-3" :user="userProfile" direction="column"></avatar>
+    <avatar class="mb-" :user="userProfile" direction="column"></avatar>
 
     <div class="w-3/5 mx-auto text-right">
       <template v-if="user.userName === currentUserName">
-        <y-button type="primary" plain @click="router.push('/userSetting')">用户配置</y-button>
+        <y-button type="primary" size="small" plain @click="router.push('/userSetting')">用户配置</y-button>
       </template>
       <template v-else>
         <y-button type="info" plain @click="handleClickFollow">{{
@@ -13,7 +13,7 @@
       </template>
     </div>
   </div>
-  <div class="w-3/5 mx-auto mt-5">
+  <div class="lg:w-2/3 xl:w-2/3 2xl:w-2/3 px-4 mx-auto">
     <y-tabs v-model="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
 
     <articles-list-component
@@ -24,6 +24,7 @@
     />
 
     <y-pagination
+      class="my-4 justify-center"
       :total="articlesCountData"
       @current-click="handlePagination"
       @prev-click="handlePagination"
