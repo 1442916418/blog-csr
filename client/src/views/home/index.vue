@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <div class="py-6 text-center text-white bg-blue-600 shadow-inner" v-if="!user.isUser">
-      <h1 class="pt-3 text-3xl font-bold" @click="test = !test"><b>主标题</b></h1>
+      <h1 class="pt-3 text-3xl font-bold"><b>主标题</b></h1>
       <h2>这里是副标题</h2>
     </div>
-    <div class="w-full my-5 flex items-start">
+    <div class="w-full lg:my-4 xl:my-4 2xl:my-4 flex items-start">
       <div class="flex-1">
         <y-tabs v-model="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
 
@@ -23,14 +23,25 @@
           @next-click="handlePagination"
         />
       </div>
-      <div class="p-2 ml-2 w-48 h-auto rounded bg-gray-100">
-        <b class="block">标签</b>
+
+      <div class="mobile-tags">
+        <b class="block">标 签</b>
 
         <tags-component :list="tags" type="info" effect="dark" @click="handleClickTag"></tags-component>
       </div>
-    </div>
 
-    <modal :show="test" @close="test = false" @confirm="test = false"> </modal>
+      <div class="fixed-tags" @click="showDrawer = true">√</div>
+
+      <Teleport to="body">
+        <y-drawer :show="showDrawer" @close="showDrawer = false">
+          <template #header>标 签</template>
+          <template #body>
+            <tags-component :list="tags" type="info" effect="dark" @click="handleClickTag"></tags-component>
+          </template>
+          <template #footer>&nbsp;</template>
+        </y-drawer>
+      </Teleport>
+    </div>
   </div>
 </template>
 
@@ -45,12 +56,11 @@ import articlesListComponent from '@/components/articles-list/index.vue'
 import tagsComponent from '@/components/tags/index.vue'
 import yTabs from '@/components/custom/tabs/tabs.vue'
 import yPagination from '@/components/custom/pagination/pagination.vue'
+import yDrawer from '@/components/custom/drawer/drawer.vue'
 
 import { getArticlesFeed, getArticles, getTags, favoriteArticles, deleteFavoriteArticles } from '@/apis'
 
 import type { ArticleResult, AuthorResult } from '@/types/response-types'
-
-import modal from '@/components/custom/modal/modal.vue'
 
 /** Use of external methods */
 const user = useUserStore()
@@ -58,7 +68,7 @@ const router = useRouter()
 const account = useAccountStore()
 
 /** Variable */
-let test = ref(false)
+let showDrawer = ref(false)
 let articlesList = ref<ArticleResult[]>([])
 let articlesCountData = ref(0)
 let tabName = ref('')
@@ -111,6 +121,10 @@ const handleClickTag = (tag: string) => {
   queryParams.tag = tag
 
   getDefaultArticlesData()
+
+  if (showDrawer.value) {
+    showDrawer.value = false
+  }
 }
 const handleUserArticles = () => {
   if (user.isUser) {
@@ -243,3 +257,17 @@ onMounted(() => {
   }
 })
 </script>
+
+<style lang="postcss" scoped>
+@tailwind components;
+
+@layer components {
+  .mobile-tags {
+    @apply p-2 mx-2 hidden md:hidden lg:inline-block lg:w-48 xl:inline-block xl:w-48 2xl:inline-block 2xl:w-48 h-auto rounded bg-gray-100;
+  }
+
+  .fixed-tags {
+    @apply w-8 h-8 fixed right-7 bottom-7 flex justify-center items-center z-10 rounded-full text-lg text-white bg-blue-600 shadow cursor-pointer lg:hidden xl:hidden 2xl:hidden;
+  }
+}
+</style>

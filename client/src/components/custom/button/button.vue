@@ -33,7 +33,8 @@ const props = defineProps({
   },
   plain: Boolean,
   round: Boolean,
-  link: Boolean
+  link: Boolean,
+  circle: Boolean
 })
 const emits = defineEmits<{
   (e: 'click', event: MouseEvent): void
@@ -47,7 +48,8 @@ const buttonClass = computed(() => {
     css.bm(_b, props.size),
     css.is('plain', props.plain),
     css.is('round', props.round),
-    css.is('link', props.link)
+    css.is('link', props.link),
+    css.is('circle', props.circle)
   ]
 })
 </script>
@@ -69,6 +71,11 @@ const buttonClass = computed(() => {
   .y-button.is-link {
     @apply px-1 py-0 bg-transparent border-transparent hover:text-gray-600 active:text-gray-500;
   }
+
+  .y-button.is-circle {
+    @apply w-6 h-6 p-0 rounded-full;
+  }
+
   .y-button--large {
     @apply px-5 py-3 text-lg;
   }

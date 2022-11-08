@@ -15,7 +15,9 @@
       <div class="avatar-info">
         <y-button type="info" link>{{ user.username }}</y-button>
 
-        <span v-show="date" class="date">{{ date }}</span>
+        <!-- TODO: 时间格式 -->
+        <span v-show="date" class="date">2022-11-08</span>
+        <!-- <span v-show="date" class="date">{{ date }}</span> -->
       </div>
     </div>
   </div>

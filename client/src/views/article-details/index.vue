@@ -6,7 +6,7 @@
     <div class="py-4 flex items-center">
       <avatar-component :user="details.author" :date="details.createdAt" @click="handleClickAvatar" />
 
-      <div class="ml-5 space-x-2">
+      <div class="ml-5 flex space-x-2">
         <template v-if="isCurrentUserArticle">
           <y-button size="small" type="primary" @click="handleClickEdit">修 改</y-button>
           <y-button size="small" type="danger" @click="handleClickDelete">删 除</y-button>
@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  <div class="my-5">
+  <div class="m-5">
     <div class="mb-2">
       <span class="text-sm text-gray-500">描述</span><br />
 
@@ -35,14 +35,14 @@
 
     <div class="my-5 border-b-2 border-gray-200"></div>
 
-    <div class="mx-auto w-3/5">
+    <div class="mx-auto w-11/12 md:w-11/12 lg:w-3/5 xl:w-3/5 2xl:w-3/5">
       <box-component class="mb-5">
         <textarea
           class="w-full border-none"
           name="commentBody"
           id="commentBody"
           cols="30"
-          rows="5"
+          rows="2"
           placeholder="请输入评论内容"
           v-model="commentBody"
         ></textarea>
