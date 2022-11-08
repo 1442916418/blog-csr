@@ -15,9 +15,7 @@
       <div class="avatar-info">
         <y-button type="info" link>{{ user.username }}</y-button>
 
-        <!-- TODO: 时间格式 -->
-        <span v-show="date" class="date">2022-11-08</span>
-        <!-- <span v-show="date" class="date">{{ date }}</span> -->
+        <span v-show="date" class="date">{{ computedDate }}</span>
       </div>
     </div>
   </div>
@@ -25,8 +23,9 @@
 
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
-import type { AuthorResult } from '@/types/response-types'
+import dayjs from 'dayjs'
 
+import type { AuthorResult } from '@/types/response-types'
 import yButton from '@/components/custom/button/button.vue'
 
 const props = defineProps({
@@ -59,6 +58,9 @@ const styles = computed(() => {
     ml: direction === 'row' ? '8px' : 0,
     mt: direction === 'row' ? 0 : '12px'
   }
+})
+const computedDate = computed(() => {
+  return dayjs(props.date).format('YYYY-MM-DD HH:mm:ss')
 })
 </script>
 

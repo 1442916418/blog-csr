@@ -16,6 +16,7 @@ module.exports = {
     username: isDev ? 'root' : '',
     password: isDev ? 'root' : '',
     database: 'blog',
+    dateStrings: true,
     // TODO: 时间格式错误
     timezone: '+08:00',
     // TODO: 生产数据库关闭此选项
