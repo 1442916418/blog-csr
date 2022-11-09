@@ -71,9 +71,6 @@ common/autoinstallers/*/.npmrc
 # .history
 .history
 
-# config
-# server/env
-
 # log
 server/app
 

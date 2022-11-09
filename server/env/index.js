@@ -10,10 +10,10 @@ module.exports = {
   port: '3333',
   ormConfig: {
     type: 'mysql',
-    host: isDev ? 'localhost' : '',
+    host: isDev ? 'localhost' : '124.71.143.130',
     port: 3306,
-    username: isDev ? 'root' : '',
-    password: isDev ? 'root' : '',
+    username: isDev ? 'root' : 'yushuisheng',
+    password: isDev ? 'root' : '6486813abcyss',
     database: 'blog',
     dateStrings: true,
     // BUG: 时间格式错误

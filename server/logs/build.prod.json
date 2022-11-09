@@ -1,0 +1,22 @@
+[
+  {
+    "title": "正式环境更新",
+    "describe": "修改数据库用户名...",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.2",
+    "environment": "production",
+    "prevVersion": "1.0.1",
+    "date": "2022-11-09 22:37:51"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "第一次打包",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.1",
+    "environment": "production",
+    "prevVersion": "1.0.0",
+    "date": "2022-11-09 21:47:38"
+  }
+]

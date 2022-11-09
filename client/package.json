@@ -1,13 +1,16 @@
 {
   "name": "client",
-  "version": "0.0.0",
+  "version": "1.0.2",
+  "version_prod": "1.0.2",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run log:prod && vite build && npm run upload:prod",
     "preview": "vite preview --port 4173",
     "build-check": "run-p type-check build-only",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "log:prod": "y-cli build-log -b dev -e production -s prod",
+    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=G:\\yss\\blog-csr\\config\\upload.prod.json y-cli upload -e production"
   },
   "dependencies": {
     "@element-plus/icons-vue": "~2.0.10",
@@ -46,6 +49,7 @@
     "vue-tsc": "^0.40.7",
     "@types/nprogress": "~0.2.0",
     "vite-plugin-html": "~3.2.0",
-    "vite-plugin-compression": "~0.5.1"
+    "vite-plugin-compression": "~0.5.1",
+    "yss-toolchain": "~0.1.4"
   }
 }

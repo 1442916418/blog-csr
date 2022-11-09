@@ -1,13 +1,15 @@
 {
   "name": "server",
-  "version": "1.0.0",
+  "version": "1.0.2",
+  "version_prod": "1.0.2",
   "private": true,
   "description": "blog-csr server",
   "scripts": {
     "start": "cross-env NODE_ENV=development nodemon --watch src -e ts --exec ts-node src/server.ts",
-    "build:dev": "npm run log:dev && npm run c-build",
-    "build:prod": "npm run log:prod && npm run c-build",
+    "build": "npm run log:prod && npm run c-build && npm run upload:prod",
     "c-build": "cross-env NODE_ENV=production node ./build/start && tsc && node ./build/end",
+    "log:prod": "y-cli build-log -b dev -e production -s prod",
+    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=G:\\yss\\blog-csr\\config\\upload.prod.json y-cli upload -e production",
     "obfuscator": "node ./build/encryption",
     "tsc": "tsc",
     "prettier:src": "npx prettier --write ./src",
@@ -60,7 +62,8 @@
     "jest": "~29.2.1",
     "@types/jest": "~29.2.0",
     "ts-jest": "~29.0.3",
-    "@types/mocha": "~10.0.0"
+    "@types/mocha": "~10.0.0",
+    "yss-toolchain": "~0.1.4"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -78,7 +81,7 @@
       "!./src/model/entity/*.ts"
     ],
     "transform": {
-      "\\.ts$": "ts-jest"
+      "\\\\.ts$": "ts-jest"
     },
     "coverageThreshold": {
       "global": {
