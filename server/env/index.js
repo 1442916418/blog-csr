@@ -2,7 +2,6 @@
 const pwd = process.cwd()
 
 const isDev = process.env.NODE_ENV === 'development'
-const ext = isDev ? 'ts' : 'js'
 
 /**
  * 环境配置文件
@@ -17,11 +16,12 @@ module.exports = {
     password: isDev ? 'root' : '',
     database: 'blog',
     dateStrings: true,
-    // TODO: 时间格式错误
+    // BUG: 时间格式错误
     timezone: '+08:00',
-    // TODO: 生产数据库关闭此选项
-    // TODO: 数据库迁移，migrations cli:migrationsDir
-    synchronize: isDev ? true : false,
+    // BUG: 生产数据库关闭此选项
+    // BUG: 数据库迁移，migrations cli:migrationsDir
+    // synchronize: isDev ? true : false,
+    synchronize: true,
     entities: ['src/model/entity/*.{js,ts}'],
     cli: {
       entitiesDir: 'src/model/entity'

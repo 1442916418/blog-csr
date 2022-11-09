@@ -21,7 +21,7 @@ function loopCopy(target, source, regexp) {
     }
     return
   } else if (stats.isDirectory()) {
-    //目标文件夹是否存在，不存在则新建
+    // 目标文件夹是否存在，不存在则新建
     if (!fs.existsSync(source)) {
       mkdirs(source)
     }
@@ -32,7 +32,7 @@ function loopCopy(target, source, regexp) {
       loopCopy(_target, _source, regexp)
     })
   }
-  //目标文件夹是否存在，不存在则新建
+  // 目标文件夹是否存在，不存在则新建
   if (!fs.existsSync(source)) {
     mkdirs(source)
   }
@@ -45,12 +45,12 @@ function mkdirs(dirpath) {
   fs.mkdirSync(dirpath)
 }
 
-//拷贝所有
+// 拷贝所有
 exports.copyAll = function (target, source, regexp, cb) {
   loopCopy(target, source, regexp)
   cb && cb()
 }
-//拷贝文件
+// 拷贝文件
 exports.copyFile = function (target, source) {
   const exit = fs.existsSync(target)
   if (!exit) {
@@ -63,7 +63,7 @@ exports.copyFile = function (target, source) {
     return
   }
   if (stats.isFile()) {
-    //目标文件夹是否存在，不存在则新建
+    // 目标文件夹是否存在，不存在则新建
     const dir = source.substr(0, source.lastIndexOf('\\'))
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir)
@@ -74,7 +74,7 @@ exports.copyFile = function (target, source) {
     console.error('拷贝失败,不是文件')
   }
 }
-//清空所有
+// 清空所有
 exports.clearAll = function (folder, isDeleteDir) {
   console.warn('清空文件夹', folder)
   const exit = fs.existsSync(folder)
@@ -85,7 +85,7 @@ exports.clearAll = function (folder, isDeleteDir) {
     }
   }
 }
-//文件替换
+// 文件替换
 exports.replace = function (file, cb) {
   const exit = fs.existsSync(file)
   if (!exit) {
@@ -104,7 +104,7 @@ exports.replace = function (file, cb) {
     console.error('替换失败,不是文件')
   }
 }
-//拷贝，同时替换掉修改后的内容
+// 拷贝，同时替换掉修改后的内容
 exports.copyReplace = function (target, source, cb) {
   const exit = fs.existsSync(target)
   if (!exit) {
@@ -117,7 +117,7 @@ exports.copyReplace = function (target, source, cb) {
     return
   }
   if (stats.isFile()) {
-    //目标文件夹是否存在，不存在则新建
+    // 目标文件夹是否存在，不存在则新建
     const dir = source.substr(0, source.lastIndexOf('\\'))
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir)
@@ -129,7 +129,7 @@ exports.copyReplace = function (target, source, cb) {
   }
 }
 
-//路径下的文件加密
+// 路径下的文件加密
 function encryptionPath(target, source, regexp, cb) {
   const exit = fs.existsSync(target)
   if (!exit) {
@@ -138,7 +138,7 @@ function encryptionPath(target, source, regexp, cb) {
   }
   const stats = fs.statSync(target)
   if (!stats) {
-    console.error('无法读取stats!')
+    console.error('无法读取 stats!')
     return
   }
   if (stats.isFile()) {
@@ -148,7 +148,7 @@ function encryptionPath(target, source, regexp, cb) {
     }
     return
   } else if (stats.isDirectory()) {
-    //目标文件夹是否存在，不存在则新建
+    // 目标文件夹是否存在，不存在则新建
     if (!fs.existsSync(source)) {
       mkdirs(source)
     }
@@ -159,20 +159,23 @@ function encryptionPath(target, source, regexp, cb) {
       encryptionPath(_target, _source, regexp, cb)
     })
   }
-  //目标文件夹是否存在，不存在则新建
+  // 目标文件夹是否存在，不存在则新建
   if (!fs.existsSync(source)) {
     mkdirs(source)
   }
 }
+
 exports.encryptionPath = encryptionPath
+
 let index = 0
-//代码文件加密
+// 代码文件加密
 function encryptionFile(target, source) {
   try {
     execSync(`javascript-obfuscator ${target}  --output ${source}`)
-    console.log(`文件:${target}------------加密成功`)
+    console.log(`文件: ${target}------------加密成功`)
   } catch (error) {
     global.encryptionError[target] = error
   }
 }
+
 exports.encryptionFile = encryptionFile

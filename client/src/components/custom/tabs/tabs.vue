@@ -24,21 +24,14 @@ const props = defineProps({
   list: {
     type: Array as PropType<ITabItem[]>
   },
-  modelValue: String
+  modelValue: String as PropType<string>
 })
 const emits = defineEmits<{
-  (e: 'update:modelValue', value?: string): void
+  (e: 'update:modelValue', value: string): void
   (e: 'click', value: string): void
 }>()
 
-const value = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emits('update:modelValue', value)
-  }
-})
+const value = computed(() => props.modelValue)
 
 const handleClickTag = (value: string) => {
   emits('update:modelValue', value)

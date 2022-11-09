@@ -8,7 +8,7 @@
     "build:dev": "npm run log:dev && npm run c-build",
     "build:prod": "npm run log:prod && npm run c-build",
     "c-build": "cross-env NODE_ENV=production node ./build/start && tsc && node ./build/end",
-    "obfuscator": "npm run build && node ./build/encryption",
+    "obfuscator": "node ./build/encryption",
     "tsc": "tsc",
     "prettier:src": "npx prettier --write ./src",
     "unit:test": "jest  --collectCoverage --testPathPattern=tests/unit/controllers/user.spec.ts --no-cache",

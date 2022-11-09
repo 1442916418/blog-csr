@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="lg:w-2/3 xl:w-2/3 2xl:w-2/3 px-4 mx-auto">
-    <y-tabs v-model="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
+    <y-tabs v-model:modelValue="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
 
     <articles-list-component
       :list="articlesList"

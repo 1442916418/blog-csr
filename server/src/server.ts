@@ -16,7 +16,6 @@ import logger from './middleware/logger/logger'
 const config = require('../env/index')
 
 const isDev = process.env.NODE_ENV === 'development'
-const log = console.log
 
 const init = async () => {
   const connect = await AppDataSource.initialize().catch((err: string) => {

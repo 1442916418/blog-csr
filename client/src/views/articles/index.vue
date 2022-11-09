@@ -196,13 +196,15 @@ const handleSubmitArticleData = async () => {
     // @ts-ignore
     delete formResult.tagList
 
-    res = await updateArticleBySlug({ slug: isSlug.value }, { article: formResult }).finally(() => {
-      loading.value = false
-    })
+    // BUG: finally 错误
+    res = await updateArticleBySlug({ slug: isSlug.value }, { article: formResult })
   } else {
-    res = await createArticle({ article: formResult }).finally(() => {
-      loading.value = false
-    })
+    res = await createArticle({ article: formResult })
+
+    // BUG: finally 错误
+    // res = await createArticle({ article: formResult }).finally(() => {
+    //   loading.value = false
+    // })
   }
 
   const article = res?.data?.article || {}

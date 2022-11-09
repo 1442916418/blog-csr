@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check build-only",
+    "build": "vite build",
     "preview": "vite preview --port 4173",
-    "build-only": "vite build",
+    "build-check": "run-p type-check build-only",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
@@ -44,6 +44,8 @@
     "typescript": "~4.5.5",
     "vite": "^3.0.9",
     "vue-tsc": "^0.40.7",
-    "@types/nprogress": "~0.2.0"
+    "@types/nprogress": "~0.2.0",
+    "vite-plugin-html": "~3.2.0",
+    "vite-plugin-compression": "~0.5.1"
   }
 }

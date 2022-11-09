@@ -6,7 +6,7 @@
     </div>
     <div class="w-full lg:my-4 xl:my-4 2xl:my-4 flex items-start">
       <div class="flex-1">
-        <y-tabs v-model="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
+        <y-tabs v-model:modelValue="tabName" :list="tabs" @click="handleClickTab"></y-tabs>
 
         <articles-list-component
           :list="articlesList"

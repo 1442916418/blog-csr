@@ -76,3 +76,7 @@ common/autoinstallers/*/.npmrc
 
 # log
 server/app
+
+# dist
+server/dist
+client/dist

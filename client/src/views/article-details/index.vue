@@ -118,7 +118,7 @@ import {
   getComments
 } from '@/apis'
 
-import type { ArticleResult, CommentResult, UserResult } from '@/types/response-types'
+import type { ArticleResult, AuthorResult, CommentResult } from '@/types/response-types'
 
 // TODO: 导入报错
 // import { StatusCodes } from 'http-status-codes'
@@ -179,7 +179,7 @@ const handleIsSignIn = () => {
 
   return true
 }
-const handleClickAvatar = (user: UserResult) => {
+const handleClickAvatar = (user: AuthorResult) => {
   const username = user?.username ?? ''
 
   if (username) {

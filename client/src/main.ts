@@ -4,6 +4,7 @@ import piniaPersist from 'pinia-plugin-persist'
 
 import App from './App.vue'
 import router from './router'
+console.log('🚀 ~ file: main.ts ~ line 7 ~ router', router)
 
 import './assets/styles/base.css'
 
