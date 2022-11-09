@@ -8,12 +8,16 @@ export default async function (ctx: Context, next: Next) {
     await next()
   } catch (ex) {
     if (ex.isJoi) {
+      const body = ex.details[0].message
+
       ctx.status = StatusCodes.UNPROCESSABLE_ENTITY
       ctx.body = {
         errors: {
-          body: ex.details[0].message
+          body
         }
       }
+
+      logger.error('Joi validates Error: ', ex.details)
     } else if (ex.status && ex.status !== StatusCodes.INTERNAL_SERVER_ERROR) {
       ctx.status = ex.status
       ctx.body = { message: ex.message }

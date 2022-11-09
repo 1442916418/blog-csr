@@ -48,7 +48,7 @@ export default class ArticleController {
         article: joi.object({
           title: joi.string().min(5).max(50).required(),
           description: joi.string().max(100).required(),
-          body: joi.string().max(10000).required(),
+          body: joi.string().max(30000).required(),
           tagList: joi.array().items(joi.string().max(10)).required()
         })
       })
@@ -192,7 +192,7 @@ export default class ArticleController {
         article: joi.object({
           title: joi.string().min(5).max(50),
           description: joi.string().max(100),
-          body: joi.string().max(10000)
+          body: joi.string().max(30000)
         })
       })
     )
@@ -270,7 +270,7 @@ export default class ArticleController {
       ctx.request.body,
       joi.object({
         comment: joi.object({
-          body: joi.string().max(10000).required()
+          body: joi.string().max(30000).required()
         })
       })
     )
