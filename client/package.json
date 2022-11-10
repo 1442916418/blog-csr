@@ -10,7 +10,7 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "log:prod": "y-cli build-log -b dev -e production -s prod",
-    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=D:\\code\\A_2\\yss\\blog-csr\\uConfig\\upload.prod.json y-cli upload -e production"
+    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=..\\uConfig\\upload.prod.json y-cli upload -e production"
   },
   "dependencies": {
     "@element-plus/icons-vue": "~2.0.10",
@@ -50,6 +50,6 @@
     "@types/nprogress": "~0.2.0",
     "vite-plugin-html": "~3.2.0",
     "vite-plugin-compression": "~0.5.1",
-    "yss-toolchain": "~0.1.4"
+    "yss-toolchain": "~0.1.6"
   }
 }

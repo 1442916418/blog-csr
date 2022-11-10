@@ -42,7 +42,7 @@ importers:
       vue: ^3.2.38
       vue-router: ^4.1.5
       vue-tsc: ^0.40.7
-      yss-toolchain: ~0.1.4
+      yss-toolchain: ~0.1.6
     dependencies:
       '@element-plus/icons-vue': 2.0.10_vue@3.2.41
       '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.1
@@ -80,7 +80,7 @@ importers:
       vite-plugin-compression: 0.5.1_vite@3.1.8
       vite-plugin-html: 3.2.0_vite@3.1.8
       vue-tsc: 0.40.13_typescript@4.5.5
-      yss-toolchain: 0.1.4
+      yss-toolchain: 0.1.6
 
   ../../server:
     specifiers:
@@ -123,7 +123,7 @@ importers:
       ts-node: ~10.7.0
       typeorm: ^0.3.6
       typescript: ~4.5.5
-      yss-toolchain: ~0.1.4
+      yss-toolchain: ~0.1.6
     dependencies:
       '@koa/cors': 3.3.0
       '@koa/router': 8.0.8
@@ -165,7 +165,7 @@ importers:
       ts-jest: 29.0.3_jest@29.2.1+typescript@4.5.5
       ts-node: 10.7.0_68383bdfff7e76ddc3ee7d7d7b1857cd
       typescript: 4.5.5
-      yss-toolchain: 0.1.4
+      yss-toolchain: 0.1.6
 
 packages:
 
@@ -7681,8 +7681,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /yss-toolchain/0.1.4:
-    resolution: {integrity: sha512-/UtwfG6Y3IcI7D1+qdHH/lstvIAXfNlHLjx3clpA9Fa/naYW9V97OyiG6hyc+FQexHtDiRYNJK6dZtL+OZNx2A==}
+  /yss-toolchain/0.1.6:
+    resolution: {integrity: sha512-GwzvlW24cAQ1KyYUPzWXFIl/ONAc65Y3kR9MKp4/JtUKpEdbNjmtTb5qvA3wn/5qmjb9hDhK5jJua8ZI9eFLag==}
     hasBin: true
     dependencies:
       archiver: 5.3.1

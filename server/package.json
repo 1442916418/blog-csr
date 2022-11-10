@@ -9,7 +9,7 @@
     "build": "npm run log:prod && npm run c-build && npm run upload:prod",
     "c-build": "cross-env NODE_ENV=production node ./build/start && tsc && node ./build/end",
     "log:prod": "y-cli build-log -b dev -e production -s prod",
-    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=G:\\yss\\blog-csr\\config\\upload.prod.json y-cli upload -e production",
+    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=..\\uConfig\\upload.prod.json y-cli upload -e production",
     "obfuscator": "node ./build/encryption",
     "tsc": "tsc",
     "prettier:src": "npx prettier --write ./src",
@@ -63,7 +63,7 @@
     "@types/jest": "~29.2.0",
     "ts-jest": "~29.0.3",
     "@types/mocha": "~10.0.0",
-    "yss-toolchain": "~0.1.4"
+    "yss-toolchain": "~0.1.6"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
