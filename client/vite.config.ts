@@ -13,7 +13,7 @@ const config = {
   // 静态目录
   assetsDir: 'assets',
   // 页面标题
-  title: '余水生的博客',
+  title: '我的博客',
   // Gzip
   zip: true,
   cdn: ''

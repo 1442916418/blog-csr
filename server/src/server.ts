@@ -13,7 +13,7 @@ import errorMiddleware from './middleware/error-middleware'
 import { AppDataSource } from './dataSource'
 import logger from './middleware/logger/logger'
 
-const config = require('../env/index')
+const config = require('../environment/index')
 
 const isDev = process.env.NODE_ENV === 'development'
 

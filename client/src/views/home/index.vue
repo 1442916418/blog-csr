@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="py-6 text-center text-white bg-blue-600 shadow-inner" v-if="!user.isUser">
-      <h1 class="pt-3 text-3xl font-bold"><b>欢迎访问</b></h1>
+      <h1 class="pt-3 pb-2 text-4xl font-bold tracking-wide">欢迎访问</h1>
       <h2>小时候真傻，居然盼着长大</h2>
     </div>
     <div class="w-full lg:my-4 xl:my-4 2xl:my-4 flex items-start">

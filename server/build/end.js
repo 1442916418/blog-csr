@@ -15,7 +15,7 @@ for (const fileName of copyArr) {
 
 // 拷贝 env
 fileUtil.copyAll(path.resolve(__dirname, '..\\bin'), path.resolve(__dirname, '..\\dist\\bin'))
-fileUtil.copyAll(path.resolve(__dirname, '..\\env'), path.resolve(__dirname, '..\\dist\\env'))
+fileUtil.copyAll(path.resolve(__dirname, '..\\environment'), path.resolve(__dirname, '..\\dist\\environment'))
 
 // //拷贝 static
 // fileUtil.copyAll(path.resolve(__dirname, '..\\static'), path.resolve(__dirname, '..\\dist\\static'));

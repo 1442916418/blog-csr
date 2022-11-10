@@ -1,0 +1,12 @@
+[
+  {
+    "title": "正式环境更新",
+    "describe": "更新标题和 icon",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.3",
+    "environment": "production",
+    "prevVersion": "1.0.2",
+    "date": "2022-11-10 10:03:20"
+  }
+]

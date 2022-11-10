@@ -1,6 +1,6 @@
 import log4js from 'log4js'
 
-const config = require('../../../env/index')
+const config = require('../../../environment/index')
 
 log4js.configure({
   appenders: { cheese: { type: 'file', filename: `${config.logConfig.outDir}/receive.log` } },
