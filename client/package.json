@@ -1,7 +1,7 @@
 {
   "name": "client",
-  "version": "1.0.2",
-  "version_prod": "1.0.2",
+  "version": "1.0.3",
+  "version_prod": "1.0.3",
   "scripts": {
     "dev": "vite",
     "build": "npm run log:prod && vite build && npm run upload:prod",
@@ -10,7 +10,7 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "log:prod": "y-cli build-log -b dev -e production -s prod",
-    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=G:\\yss\\blog-csr\\config\\upload.prod.json y-cli upload -e production"
+    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=D:\\code\\A_2\\yss\\blog-csr\\config\\upload.prod.json y-cli upload -e production"
   },
   "dependencies": {
     "@element-plus/icons-vue": "~2.0.10",
