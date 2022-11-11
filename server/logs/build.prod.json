@@ -1,6 +1,26 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "修复 bug",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.4",
+    "environment": "production",
+    "prevVersion": "1.0.3",
+    "date": "2022-11-11 14:41:48"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "注册增加邀请码",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.3",
+    "environment": "production",
+    "prevVersion": "1.0.2",
+    "date": "2022-11-11 14:27:25"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "修改数据库用户名...",
     "author": "yushuisheng",
     "branch": "dev",

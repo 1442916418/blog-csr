@@ -42,6 +42,8 @@ export type ApiRequestUserRegister = {
     password: string
     /** 用户名 */
     username: string
+    /** 邀请码 */
+    invitationCode: string
   }
 }
 

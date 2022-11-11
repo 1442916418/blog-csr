@@ -4,6 +4,7 @@ import { Context } from 'koa'
 import joi from 'joi'
 
 import { UserRepository } from '../repositories/user'
+import { InvitationCodeRepository } from '../repositories/invitation-code'
 
 import { User } from '../model/entity/user'
 
@@ -14,37 +15,60 @@ import { CParams } from '../types'
 
 @route('/api')
 export default class UserController {
-  private _userRepository: typeof UserRepository
   private _securityService: SecurityService
+  private _userRepository: typeof UserRepository
+  private _invitationCode: typeof InvitationCodeRepository
 
   // 注入依赖
   constructor({ securityService }: CParams) {
-    this._userRepository = UserRepository
     this._securityService = securityService
+    this._userRepository = UserRepository
+    this._invitationCode = InvitationCodeRepository
   }
 
   @route('/users')
   @POST()
   async register(ctx: Context) {
+    const body = ctx.request.body
+
     joi.assert(
-      ctx.request.body,
+      body,
       joi.object({
         user: joi.object({
           username: joi.string().min(1).max(30).required(),
           email: joi.string().email().required(),
           password: joi.string().min(5).max(30).required(),
+          invitationCode: joi.string().guid().required(),
           bio: joi.string().max(1000),
           image: joi.string().max(1000)
         })
       })
     )
 
+    const invitationCode = await this._invitationCode.findOne({ where: { code: body.user.invitationCode } })
+
+    if (!invitationCode) {
+      ctx.status = StatusCodes.OK
+      ctx.body = { errors: { body: '邀请码无效' } }
+      return
+    }
+
+    if (invitationCode.isUse) {
+      ctx.status = StatusCodes.OK
+      ctx.body = { errors: { body: '邀请码已使用' } }
+      return
+    }
+
     const user: User = new User()
-    Object.assign(user, ctx.request.body.user)
+    Object.assign(user, body.user, { invitationCode })
 
     SecurityService.hashPassword(user)
 
     await this._userRepository.save(user)
+
+    invitationCode.isUse = true
+
+    await this._invitationCode.update(invitationCode.id, invitationCode)
 
     const token: string = this._securityService.generateToken(user)
 
@@ -66,9 +90,9 @@ export default class UserController {
     )
 
     const { email, password }: { email: string; password: string } = ctx.request.body.user
-    const user: User | null = await this._userRepository.findOne({ where: { email } })
+    const user: User | null = await this._userRepository.findOne({ where: { email }, relations: ['invitationCode'] })
 
-    if (!user) {
+    if (!user || !user.invitationCode) {
       ctx.throw(StatusCodes.UNAUTHORIZED, 'Unauthorized')
     }
 

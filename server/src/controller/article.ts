@@ -241,7 +241,7 @@ export default class ArticleController {
     const favorited: boolean = await this._favoriteRepository.getIsFavorited(article, ctx.state.user)
     const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
 
-    ctx.body = { article: article.toJSON(following, favorited) }
+    ctx.body = { article: article.toJSON(following, favorited, true) }
     ctx.status = StatusCodes.OK
   }
 
@@ -363,7 +363,7 @@ export default class ArticleController {
     const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
 
     ctx.status = StatusCodes.CREATED
-    ctx.body = { article: article.toJSON(following, true) }
+    ctx.body = { article: article.toJSON(following, true, true) }
   }
 
   @route('/:slug/favorite')
@@ -392,6 +392,6 @@ export default class ArticleController {
     const following: boolean = await this._followRepository.getIsFollowing(ctx.state.user, article.author)
 
     ctx.status = StatusCodes.OK
-    ctx.body = { article: article.toJSON(following, false) }
+    ctx.body = { article: article.toJSON(following, false, true) }
   }
 }

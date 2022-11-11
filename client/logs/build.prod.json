@@ -1,6 +1,26 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "修复 bug",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.6",
+    "environment": "production",
+    "prevVersion": "1.0.5",
+    "date": "2022-11-11 14:43:55"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "注册增加邀请码字段",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.5",
+    "environment": "production",
+    "prevVersion": "1.0.4",
+    "date": "2022-11-11 14:27:57"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "编辑器插件配置更新",
     "author": "yushuisheng",
     "branch": "dev",

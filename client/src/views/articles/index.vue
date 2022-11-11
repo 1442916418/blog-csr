@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted, computed, nextTick } from 'vue'
+import { reactive, ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import htmlToMarkdown from '@wcj/html-to-markdown'
 

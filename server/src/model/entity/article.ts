@@ -64,12 +64,12 @@ export class Article {
    * @param favorited 是否收藏
    * @returns Article JSON
    */
-  toJSON(following: boolean, favorited: boolean) {
+  toJSON(following: boolean, favorited: boolean, isBody = false) {
     return {
       slug: this.slug,
       title: this.title,
       description: this.description,
-      body: this.body,
+      body: isBody && this.body,
       tagList: this.tagList && this.tagList.map((tag: Tag) => tag.toJSON()),
       author: this.author && this.author.toProfileJSON(following),
       createdAt: this.createdAt,

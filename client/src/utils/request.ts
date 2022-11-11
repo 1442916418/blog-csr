@@ -34,6 +34,7 @@ export class Request {
         return config
       },
       (err: any) => {
+        console.log('🚀 ~ file: request.ts ~ line 37 ~ Request ~ constructor ~ err', err)
         Message.danger('请求错误')
         return Promise.reject(err)
       }

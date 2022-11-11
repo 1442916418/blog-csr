@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Index, Column, OneToMany } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Index, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm'
 import { Article } from './article'
 import { Comment } from './comment'
 import { Follow } from './follow'
 import { Favorite } from './favorite'
+import { InvitationCode } from './invitation-code'
 
 /**
  * 用户实体类
@@ -43,6 +44,10 @@ export class User {
 
   @OneToMany(() => Follow, (follow: Follow) => follow.following)
   following!: Follow[]
+
+  @OneToOne(() => InvitationCode)
+  @JoinColumn()
+  invitationCode: InvitationCode
 
   toUserJSON(token: string) {
     return {

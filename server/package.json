@@ -1,7 +1,7 @@
 {
   "name": "server",
-  "version": "1.0.2",
-  "version_prod": "1.0.2",
+  "version": "1.0.4",
+  "version_prod": "1.0.4",
   "private": true,
   "description": "blog-csr server",
   "scripts": {

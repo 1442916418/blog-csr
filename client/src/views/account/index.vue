@@ -12,17 +12,30 @@
       </ul>
 
       <form action="" id="accountForm" class="my-5 flex flex-col space-y-4">
-        <div v-if="!account.isSignIn">
-          <label for="username">账户名</label><br />
-          <input
-            class="w-full mt-2"
-            type="text"
-            name="username"
-            id="username"
-            placeholder="请输入账户名"
-            v-model="ruleForm.username"
-          />
-        </div>
+        <template v-if="!account.isSignIn">
+          <div>
+            <label for="invitationCode">邀请码</label><br />
+            <input
+              class="w-full mt-2"
+              type="text"
+              name="invitationCode"
+              id="invitationCode"
+              placeholder="请输入邀请码"
+              v-model.trim="ruleForm.invitationCode"
+            />
+          </div>
+          <div>
+            <label for="username">账户名</label><br />
+            <input
+              class="w-full mt-2"
+              type="text"
+              name="username"
+              id="username"
+              placeholder="请输入账户名"
+              v-model.trim="ruleForm.username"
+            />
+          </div>
+        </template>
         <div>
           <label for="email">邮箱</label><br />
           <input
@@ -31,7 +44,7 @@
             name="email"
             id="email"
             placeholder="请输入邮箱"
-            v-model="ruleForm.email"
+            v-model.trim="ruleForm.email"
           />
         </div>
         <div>
@@ -42,7 +55,7 @@
             name="password"
             id="password"
             placeholder="请输入密码"
-            v-model="ruleForm.password"
+            v-model.trim="ruleForm.password"
           />
         </div>
       </form>
@@ -64,7 +77,7 @@ import { useAccountStore, Status } from '@/stores/account'
 import { useUserStore } from '@/stores/user'
 import { userLogin, userRegister } from '@/apis'
 
-import { validateEmail } from '@/utils/constant'
+import { validateEmail, validateGuid } from '@/utils/constant'
 
 import yButton from '@/components/custom/button/button.vue'
 
@@ -80,7 +93,8 @@ let validateRules = ref<string[]>([])
 const ruleForm = reactive({
   username: '',
   password: '',
-  email: ''
+  email: '',
+  invitationCode: ''
 })
 
 /** Compute */
@@ -150,7 +164,7 @@ const handleSignUp = async () => {
   }
 }
 const handleFormValidate = () => {
-  const { username, password, email } = ruleForm
+  const { username, password, email, invitationCode } = ruleForm
   const result = []
 
   if (!account.isSignIn) {
@@ -158,6 +172,11 @@ const handleFormValidate = () => {
       result.push('请输入账户名')
     } else if (!username.length || username.length > 30) {
       result.push('账户名长度 1 - 30 之间')
+    }
+    if (!invitationCode) {
+      result.push('请输入邀请码')
+    } else if (!validateGuid.test(invitationCode)) {
+      result.push('邀请码校验失败')
     }
   }
 
