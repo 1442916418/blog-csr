@@ -1,6 +1,16 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "编辑器插件配置更新",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.4",
+    "environment": "production",
+    "prevVersion": "1.0.3",
+    "date": "2022-11-11 11:17:00"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "更新标题和 icon",
     "author": "yushuisheng",
     "branch": "dev",
