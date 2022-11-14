@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="text-left font-bold cursor-pointer" @click="jumpPage('/')">BLOG</div>
+    <div class="text-left font-bold cursor-pointer hover:text-blue-600" @click="jumpPage('/')">Home</div>
     <div class="flex-1 flex justify-end item-center space-x-2">
       <template v-if="user.isUser">
         <div class="hidden md:hidden lg:flex xl:flex 2xl:flex">
