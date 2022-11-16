@@ -1,7 +1,24 @@
 <template>
   <header class="header">
-    <div class="text-left font-bold cursor-pointer hover:text-blue-600" @click="jumpPage('/')">Home</div>
-    <div class="flex-1 flex justify-end item-center space-x-2">
+    <div class="text-left font-bold cursor-pointer hover:text-blue-600 dark:text-gray-50" @click="jumpPage('/')">
+      Home
+    </div>
+    <div class="flex-1 flex justify-end items-center space-x-2 dark:text-gray-50">
+      <UseDark v-slot="{ toggleDark }">
+        <span
+          class="h-8 w-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-600"
+          @click="
+            () => {
+              const value = toggleDark()
+
+              theme.setStatus(value)
+            }
+          "
+        >
+          <i class="iconfont icon-lights"></i>
+        </span>
+      </UseDark>
+
       <template v-if="user.isUser">
         <div class="hidden md:hidden lg:flex xl:flex 2xl:flex">
           <y-button type="info" link @click="jumpPage('/articles')">
@@ -42,7 +59,9 @@
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useThemeStore } from '@/stores/theme'
 import { Status, useAccountStore } from '@/stores/account'
+import { UseDark } from '@vueuse/components'
 
 import yModal from '@/components/custom/modal/modal.vue'
 import avatar from '@/components/avatar/index.vue'
@@ -55,6 +74,7 @@ const user = useUserStore()
 const account = useAccountStore()
 const router = useRouter()
 const route = useRoute()
+const theme = useThemeStore()
 
 /** Variable */
 let showModal = ref(false)
@@ -97,7 +117,7 @@ const jumpPage = (path: string, params?: RouteParamsRaw) => {
 
 @layer components {
   .header {
-    @apply px-4 py-3 h-12 flex justify-center items-center;
+    @apply px-4 py-3 h-12 flex justify-center items-center dark:bg-gray-800;
   }
 }
 </style>

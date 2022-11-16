@@ -92,7 +92,7 @@ const buttonClass = computed(() => {
   }
 
   .y-button--primary.is-link {
-    @apply text-blue-600 bg-transparent border-transparent hover:text-blue-500 active:text-blue-600;
+    @apply text-blue-600 bg-transparent border-transparent hover:text-blue-500 active:text-blue-600 dark:text-blue-50;
   }
 
   .y-button--success {
@@ -104,7 +104,7 @@ const buttonClass = computed(() => {
   }
 
   .y-button--success.is-link {
-    @apply text-green-600 bg-transparent border-transparent hover:text-green-500 active:text-green-600;
+    @apply text-green-600 bg-transparent border-transparent hover:text-green-500 active:text-green-600 dark:text-green-50;
   }
 
   .y-button--warning {
@@ -116,7 +116,7 @@ const buttonClass = computed(() => {
   }
 
   .y-button--warning.is-link {
-    @apply text-yellow-600 bg-transparent border-transparent hover:text-yellow-500 active:text-yellow-600;
+    @apply text-yellow-600 bg-transparent border-transparent hover:text-yellow-500 active:text-yellow-600 dark:text-yellow-50;
   }
 
   .y-button--danger {
@@ -128,7 +128,7 @@ const buttonClass = computed(() => {
   }
 
   .y-button--danger.is-link {
-    @apply text-red-600 bg-transparent border-transparent hover:text-red-500 active:text-red-600;
+    @apply text-red-600 bg-transparent border-transparent hover:text-red-500 active:text-red-600 dark:text-red-50;
   }
 
   .y-button--info {
@@ -140,7 +140,7 @@ const buttonClass = computed(() => {
   }
 
   .y-button--info.is-link {
-    @apply text-gray-600 bg-transparent border-transparent hover:text-gray-500 active:text-gray-600;
+    @apply text-gray-600 bg-transparent border-transparent hover:text-gray-500 active:text-gray-600 dark:text-gray-50;
   }
 }
 </style>

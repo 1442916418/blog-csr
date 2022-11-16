@@ -2,14 +2,10 @@
   <div class="inline-block" @click.stop="emits('click', user)">
     <div class="avatar">
       <template v-if="user.image">
-        <img
-          :src="user.image"
-          :title="user.username"
-          class="inset-0 w-10 h-10 object-cover bg-gray-100 sm:rounded-lg"
-        />
+        <img :src="user.image" :title="user.username" class="inset-0 w-10 h-10 object-cover sm:rounded-lg" />
       </template>
       <template v-else>
-        <div class="inset-0 w-10 h-10 rounded-lg bg-gray-200 align-middle"></div>
+        <div class="inset-0 w-10 h-10 rounded-lg bg-gray-200 align-middle dark:bg-gray-400"></div>
       </template>
 
       <div class="avatar-info">

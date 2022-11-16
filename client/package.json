@@ -29,7 +29,8 @@
     "@tailwindcss/line-clamp": "~0.4.2",
     "@wcj/html-to-markdown": "~1.0.1",
     "@vueuse/core": "~9.4.0",
-    "dayjs": "^1.11.0"
+    "dayjs": "^1.11.0",
+    "@vueuse/components": "~9.5.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

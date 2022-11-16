@@ -1,5 +1,5 @@
 <template>
-  <div class="p-5 flex flex-col items-start bg-gray-400">
+  <div class="p-5 flex flex-col items-start bg-gray-400 dark:bg-gray-600">
     <div class="text-white text-2xl font-bold mb-2">
       {{ details.title }}
     </div>
@@ -30,6 +30,7 @@
       </div>
     </div>
   </div>
+
   <div class="m-5">
     <div class="mb-2">
       <span class="text-sm text-gray-500"> <i class="iconfont icon-text"></i> 描述 </span><br />
@@ -37,7 +38,7 @@
       <div class="text-gray-400">{{ details.description }}</div>
     </div>
 
-    <md-editor v-model="details.body" :previewOnly="true"></md-editor>
+    <md-editor v-model="details.body" :theme="theme.idDark ? 'dark' : 'light'" :previewOnly="true"></md-editor>
 
     <tags-component class="mt-4" :list="details.tagList"></tags-component>
 
@@ -93,10 +94,11 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, computed } from 'vue'
+import { onMounted, reactive, ref, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
+import { useThemeStore } from '@/stores/theme'
 
 import { Message } from '@/components/custom/message/message'
 
@@ -128,8 +130,10 @@ const user = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const account = useAccountStore()
+const theme = useThemeStore()
 
 /** Variable */
+let isDark = ref(false)
 let showModal = ref(false)
 let currentSlug = ref('')
 const details = reactive<ArticleResult>({

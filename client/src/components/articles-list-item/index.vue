@@ -1,6 +1,6 @@
 <template>
   <div
-    class="px-4 flex flex-col border-b-2 border-gray-200 cursor-pointer hover:bg-gray-50"
+    class="px-4 flex flex-col border-b-2 border-gray-200 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
     @click="emits('clickDetails', item)"
   >
     <div class="py-1 md:py-1 lg:py-4 xl:py-4 2xl:py-4 flex justify-between items-center">
@@ -14,7 +14,9 @@
 
     <div class="py-1 md:py-1 lg:py-4 xl:py-4 2xl:py-4 text-base font-bold">{{ item.title }}</div>
 
-    <div class="py-2 md:py-2 lg:py-4 xl:py-4 2xl:py-4 text-sm line-clamp-3 text-gray-500">{{ item.description }}</div>
+    <div class="py-2 md:py-2 lg:py-4 xl:py-4 2xl:py-4 text-sm line-clamp-3 text-gray-500 dark:text-gray-200">
+      {{ item.description }}
+    </div>
 
     <div class="py-2 md:py-2 lg:py-4 xl:py-4 2xl:py-4 text-right">
       <tags :list="item.tagList"></tags>

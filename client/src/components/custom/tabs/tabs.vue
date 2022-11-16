@@ -48,7 +48,7 @@ const handleClickTag = (value: string) => {
   }
 
   .y-tabs__tab {
-    @apply px-3 py-2 bg-white text-gray-600 cursor-pointer hover:text-blue-600;
+    @apply px-3 py-2 text-gray-600 cursor-pointer hover:text-blue-600 dark:bg-gray-800 dark:text-gray-50;
   }
   .y-tabs__tab.is-active {
     @apply text-blue-600 font-bold;

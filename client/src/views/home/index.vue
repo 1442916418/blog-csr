@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="py-6 text-center text-white bg-blue-600 shadow-inner" v-if="!user.isUser">
+    <div class="py-6 text-center text-white bg-blue-600 shadow-inner dark:bg-gray-800" v-show="!user.isUser">
       <h1 class="pt-3 pb-2 text-4xl font-bold tracking-wide">欢迎访问</h1>
       <h2>小时候真傻，居然盼着长大</h2>
     </div>
@@ -264,6 +264,7 @@ onMounted(() => {
 @layer components {
   .mobile-tags {
     @apply p-2 mx-2 hidden md:hidden lg:inline-block lg:w-48 xl:inline-block xl:w-48 2xl:inline-block 2xl:w-48 h-auto rounded bg-gray-100;
+    @apply dark:bg-gray-800 dark:text-gray-50;
   }
 
   .fixed-tags {

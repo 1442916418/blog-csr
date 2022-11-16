@@ -65,6 +65,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins,
     server: {
+      host: '0.0.0.0',
       proxy: {
         [env.VITE_APP_BASE_API_PATH]: {
           target: env.VITE_APP_BASE_URL,
