@@ -3,12 +3,20 @@ import { defineStore } from 'pinia'
 export const useThemeStore = defineStore('theme', {
   state: () => {
     return {
-      idDark: false
+      isDark: false
     }
   },
   actions: {
     setStatus(value: boolean) {
-      this.idDark = value
+      this.isDark = value
     }
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage
+      }
+    ]
   }
 })

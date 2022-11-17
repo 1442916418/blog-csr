@@ -3,7 +3,7 @@
     <div class="text-white text-2xl font-bold mb-2">
       {{ details.title }}
     </div>
-    <div class="py-4 flex items-center">
+    <div class="py-4 flex flex-col items-center md:flex-row lg:flex-row xl:flex-row 2xl:flex-row">
       <avatar-component :user="details.author" :date="details.createdAt" @click="handleClickAvatar" />
 
       <div class="ml-5 flex space-x-2">
@@ -38,7 +38,19 @@
       <div class="text-gray-400">{{ details.description }}</div>
     </div>
 
-    <md-editor v-model="details.body" :theme="theme.idDark ? 'dark' : 'light'" :previewOnly="true"></md-editor>
+    <md-editor
+      v-model="details.body"
+      :previewOnly="true"
+      :theme="theme.isDark ? 'dark' : 'light'"
+      :style="
+        theme.isDark
+          ? {
+              '--md-bk-color': 'bg-gray-600',
+              '--md-bk-color-outstand': 'bg-gray-400'
+            }
+          : {}
+      "
+    ></md-editor>
 
     <tags-component class="mt-4" :list="details.tagList"></tags-component>
 
@@ -94,7 +106,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, computed, watch } from 'vue'
+import { onMounted, reactive, ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
@@ -133,7 +145,6 @@ const account = useAccountStore()
 const theme = useThemeStore()
 
 /** Variable */
-let isDark = ref(false)
 let showModal = ref(false)
 let currentSlug = ref('')
 const details = reactive<ArticleResult>({

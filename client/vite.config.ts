@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 
 import vue from '@vitejs/plugin-vue'
 import { defineConfig, loadEnv } from 'vite'
-import { createHtmlPlugin } from 'vite-plugin-html'
 import viteCompression from 'vite-plugin-compression'
 
 const config = {
@@ -26,29 +25,7 @@ export default defineConfig(({ mode }) => {
 
   console.log('🚀 ~ file: vite.config.ts ~ line 27 ~ defineConfig ~ env: \n', env)
 
-  const plugins = [
-    vue(),
-    createHtmlPlugin({
-      minify: true, // 是否压缩 html
-      /**
-       * 在这里写 entry 后，你将不需要在`index.html`内添加 script 标签，原有标签需要删除
-       * @default src/main.ts
-       */
-      entry: 'src/main.ts',
-      /**
-       * 如果你想将 `index.html` 存放在指定文件夹，可以修改它，否则不需要配置
-       * @default index.html
-       */
-      // 例如: "public/index.html"
-      template: '/index.html',
-      inject: {
-        data: {
-          title: config.title,
-          injectScript: config.cdn || ''
-        }
-      }
-    })
-  ]
+  const plugins = [vue()]
 
   if (config.zip) {
     plugins.push(

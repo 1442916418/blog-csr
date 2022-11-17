@@ -3,7 +3,12 @@
     <div class="app-container-content">
       <header-container />
 
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" v-if="route.meta.keepAlive" :key="route.name" />
+        </keep-alive>
+        <component :is="Component" v-if="!route.meta.keepAlive" :key="route.name" />
+      </router-view>
 
       <footer-container />
     </div>
@@ -11,9 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import headerContainer from '@/components/header/index.vue'
 import footerContainer from '@/components/footer/index.vue'
+
+const route = useRoute()
 </script>
 
 <style>
@@ -25,6 +32,9 @@ import footerContainer from '@/components/footer/index.vue'
 }
 
 input {
+  @apply dark:text-gray-600;
+}
+textarea {
   @apply dark:text-gray-600;
 }
 </style>

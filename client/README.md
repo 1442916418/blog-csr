@@ -3,7 +3,7 @@
 ## 任务列表  
 
 - [x] 自适应 [`tailwindCSS`](https://www.tailwindcss.cn/)
-- [ ] 主题切换
+- [x] 主题切换
 - [ ] 骨架屏  
 
 ---

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8 flex flex-col bg-gray-100">
+  <div class="p-8 flex flex-col bg-gray-100 dark:bg-gray-600">
     <avatar class="mb-" :user="userProfile" direction="column"></avatar>
 
     <div class="w-3/5 mx-auto text-right">

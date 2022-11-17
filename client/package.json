@@ -1,7 +1,7 @@
 {
   "name": "client",
-  "version": "1.0.7",
-  "version_prod": "1.0.7",
+  "version": "1.0.8",
+  "version_prod": "1.0.8",
   "scripts": {
     "dev": "vite",
     "build": "npm run log:prod && vite build && npm run upload:prod",
@@ -49,7 +49,6 @@
     "vite": "^3.0.9",
     "vue-tsc": "^0.40.7",
     "@types/nprogress": "~0.2.0",
-    "vite-plugin-html": "~3.2.0",
     "vite-plugin-compression": "~0.5.1",
     "yss-toolchain": "~0.1.6"
   }

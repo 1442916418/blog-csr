@@ -5,7 +5,9 @@
         <img :src="user.image" :title="user.username" class="inset-0 w-10 h-10 object-cover sm:rounded-lg" />
       </template>
       <template v-else>
-        <div class="inset-0 w-10 h-10 rounded-lg bg-gray-200 align-middle dark:bg-gray-400"></div>
+        <div class="inset-0 w-10 h-10 flex justify-center items-center rounded-lg bg-gray-200 dark:bg-gray-400">
+          <i class="iconfont icon-smile text-xl"></i>
+        </div>
       </template>
 
       <div class="avatar-info">
