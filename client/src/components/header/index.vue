@@ -46,13 +46,13 @@
         </y-button>
       </template>
     </div>
-  </header>
 
-  <Teleport to="body">
-    <y-modal :show="showModal" @close="showModal = false" @confirm="handleConfirmLogout">
-      <template #body> 确认退出? </template>
-    </y-modal>
-  </Teleport>
+    <Teleport to="body">
+      <y-modal :show="showModal" @close="showModal = false" @confirm="handleConfirmLogout">
+        <template #body> 确认退出? </template>
+      </y-modal>
+    </Teleport>
+  </header>
 </template>
 
 <script lang="ts" setup>
