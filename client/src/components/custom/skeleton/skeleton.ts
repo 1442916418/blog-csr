@@ -6,98 +6,73 @@ import { getType } from '@/components/custom/utils/common'
 
 interface Props {
   show: boolean
-  className: string
+  className?: string
+  /** 根据类名排除元素 */
+  exclude?: string[]
+  /** 防抖 */
+  throttle?: number
 }
-interface Params {
-  show?: boolean
+interface Params extends Props {
   handler?: (node: VNode) => void
-  class?: undefined
 }
 
 const params: Params = {
   show: false,
   handler: void 0,
-  class: void 0
+  className: void 0,
+  exclude: [],
+  throttle: 0
 }
 
-const log = console.log
-const abstractComponent = ['RouterView', 'KeepAlive']
+const isExclude = (className: string) => {
+  if (!className || !params.exclude?.length) return false
 
-const handleAddClassName = (slot: VNode) => {
-  const el = slot.el
+  const find = params.exclude.find((v) => className.includes(v))
 
-  if (el) {
-    if (el.nodeType === 1) {
-      el.classList.add(params.class)
-    } else {
-      ;(el.data || {}).staticClass += ` ${params.class}`
+  return !!find
+}
+const handleAddClassName = (node: VNode) => {
+  const el = node.el
+
+  if (!el) return
+
+  if (el.nodeType === 1 && !isExclude(el.className)) {
+    el.classList.add(params.className)
+  }
+}
+const handleRemoveClassName = (node: VNode) => {
+  const el = node.el
+
+  if (!el) return
+
+  if (el.nodeType === 1) {
+    if (el.classList && el.classList.contains(params.className)) {
+      el.classList.remove(params.className)
     }
   }
 }
-const handleRemoveClassName = (slot: VNode) => {
-  const el = slot.el
-
-  if (el && el.nodeType === 1) {
-    if (el.classList && el.classList.includes(params.class)) {
-      el.classList.remove(params.class)
-    } else if ((el.data || {}).staticClass) {
-      el.data.staticClass = el.data.staticClass.replace(` ${params.class}`, '')
-    }
-  }
-}
-const handleSlotType = (slot: VNode) => {
-  switch (getType(slot.type)) {
-    case 'String':
-      handleItemStringType(slot)
-      break
-    case 'Object':
-      handleItemObjectType(slot)
-      break
-  }
-}
-const handleItemStringType = (node: VNode) => {
-  console.log('🚀 String node', node, '\n')
-  const child = node?.children ?? []
-
+const handleElement = (node: VNode) => {
   params.handler && params.handler(node)
 
-  if (getType(child) === 'Array') {
+  if (node.children && getType(node.children) === 'Array') {
     // @ts-ignore
-    child.forEach((item) => handleSlotType(item))
+    node.children.forEach((item) => handleElement(item))
   }
-}
-const handleAbstractComponentItem = (node: VNode) => {
-  console.log('🚀 Abstract component node', node, '\n')
-  const com = node.component
-  const type = node.type
 
-  // @ts-ignore
-  if (com && type.setup) {
-    // @ts-ignore
-    const ele = type.setup(type.props, com)
-    console.log('🚀 ~ file: skeleton.ts ~ line 78 ~ handleAbstractComponentItem ~ ele', ele)
-  }
-}
-const handleItemObjectType = (node: VNode) => {
-  console.log('🚀 Object node', node, '\n')
-  const dataType = node.type
+  const children = node.component?.subTree.children || []
 
-  // @ts-ignore
-  if (abstractComponent.includes(dataType.name)) {
-    log('Abstract component')
-    handleAbstractComponentItem(node)
+  if (children && getType(children) === 'Array') {
     // @ts-ignore
-  } else if (dataType?.__file) {
-    log('Custom component')
-    handleItemStringType(node)
+    children.forEach((item) => handleElement(item))
   }
 }
 const handleElements = (slots: VNode[]) => {
   if (!slots.length) return
 
-  slots.forEach((item) => handleSlotType(item))
+  slots.forEach((item) => handleElement(item))
 }
 
+// TODO: 循环列表，图片，开销较大
 const skeleton = (props: Props, context: SetupContext) => {
   const { slots } = context
   const slotsElements = (slots.default && slots.default()) || [h('')]
@@ -105,15 +80,27 @@ const skeleton = (props: Props, context: SetupContext) => {
   const show = props?.show ?? false
   Object.assign(params, {
     show,
-    class: props?.className ?? 'g-skeleton',
+    className: props?.className ?? 'g-skeleton',
+    exclude: props?.exclude ?? [],
+    throttle: props?.throttle ?? 0,
     handler: show ? handleAddClassName : handleRemoveClassName
   })
 
-  nextTick(() => handleElements(slotsElements))
+  if (params.show) {
+    nextTick(() => handleElements(slotsElements))
+  } else {
+    if (params.throttle) {
+      setTimeout(() => {
+        nextTick(() => handleElements(slotsElements))
+      }, params.throttle)
+    } else {
+      nextTick(() => handleElements(slotsElements))
+    }
+  }
 
-  return slotsElements?.length ? h('div', null, slotsElements) : slotsElements
+  return slotsElements?.length ? h('div', slotsElements) : slotsElements
 }
 
-skeleton.props = ['show', 'className']
+skeleton.props = ['show', 'className', 'exclude', 'throttle']
 
 export default skeleton

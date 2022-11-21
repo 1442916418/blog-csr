@@ -106,11 +106,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, computed } from 'vue'
+import { onMounted, reactive, ref, computed, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
 import { useThemeStore } from '@/stores/theme'
+import { useSkeletonStore } from '@/stores/skeleton'
 
 import { Message } from '@/components/custom/message/message'
 
@@ -143,6 +144,7 @@ const router = useRouter()
 const route = useRoute()
 const account = useAccountStore()
 const theme = useThemeStore()
+const skeleton = useSkeletonStore()
 
 /** Variable */
 let showModal = ref(false)
@@ -178,6 +180,8 @@ const isCurrentUserArticle = computed(() => {
 
 /** Operation */
 const init = () => {
+  skeleton.setLoading(true)
+
   const slug = route.params?.slug ?? ''
 
   currentSlug.value = slug as string
@@ -284,6 +288,10 @@ const getArticleDetailsData = async () => {
   if (data?.article) {
     Object.assign(details, data.article)
   }
+
+  nextTick(() => {
+    skeleton.loading && skeleton.setLoading(false)
+  })
 }
 const followUserData = async (username: string) => {
   const { data } = await followUser({ username })

@@ -1,10 +1,10 @@
 <template>
-  <div class="app-container">
-    <div class="app-container-content">
-      <skeleton-component :show="true">
+  <skeleton-component :show="skeleton.loading" :exclude="['drawer', 'modal', 'message']">
+    <div class="app-container">
+      <div class="app-container-content">
         <header-container />
 
-        <router-view v-slot="{ Component }">
+        <router-view v-slot="{ Component, route }">
           <keep-alive>
             <component :is="Component" v-if="route.meta.keepAlive" :key="route.name" />
           </keep-alive>
@@ -13,19 +13,20 @@
         </router-view>
 
         <footer-container />
-      </skeleton-component>
+      </div>
     </div>
-  </div>
+  </skeleton-component>
 </template>
 
 <script lang="ts" setup>
-import { RouterView, useRoute } from 'vue-router'
+import { RouterView } from 'vue-router'
+import { useSkeletonStore } from '@/stores/skeleton'
+
 import headerContainer from '@/components/header/index.vue'
 import footerContainer from '@/components/footer/index.vue'
-// @ts-ignore
-import skeletonComponent from '@/components/custom/skeleton/skeleton.js'
+import skeletonComponent from '@/components/custom/skeleton/skeleton'
 
-const route = useRoute()
+const skeleton = useSkeletonStore()
 </script>
 
 <style>
@@ -43,13 +44,13 @@ textarea {
   @apply dark:text-gray-600;
 }
 
-/* .g-skeleton {
-  min-height: 0.3rem;
-  min-width: 1rem;
+.g-skeleton {
+  color: transparent !important;
+  border-color: transparent !important;
   background-color: transparent !important;
   background-image: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%) !important;
   background-size: 400% 100%;
-  animation: skeleton-loading 1.5s ease-in infinite;
+  animation: skeleton-loading 1.2s ease-in infinite;
 }
 
 @keyframes skeleton-loading {
@@ -59,5 +60,5 @@ textarea {
   to {
     background-position: 0 50%;
   }
-} */
+}
 </style>

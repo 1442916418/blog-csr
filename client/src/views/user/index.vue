@@ -34,11 +34,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
+import { nextTick, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { DEFAULT_TAB } from '@/utils/constant'
 import { useAccountStore, Status } from '@/stores/account'
+import { useSkeletonStore } from '@/stores/skeleton'
 
 import {
   getArticles,
@@ -63,6 +64,7 @@ const route = useRoute()
 const router = useRouter()
 const user = useUserStore()
 const account = useAccountStore()
+const skeleton = useSkeletonStore()
 
 /** Variable */
 let articlesList = ref<ArticleResult[]>([])
@@ -90,6 +92,8 @@ const tabs = reactive([
 
 /** Operation */
 const init = () => {
+  skeleton.setLoading(true)
+
   tabName.value = DEFAULT_TAB.my
 
   const username = route.params?.username ?? ''
@@ -205,6 +209,10 @@ const getDefaultArticlesData = async () => {
   }
 
   articlesCountData.value = articlesCount || 0
+
+  nextTick(() => {
+    skeleton.loading && skeleton.setLoading(false)
+  })
 }
 const followUserData = async () => {
   const { data } = await followUser({ username: currentUserName.value })

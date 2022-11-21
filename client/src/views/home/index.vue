@@ -46,10 +46,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
+import { useSkeletonStore } from '@/stores/skeleton'
 import { DEFAULT_TAB } from '@/utils/constant'
 
 import articlesListComponent from '@/components/articles-list/index.vue'
@@ -66,6 +67,7 @@ import type { ArticleResult, AuthorResult } from '@/types/response-types'
 const user = useUserStore()
 const router = useRouter()
 const account = useAccountStore()
+const skeleton = useSkeletonStore()
 
 /** Variable */
 let showDrawer = ref(false)
@@ -225,6 +227,10 @@ const getMyFollowArticlesData = async () => {
   }
 
   articlesCountData.value = articlesCount || 0
+
+  nextTick(() => {
+    skeleton.loading && skeleton.setLoading(false)
+  })
 }
 const getDefaultArticlesData = async () => {
   const {
@@ -238,6 +244,10 @@ const getDefaultArticlesData = async () => {
   }
 
   articlesCountData.value = articlesCount || 0
+
+  nextTick(() => {
+    skeleton.loading && skeleton.setLoading(false)
+  })
 }
 const getAllTagsData = async () => {
   const { data } = await getTags()
@@ -247,6 +257,7 @@ const getAllTagsData = async () => {
 
 /** Lifecycle Hooks */
 onMounted(() => {
+  skeleton.setLoading(true)
   handleInitDefaultParams()
 
   if (user.isUser) {
