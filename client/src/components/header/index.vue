@@ -9,9 +9,7 @@
           class="h-8 w-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-100 dark:hover:bg-gray-600"
           @click="
             () => {
-              const value = toggleDark()
-
-              theme.setStatus(value)
+              theme.setStatus(toggleDark())
             }
           "
         >

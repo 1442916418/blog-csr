@@ -8,7 +8,9 @@ interface Props {
   show: boolean
   className?: string
   /** 根据类名排除元素 */
-  exclude?: string[]
+  excludeClassName?: string[]
+  /** 根据标签名称排除元素 */
+  excludeElements?: string[]
   /** 防抖 */
   throttle?: number
 }
@@ -20,32 +22,41 @@ const params: Params = {
   show: false,
   handler: void 0,
   className: void 0,
-  exclude: [],
+  excludeClassName: [],
+  excludeElements: [],
   throttle: 0
 }
 
-const isExclude = (className: string) => {
-  if (!className || !params.exclude?.length) return false
+const isExcludeClassName = (className: string) => {
+  if (!className || !params.excludeClassName?.length) return false
 
-  const find = params.exclude.find((v) => className.includes(v))
+  const find = params.excludeClassName.find((v) => className.includes(v))
 
   return !!find
 }
-const handleAddClassName = (node: VNode) => {
+const isExcludeElements = (ele: string) => {
+  if (!ele || !params.excludeElements?.length) return false
+
+  return params.excludeElements.includes(ele.toLowerCase())
+}
+const isMatch = (node: VNode) => {
   const el = node.el
 
-  if (!el) return
+  if (!el) return false
 
-  if (el.nodeType === 1 && !isExclude(el.className)) {
-    el.classList.add(params.className)
+  return el.nodeType === 1 && !isExcludeClassName(el.className) && !isExcludeElements(el.tagName)
+}
+const handleAddClassName = (node: VNode) => {
+  if (isMatch(node)) {
+    node.el?.classList.add(params.className)
   }
 }
 const handleRemoveClassName = (node: VNode) => {
-  const el = node.el
+  if (isMatch(node)) {
+    const el = node.el
 
-  if (!el) return
+    if (!el) return
 
-  if (el.nodeType === 1) {
     if (el.classList && el.classList.contains(params.className)) {
       el.classList.remove(params.className)
     }
@@ -72,7 +83,7 @@ const handleElements = (slots: VNode[]) => {
   slots.forEach((item) => handleElement(item))
 }
 
-// TODO: 循环列表，图片，开销较大
+// TODO: 循环列表，图片，开销
 const skeleton = (props: Props, context: SetupContext) => {
   const { slots } = context
   const slotsElements = (slots.default && slots.default()) || [h('')]
@@ -81,7 +92,8 @@ const skeleton = (props: Props, context: SetupContext) => {
   Object.assign(params, {
     show,
     className: props?.className ?? 'g-skeleton',
-    exclude: props?.exclude ?? [],
+    excludeClassName: props?.excludeClassName ?? [],
+    excludeElements: props?.excludeElements ?? [],
     throttle: props?.throttle ?? 0,
     handler: show ? handleAddClassName : handleRemoveClassName
   })
@@ -101,6 +113,6 @@ const skeleton = (props: Props, context: SetupContext) => {
   return slotsElements?.length ? h('div', slotsElements) : slotsElements
 }
 
-skeleton.props = ['show', 'className', 'exclude', 'throttle']
+skeleton.props = ['show', 'className', 'excludeClassName', 'excludeElements', 'throttle']
 
 export default skeleton

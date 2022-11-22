@@ -3,6 +3,7 @@ import { Message } from '@/components/custom/message/message'
 
 import { MESSAGES } from '@/utils/constant'
 import { useUserStore } from '@/stores/user'
+import { useSkeletonStore } from '@/stores/skeleton'
 
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
@@ -23,6 +24,12 @@ export class Request {
     // 使用 axios.create 创建 axios 实例
     this.instance = axios.create(Object.assign(this.baseConfig, config))
 
+    this.init()
+  }
+
+  init() {
+    const skeleton = useSkeletonStore()
+
     this.instance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
         const user = useUserStore()
@@ -34,8 +41,8 @@ export class Request {
         return config
       },
       (err: any) => {
-        console.log('🚀 ~ file: request.ts ~ line 37 ~ Request ~ constructor ~ err', err)
         Message.danger('请求错误')
+        skeleton.setLoading(false)
         return Promise.reject(err)
       }
     )
@@ -57,6 +64,7 @@ export class Request {
         const message = statusName instanceof Array ? statusName.toString() : statusName
 
         Message.danger(message)
+        skeleton.setLoading(false)
 
         return Promise.reject(response)
       }

@@ -72,6 +72,19 @@ const router = createRouter({
           component: () => import('@/views/article-details/index.vue')
         }
       ]
+    },
+    {
+      path: '/404',
+      name: '404',
+      meta: {
+        title: '404',
+        keepAlive: false
+      },
+      component: () => import('@/views/exception/404.vue')
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/404'
     }
   ]
 })
@@ -79,8 +92,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
-  if (to.path === '/account' && JSON.stringify(to.query) === '{}') {
-    next({ path: '/account', query: { redirect: from.path } })
+  if (['/account'].includes(to.path) && JSON.stringify(to.query) === '{}') {
+    next({ path: to.path, query: { redirect: from.path } })
   } else {
     next()
   }

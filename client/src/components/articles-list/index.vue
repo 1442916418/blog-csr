@@ -10,12 +10,13 @@
     </template>
   </template>
   <template v-else>
-    <p class="py-8 text-center">无数据</p>
+    <empty />
   </template>
 </template>
 
 <script lang="ts" setup>
 import articlesListItem from '@/components/articles-list-item/index.vue'
+import empty from '@/components/empty/empty.vue'
 
 import type { PropType } from 'vue'
 import type { ArticleResult, AuthorResult } from '@/types/response-types'
