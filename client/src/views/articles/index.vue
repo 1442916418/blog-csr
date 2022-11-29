@@ -165,6 +165,12 @@ const submitForm = () => {
   }
 }
 const resetForm = () => {
+  Object.assign(ruleForm, {
+    title: '',
+    description: '',
+    body: '',
+    tagList: []
+  })
   htmlBody.value = ''
   validateRules.value = []
 }

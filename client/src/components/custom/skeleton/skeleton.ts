@@ -28,7 +28,7 @@ const params: Params = {
 }
 
 const isExcludeClassName = (className: string) => {
-  if (!className || !params.excludeClassName?.length) return false
+  if (!className || typeof className !== 'string' || !params.excludeClassName?.length) return false
 
   const find = params.excludeClassName.find((v) => className.includes(v))
 

@@ -9,7 +9,7 @@
 ---
 
 - [ ] 自定义组件
-- [ ] `Button` loading
+- [x] `Button` loading
 - [ ] `Drawer` 适配不同方向，动画
 - [ ] `modal` 关闭按钮
 - [ ] `message` 图标

@@ -121,6 +121,7 @@ const changeAccountStatus = () => {
 const resetForm = () => {
   validateRules.value = []
   Object.assign(ruleForm, {
+    invitationCode: '',
     username: '',
     password: '',
     email: ''

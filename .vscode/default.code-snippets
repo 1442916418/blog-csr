@@ -58,7 +58,7 @@
 	"iconfont": {
 		"prefix": "b-iconfont",
 		"body": [
-			"<i class=\"iconfont icon-${1|lights,text,category,close,comments,delete,edit,favorite,smile,success,warning,wrong,account,add,add-account|}\"></i>",
+			"<i class=\"iconfont icon-${1|loading,lights,text,category,close,comments,delete,edit,favorite,smile,success,warning,wrong,account,add,add-account|}\"></i>",
 		],
 		"description": "生命周期代码片段"
 	},

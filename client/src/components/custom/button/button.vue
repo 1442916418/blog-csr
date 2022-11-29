@@ -1,5 +1,6 @@
 <template>
-  <button :class="buttonClass" @click="emits('click', $event)">
+  <button :class="buttonClass" @click="emits('click', $event)" :disabled="disabled" :aria-disabled="disabled">
+    <loading-component :loading="loading" />
     <slot></slot>
   </button>
 </template>
@@ -9,6 +10,8 @@ import { computed } from 'vue'
 
 import { themeType, themeSize } from '@/components/custom/utils/common'
 import * as css from '@/components/custom/utils/css'
+
+import loadingComponent from '@/components/custom/loading/loading'
 
 /** Variable */
 const _b = 'button'
@@ -34,7 +37,9 @@ const props = defineProps({
   plain: Boolean,
   round: Boolean,
   link: Boolean,
-  circle: Boolean
+  circle: Boolean,
+  loading: Boolean,
+  disabled: Boolean
 })
 const emits = defineEmits<{
   (e: 'click', event: MouseEvent): void
@@ -49,7 +54,8 @@ const buttonClass = computed(() => {
     css.is('plain', props.plain),
     css.is('round', props.round),
     css.is('link', props.link),
-    css.is('circle', props.circle)
+    css.is('circle', props.circle),
+    css.is('disabled', props.disabled)
   ]
 })
 </script>
@@ -74,6 +80,9 @@ const buttonClass = computed(() => {
 
   .y-button.is-circle {
     @apply w-6 h-6 p-0 rounded-full;
+  }
+  .y-button.is-disabled {
+    @apply disabled:opacity-50 cursor-not-allowed;
   }
 
   .y-button--large {
