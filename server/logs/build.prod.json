@@ -4,6 +4,36 @@
     "describe": "修复 bug",
     "author": "yushuisheng",
     "branch": "dev",
+    "version": "1.0.7",
+    "environment": "production",
+    "prevVersion": "1.0.6",
+    "date": "2022-12-03 14:38:40"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "修复 bug",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.6",
+    "environment": "production",
+    "prevVersion": "1.0.5",
+    "date": "2022-12-03 14:36:42"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "修复 bug",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.0.5",
+    "environment": "production",
+    "prevVersion": "1.0.4",
+    "date": "2022-12-03 14:30:20"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "修复 bug",
+    "author": "yushuisheng",
+    "branch": "dev",
     "version": "1.0.4",
     "environment": "production",
     "prevVersion": "1.0.3",
