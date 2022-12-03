@@ -1,21 +1,21 @@
 <template>
-  <skeleton-component v-bind="skeletonProps">
-    <div class="app-container">
-      <div class="app-container-content">
-        <header-container />
+  <!-- <skeleton-component v-bind="skeletonProps"> -->
+  <div class="app-container">
+    <div class="app-container-content">
+      <header-container />
 
-        <router-view v-slot="{ Component, route }">
-          <keep-alive>
-            <component :is="Component" v-if="route.meta.keepAlive" :key="route.name" />
-          </keep-alive>
+      <router-view v-slot="{ Component, route }">
+        <keep-alive>
+          <component :is="Component" v-if="route.meta.keepAlive" :key="route.name" />
+        </keep-alive>
 
-          <component :is="Component" v-if="!route.meta.keepAlive" :key="route.name" />
-        </router-view>
+        <component :is="Component" v-if="!route.meta.keepAlive" :key="route.name" />
+      </router-view>
 
-        <footer-container />
-      </div>
+      <footer-container />
     </div>
-  </skeleton-component>
+  </div>
+  <!-- </skeleton-component> -->
 
   <network-vue v-show="isShow" />
 </template>
