@@ -1,6 +1,26 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "优化 Github 样式",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.1.4",
+    "environment": "production",
+    "prevVersion": "1.1.3",
+    "date": "2022-12-04 09:41:31"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "优化样式",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.1.3",
+    "environment": "production",
+    "prevVersion": "1.1.2",
+    "date": "2022-12-04 09:18:06"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "修改风格和增加 Github 链接",
     "author": "yushuisheng",
     "branch": "dev",

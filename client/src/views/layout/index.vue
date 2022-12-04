@@ -25,13 +25,7 @@
     href="https://github.com/1442916418/blog-csr"
     aria-label="View source on GitHub"
   >
-    <svg
-      width="80"
-      height="80"
-      viewBox="0 0 250 250"
-      style="fill: #151513; color: #fff; position: absolute; top: 0; border: 0; right: 0"
-      aria-hidden="true"
-    >
+    <svg width="80" height="80" viewBox="0 0 250 250" :style="githubSvgStyles" aria-hidden="true">
       <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
       <path
         d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
@@ -51,7 +45,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { RouterView } from 'vue-router'
-import { useNetwork } from '@vueuse/core'
+import { useNetwork, useWindowSize } from '@vueuse/core'
 import { useSkeletonStore } from '@/stores/skeleton'
 
 import networkVue from '@/views/exception/network.vue'
@@ -63,6 +57,9 @@ import skeletonComponent from '@/components/custom/skeleton/skeleton'
 /** Use of external methods */
 const network = useNetwork()
 const skeleton = useSkeletonStore()
+const size = useWindowSize()
+
+/** Compute */
 const skeletonProps = computed(() => {
   return {
     show: skeleton.loading,
@@ -72,6 +69,11 @@ const skeletonProps = computed(() => {
   }
 })
 const isShow = computed(() => !network.isOnline.value)
+const githubSvgStyles = computed(() => {
+  return `display: ${
+    size.width.value >= 1024 ? 'block' : 'none'
+  }; fill: #151513; color: #fff; position: absolute; top: 0; border: 0; right: 0`
+})
 </script>
 
 <style>
