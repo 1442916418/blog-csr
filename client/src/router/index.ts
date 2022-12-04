@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
+import handleStyles from '@/utils/hooks/handle-styles'
+
 import layout from '@/views/layout/index.vue'
 
 const router = createRouter({
@@ -99,8 +101,9 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-router.afterEach(() => {
+router.afterEach((to) => {
   NProgress.done()
+  handleStyles(to.name)
 })
 
 export default router
