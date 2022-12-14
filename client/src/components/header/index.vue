@@ -17,31 +17,33 @@
         </span>
       </UseDark>
 
-      <template v-if="user.isUser">
-        <div class="hidden md:hidden lg:flex xl:flex 2xl:flex">
-          <y-button type="info" link @click="jumpPage('/articles')">
-            <i class="iconfont icon-add"></i>
-            创建新文章
-          </y-button>
-          <y-button type="info" link @click="jumpPage('/userSetting')">
-            <i class="iconfont icon-edit"></i>
-            用户配置
-          </y-button>
-        </div>
+      <template v-if="env.isDev">
+        <template v-if="user.isUser">
+          <div class="hidden md:hidden lg:flex xl:flex 2xl:flex">
+            <y-button type="info" link @click="jumpPage('/articles')">
+              <i class="iconfont icon-add"></i>
+              创建新文章
+            </y-button>
+            <y-button type="info" link @click="jumpPage('/userSetting')">
+              <i class="iconfont icon-edit"></i>
+              用户配置
+            </y-button>
+          </div>
 
-        <avatar :user="userAvatar" @click="jumpPage('/user/' + user.userName)"></avatar>
+          <avatar :user="userAvatar" @click="jumpPage('/user/' + user.userName)"></avatar>
 
-        <y-button type="danger" link @click="handleLogout">登 出</y-button>
-      </template>
-      <template v-else>
-        <y-button type="info" link @click="handleAccount(Status.SIGN_IN)">
-          <i class="iconfont icon-account"></i>
-          登 录
-        </y-button>
-        <y-button type="info" link @click="handleAccount(Status.SIGN_UP)">
-          <i class="iconfont icon-add-account"></i>
-          注 册
-        </y-button>
+          <y-button type="danger" link @click="handleLogout">登 出</y-button>
+        </template>
+        <template v-else>
+          <y-button type="info" link @click="handleAccount(Status.SIGN_IN)">
+            <i class="iconfont icon-account"></i>
+            登 录
+          </y-button>
+          <y-button type="info" link @click="handleAccount(Status.SIGN_UP)">
+            <i class="iconfont icon-add-account"></i>
+            注 册
+          </y-button>
+        </template>
       </template>
     </div>
 
@@ -59,6 +61,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useThemeStore } from '@/stores/theme'
 import { Status, useAccountStore } from '@/stores/account'
+import { useEnvStore } from '@/stores/env'
 import { UseDark } from '@vueuse/components'
 
 import yModal from '@/components/custom/modal/modal.vue'
@@ -73,6 +76,7 @@ const account = useAccountStore()
 const router = useRouter()
 const route = useRoute()
 const theme = useThemeStore()
+const env = useEnvStore()
 
 /** Variable */
 let showModal = ref(false)

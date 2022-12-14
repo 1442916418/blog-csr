@@ -1,6 +1,16 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "区分环境！！！",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.1.6",
+    "environment": "production",
+    "prevVersion": "1.1.5",
+    "date": "2022-12-14 20:00:10"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "去除灰色风格",
     "author": "yushuisheng",
     "branch": "dev",

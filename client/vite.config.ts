@@ -67,6 +67,12 @@ export default defineConfig(({ mode }) => {
       manifest: false,
       reportCompressedSize: true,
       rollupOptions: {}
+    },
+    define: {
+      'process.env': {
+        VITE_APP_NODE_ENV: env.VITE_APP_NODE_ENV,
+        VITE_APP_BASE_API_PATH: env.VITE_APP_BASE_API_PATH
+      }
     }
   }
 })

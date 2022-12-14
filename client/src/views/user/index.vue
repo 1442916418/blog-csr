@@ -2,7 +2,7 @@
   <div class="p-8 flex flex-col bg-gray-100 dark:bg-gray-600">
     <avatar class="mb-" :user="userProfile" direction="column"></avatar>
 
-    <div class="w-3/5 mx-auto text-right">
+    <div class="w-3/5 mx-auto text-right" v-if="env.isDev">
       <template v-if="user.userName === currentUserName">
         <y-button type="primary" size="small" plain @click="router.push('/userSetting')">用户配置</y-button>
       </template>
@@ -40,6 +40,7 @@ import { useUserStore } from '@/stores/user'
 import { DEFAULT_TAB } from '@/utils/constant'
 import { useAccountStore, Status } from '@/stores/account'
 import { useSkeletonStore } from '@/stores/skeleton'
+import { useEnvStore } from '@/stores/env'
 
 import {
   getArticles,
@@ -65,6 +66,7 @@ const router = useRouter()
 const user = useUserStore()
 const account = useAccountStore()
 const skeleton = useSkeletonStore()
+const env = useEnvStore()
 
 /** Variable */
 let articlesList = ref<ArticleResult[]>([])

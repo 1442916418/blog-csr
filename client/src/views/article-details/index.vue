@@ -6,7 +6,7 @@
     <div class="py-4 flex flex-col items-center md:flex-row lg:flex-row xl:flex-row 2xl:flex-row">
       <avatar-component :user="details.author" :date="details.createdAt" @click="handleClickAvatar" />
 
-      <div class="ml-5 flex space-x-2">
+      <div class="ml-5 flex space-x-2" v-if="env.isDev">
         <template v-if="isCurrentUserArticle">
           <span class="hidden md:hidden lg:inline xl:inline 2xl:inline">
             <y-button size="small" type="primary" @click="handleClickEdit"
@@ -56,7 +56,7 @@
 
     <div class="my-5 border-b-2 border-gray-200"></div>
 
-    <div class="mx-auto w-11/12 md:w-11/12 lg:w-3/5 xl:w-3/5 2xl:w-3/5">
+    <div class="mx-auto w-11/12 md:w-11/12 lg:w-3/5 xl:w-3/5 2xl:w-3/5" v-if="env.isDev">
       <box-component class="mb-5">
         <textarea
           class="w-full border-none"
@@ -112,6 +112,7 @@ import { useUserStore } from '@/stores/user'
 import { useAccountStore, Status } from '@/stores/account'
 import { useThemeStore } from '@/stores/theme'
 import { useSkeletonStore } from '@/stores/skeleton'
+import { useEnvStore } from '@/stores/env'
 
 import { Message } from '@/components/custom/message/message'
 
@@ -145,6 +146,7 @@ const route = useRoute()
 const account = useAccountStore()
 const theme = useThemeStore()
 const skeleton = useSkeletonStore()
+const env = useEnvStore()
 
 /** Variable */
 let showModal = ref(false)
