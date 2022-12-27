@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Smiley Sans';
+  src: url('../font/SmileySans-Oblique.otf.woff2') format(woff2);
+}
+
 .g-icon-loading {
   display: inline-block;
   margin-right: 4px;

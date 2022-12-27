@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="py-6 text-center text-white bg-blue-600 shadow-inner dark:bg-gray-800" v-show="!user.isUser">
+    <div class="home-title py-6 text-center text-white bg-blue-600 shadow-inner dark:bg-gray-800" v-show="!user.isUser">
       <h1 class="pt-3 pb-2 text-4xl font-bold tracking-wide">欢迎访问</h1>
       <h2>小时候真傻，居然盼着长大</h2>
     </div>
@@ -281,5 +281,9 @@ onMounted(() => {
   .fixed-tags {
     @apply w-8 h-8 fixed right-7 bottom-7 flex justify-center items-center z-10 rounded-full text-lg text-white bg-blue-600 shadow cursor-pointer lg:hidden xl:hidden 2xl:hidden;
   }
+}
+
+.home-title {
+  font-family: 'Smiley Sans';
 }
 </style>
