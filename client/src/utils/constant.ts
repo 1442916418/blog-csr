@@ -29,3 +29,12 @@ export const DEFAULT_TAB = Object.freeze({
   /** 2: 我喜欢的 */
   like: '2'
 })
+
+const PROJECT_BASE_URL = 'https://github.com/florinpop17/app-ideas/blob/master/Projects/'
+
+export const PROJECTS = Object.freeze({
+  decimalConversion: {
+    title: '二进制转十进制',
+    url: PROJECT_BASE_URL + '1-Beginner/Bin2Dec-App.md'
+  }
+})

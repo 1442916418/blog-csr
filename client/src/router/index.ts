@@ -74,6 +74,27 @@ const router = createRouter({
       ]
     },
     {
+      path: '/projects',
+      name: 'projects',
+      meta: {
+        title: '项目',
+        keepAlive: false
+      },
+      component: layout,
+      redirect: { name: 'home' },
+      children: [
+        {
+          path: 'decimal-conversion',
+          name: 'decimal-conversion',
+          meta: {
+            title: '进制转换',
+            keepAlive: true
+          },
+          component: () => import('@/views/projects/decimal-conversion/index.vue')
+        }
+      ]
+    },
+    {
       path: '/404',
       name: '404',
       meta: {
