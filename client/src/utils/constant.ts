@@ -40,5 +40,9 @@ export const PROJECTS = Object.freeze({
   borderRadius: {
     title: '边框预览器',
     url: PROJECT_BASE_URL + '1-Beginner/Border-Radius-Previewer.md'
+  },
+  calculator: {
+    title: '计算器',
+    url: PROJECT_BASE_URL + '1-Beginner/Calculator-App.md'
   }
 })
