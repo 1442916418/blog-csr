@@ -1,24 +1,22 @@
 <template>
-  <div class="decimal-conversion">
-    <introduce v-bind="PROJECTS.decimalConversion">
-      <div class="flex items-center">
-        <div>
-          <input
-            v-for="(value, i) in values"
-            :key="i"
-            class="w-10 m-2"
-            type="text"
-            v-model.number="values[i]"
-            @input="changeValue(i)"
-          />
-        </div>
-
-        <span class="mx-10">转换为:</span>
-
-        <div>{{ computedValue }}</div>
+  <introduce v-bind="PROJECTS.decimalConversion">
+    <div class="flex items-center">
+      <div>
+        <input
+          v-for="(value, i) in values"
+          :key="i"
+          class="w-10 m-2"
+          type="text"
+          v-model.number="values[i]"
+          @input="changeValue(i)"
+        />
       </div>
-    </introduce>
-  </div>
+
+      <span class="mx-10">转换为:</span>
+
+      <div>{{ computedValue }}</div>
+    </div>
+  </introduce>
 </template>
 
 <script lang="ts" setup>
@@ -43,5 +41,3 @@ const changeValue = (index: number) => {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>

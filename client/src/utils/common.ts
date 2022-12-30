@@ -19,3 +19,32 @@ export const handleRequestParam = (obj: any) => {
 
   return res
 }
+
+export const unsecuredCopyToClipboard = (text: string) => {
+  const textArea = document.createElement('textarea')
+  textArea.value = text
+
+  document.body.appendChild(textArea)
+  textArea.focus()
+  textArea.select()
+
+  const isCopy = document.execCommand('copy')
+
+  return new Promise<void>((res, rej) => {
+    document.body.removeChild(textArea)
+
+    if (isCopy) {
+      res()
+    } else {
+      rej()
+    }
+  })
+}
+
+export const copyToClipboard = (content: string) => {
+  if (window.isSecureContext && navigator.clipboard) {
+    return navigator.clipboard.writeText(content)
+  } else {
+    return unsecuredCopyToClipboard(content)
+  }
+}

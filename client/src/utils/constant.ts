@@ -36,5 +36,9 @@ export const PROJECTS = Object.freeze({
   decimalConversion: {
     title: '二进制转十进制',
     url: PROJECT_BASE_URL + '1-Beginner/Bin2Dec-App.md'
+  },
+  borderRadius: {
+    title: '边框预览器',
+    url: PROJECT_BASE_URL + '1-Beginner/Border-Radius-Previewer.md'
   }
 })

@@ -1,6 +1,16 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "增加边框圆角应用",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.1.9",
+    "environment": "production",
+    "prevVersion": "1.1.8",
+    "date": "2022-12-30 13:26:27"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "增加进制转换页",
     "author": "yushuisheng",
     "branch": "dev",

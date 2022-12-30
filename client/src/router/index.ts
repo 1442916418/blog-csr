@@ -4,6 +4,24 @@ import 'nprogress/nprogress.css'
 
 import layout from '@/views/layout/index.vue'
 
+const projectsChildFile = import.meta.glob('../views/projects/**/*.vue')
+const projectsChild = []
+
+for (const [key, value] of Object.entries(projectsChildFile)) {
+  const splitName = key.split('/')
+  const fileName = splitName.slice(-2, -1)[0]
+
+  projectsChild.push({
+    path: fileName,
+    name: fileName,
+    meta: {
+      title: fileName,
+      keepAlive: false
+    },
+    component: value
+  })
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -82,17 +100,7 @@ const router = createRouter({
       },
       component: layout,
       redirect: { name: 'home' },
-      children: [
-        {
-          path: 'decimal-conversion',
-          name: 'decimal-conversion',
-          meta: {
-            title: '进制转换',
-            keepAlive: true
-          },
-          component: () => import('@/views/projects/decimal-conversion/index.vue')
-        }
-      ]
+      children: projectsChild
     },
     {
       path: '/404',
