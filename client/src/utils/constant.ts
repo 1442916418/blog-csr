@@ -44,5 +44,9 @@ export const PROJECTS = Object.freeze({
   calculator: {
     title: '计算器',
     url: PROJECT_BASE_URL + '1-Beginner/Calculator-App.md'
+  },
+  christmasLights: {
+    title: '圣诞灯饰',
+    url: PROJECT_BASE_URL + '1-Beginner/Christmas-Lights-App.md'
   }
 })
