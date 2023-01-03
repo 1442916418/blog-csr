@@ -29,15 +29,13 @@ import { computed, ref } from 'vue'
 import introduce from '@/components/introduce/index.vue'
 import yButton from '@/components/custom/button/button.vue'
 
-import { PROJECTS } from '@/utils/constant'
+import { PROJECTS, PAUSED, RUNNING } from '@/utils/constant'
 
 /** Variable */
 const colors = ['#A78BFA', '#818CF8', '#60A5FA', '#34D399', '#FBBF24', '#F87171']
-const paused = 'paused'
-const running = 'running'
 
 let rows = ref(1)
-let state = ref(running)
+let state = ref(RUNNING)
 
 /** Compute */
 const columnStyles = computed(() => {
@@ -56,7 +54,7 @@ const changeRows = (event: Event) => {
 
   rows.value = +target.value
 }
-const handleState = () => (state.value = state.value === running ? paused : running)
+const handleState = () => (state.value = state.value === RUNNING ? PAUSED : RUNNING)
 </script>
 
 <style lang="postcss" scoped>

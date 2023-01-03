@@ -30,23 +30,36 @@ export const DEFAULT_TAB = Object.freeze({
   like: '2'
 })
 
+export const PAUSED = 'paused'
+
+export const RUNNING = 'running'
+
 const PROJECT_BASE_URL = 'https://github.com/florinpop17/app-ideas/blob/master/Projects/'
 
 export const PROJECTS = Object.freeze({
   decimalConversion: {
     title: '二进制转十进制',
-    url: PROJECT_BASE_URL + '1-Beginner/Bin2Dec-App.md'
+    url: PROJECT_BASE_URL + '1-Beginner/Bin2Dec-App.md',
+    id: '_52939c4b3045c'
   },
   borderRadius: {
     title: '边框预览器',
-    url: PROJECT_BASE_URL + '1-Beginner/Border-Radius-Previewer.md'
+    url: PROJECT_BASE_URL + '1-Beginner/Border-Radius-Previewer.md',
+    id: '_63849aad0b106'
   },
   calculator: {
     title: '计算器',
-    url: PROJECT_BASE_URL + '1-Beginner/Calculator-App.md'
+    url: PROJECT_BASE_URL + '1-Beginner/Calculator-App.md',
+    id: '_81b62a1c64ec2'
   },
   christmasLights: {
     title: '圣诞灯饰',
-    url: PROJECT_BASE_URL + '1-Beginner/Christmas-Lights-App.md'
+    url: PROJECT_BASE_URL + '1-Beginner/Christmas-Lights-App.md',
+    id: '_8108afa0f0c08'
+  },
+  colorCycle: {
+    title: '颜色循环',
+    url: PROJECT_BASE_URL + '1-Beginner/Color-Cycle-App',
+    id: '_6aa7ed9273534'
   }
 })

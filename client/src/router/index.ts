@@ -103,6 +103,15 @@ const router = createRouter({
       children: projectsChild
     },
     {
+      path: '/list',
+      name: 'list',
+      meta: {
+        title: '应用列表',
+        keepAlive: false
+      },
+      component: () => import('@/views/list/index.vue')
+    },
+    {
       path: '/404',
       name: '404',
       meta: {

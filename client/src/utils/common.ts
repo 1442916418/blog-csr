@@ -48,3 +48,15 @@ export const copyToClipboard = (content: string) => {
     return unsecuredCopyToClipboard(content)
   }
 }
+
+/**
+ * 小驼峰命名转中划线命名
+ */
+export const toMiddleDashNomenclature = (value: string) => {
+  return value.replace(/[A-Z]/g, (v) => '-' + v.toLowerCase())
+}
+
+/**
+ * 随机生成十六进制颜色
+ */
+export const randomColor = () => '#' + Math.random().toString(16).substring(2, 8)
