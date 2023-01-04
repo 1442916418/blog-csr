@@ -4,7 +4,7 @@ import 'nprogress/nprogress.css'
 
 import layout from '@/views/layout/index.vue'
 
-const projectsChildFile = import.meta.glob('../views/projects/**/*.vue')
+const projectsChildFile = import.meta.glob('../views/projects/**/index.vue')
 const projectsChild = []
 
 for (const [key, value] of Object.entries(projectsChildFile)) {
@@ -99,7 +99,7 @@ const router = createRouter({
         keepAlive: false
       },
       component: layout,
-      redirect: { name: 'home' },
+      redirect: { name: 'decimal-conversion' },
       children: projectsChild
     },
     {

@@ -30,12 +30,21 @@ export const DEFAULT_TAB = Object.freeze({
   like: '2'
 })
 
+/**
+ * animation-play-state
+ */
 export const PAUSED = 'paused'
 
+/**
+ * animation-play-state
+ */
 export const RUNNING = 'running'
 
 const PROJECT_BASE_URL = 'https://github.com/florinpop17/app-ideas/blob/master/Projects/'
 
+/**
+ * 项目声明
+ */
 export const PROJECTS = Object.freeze({
   decimalConversion: {
     title: '二进制转十进制',
@@ -61,5 +70,10 @@ export const PROJECTS = Object.freeze({
     title: '颜色循环',
     url: PROJECT_BASE_URL + '1-Beginner/Color-Cycle-App',
     id: '_6aa7ed9273534'
+  },
+  countdownTimer: {
+    title: '倒计时',
+    url: PROJECT_BASE_URL + '1-Beginner/Countdown-Timer-App.md',
+    id: ''
   }
 })

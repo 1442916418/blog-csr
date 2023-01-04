@@ -60,3 +60,19 @@ export const toMiddleDashNomenclature = (value: string) => {
  * 随机生成十六进制颜色
  */
 export const randomColor = () => '#' + Math.random().toString(16).substring(2, 8)
+
+/**
+ * 秒数转日期
+ * @param value 毫秒数
+ * @returns 日期
+ */
+export const secondToDate = (value: number) => {
+  value = value / 1000
+
+  const days = Math.floor(value / 86400)
+  const hours = Math.floor(value / 3600)
+  const minutes = Math.floor((value / 60) % 60)
+  const seconds = Math.floor(value % 60)
+
+  return { days, hours, minutes, seconds }
+}
