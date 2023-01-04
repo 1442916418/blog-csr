@@ -57,5 +57,3 @@ const handleSubmit = () => {
   }
 }
 </script>
-
-<style lang="postcss" scoped></style>
