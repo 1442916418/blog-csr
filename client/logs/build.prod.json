@@ -1,6 +1,16 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "应用增加 JSON <=> CSV",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.2.4",
+    "environment": "production",
+    "prevVersion": "1.2.3",
+    "date": "2023-01-05 13:47:26"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "应用增加倒计时...",
     "author": "yushuisheng",
     "branch": "dev",

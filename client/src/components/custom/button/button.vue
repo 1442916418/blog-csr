@@ -82,6 +82,7 @@ const buttonClass = computed(() => {
     @apply w-6 h-6 p-0 rounded-full;
   }
   .y-button.is-disabled {
+    pointer-events: none;
     @apply disabled:opacity-50 cursor-not-allowed;
   }
 
