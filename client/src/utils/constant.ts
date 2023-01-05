@@ -80,5 +80,10 @@ export const PROJECTS = Object.freeze({
     title: 'JSON-CSV',
     url: PROJECT_BASE_URL + '1-Beginner/CSV2JSON-App.md',
     id: '_03400c1329306'
+  },
+  dynamicCSSVariables: {
+    title: '动态 CSS 变量',
+    url: PROJECT_BASE_URL + '1-Beginner/Dynamic-CSSVar-app.md',
+    id: '_1947786ccaa55'
   }
 })

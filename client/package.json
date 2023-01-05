@@ -1,7 +1,7 @@
 {
   "name": "client",
-  "version": "1.2.4",
-  "version_prod": "1.2.4",
+  "version": "1.2.5",
+  "version_prod": "1.2.5",
   "scripts": {
     "dev": "vite",
     "build": "npm run log:prod && vite build && npm run upload:prod",
