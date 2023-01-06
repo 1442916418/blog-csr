@@ -1,82 +1,175 @@
+import { requestDB, add, remove, put, get, getStore } from './db'
+import { RESULT as _ } from './constant'
+import Message from './message'
+
+import type * as types from './types'
+
+const STORE_NAME = 'customers'
+const DEFAULT_INIT_PARAMS = { name: 'customer_db', version: 1, timeout: 1500 }
+const DEFAULT_STORE_PARAMS_LIST = [
+  {
+    storeName: STORE_NAME,
+    keyPathOptions: { autoIncrement: true, keyPath: 'email' },
+    indexList: [
+      {
+        name: 'name',
+        options: { unique: false }
+      },
+      {
+        name: 'email',
+        options: { unique: true }
+      }
+    ]
+  }
+]
+
 class Customer {
-  /**
-   * 数据库名称
-   */
-  dbName: string
+  /** 请求数据库 */
+  private requestDB: types.RequestDBReturn | undefined
+  /** 数据库 */
+  private db: IDBDatabase | undefined
+  /** 全局参数 */
+  private params: types.CustomerConstructorParams
 
-  constructor(dbName: string) {
-    this.dbName = dbName
-
-    if (!window.indexedDB) {
-      window.alert('浏览器不支持 IndexedDB 数据库，功能不可用')
+  constructor(
+    params: types.CustomerConstructorParams = {
+      requestDBParams: { initParams: DEFAULT_INIT_PARAMS, storeParamsList: DEFAULT_STORE_PARAMS_LIST }
     }
+  ) {
+    this.params = params
+    this.requestDB = void 0
+    this.db = void 0
+
+    this.init()
   }
 
-  /**
-   * 删除数据库所有行
-   * @memberof Customer
-   */
-  removeAllRows = () => {
-    const request = indexedDB.open(this.dbName, 1)
+  private init() {
+    Message.add(_.START)
 
-    request.onerror = (event) => {
-      console.log('removeAllRows - Database error: ', event)
-    }
+    const reqDB = requestDB(this.params.requestDBParams)
 
-    request.onsuccess = (event: any) => {
-      if (!event) return
+    this.requestDB = reqDB
 
-      const db = event.target.result
-      const txn = db.transaction('customers', 'readwrite')
-
-      txn.onerror = (event: { target: { error: { code: any; message: any } } }) => {
-        console.log('removeAllRows - Txn error: ', event.target.error.code, ' - ', event.target.error.message)
-      }
-      txn.oncomplete = (event: any) => {
-        console.log('All rows removed!')
-      }
-
-      const objectStore = txn.objectStore('customers')
-      const getAllKeysRequest = objectStore.getAllKeys()
-
-      getAllKeysRequest.onsuccess = (event: any) => {
-        getAllKeysRequest.result.forEach((key: any) => {
-          objectStore.delete(key)
-        })
-      }
-    }
-  }
-
-  /**
-   * 初始数据库
-   * @param {[object]} customerData 数据
-   * @memberof Customer
-   */
-  initialLoad = (customerData: any[]) => {
-    const request = indexedDB.open(this.dbName, 1)
-
-    request.onerror = (event) => {
-      console.log('initialLoad - Database error: ', event)
-    }
-
-    request.onupgradeneeded = (event: any) => {
-      const db = event.target.result
-      const objectStore = db.createObjectStore('customers', { keyPath: 'userId' })
-
-      objectStore.onerror = (event: { target: { error: { code: any; message: any } } }) => {
-        console.log('initialLoad - objectStore error: ', event.target.error.code, ' - ', event.target.error.message)
-      }
-
-      // 创建索引以按名称和电子邮件搜索客户
-      objectStore.createIndex('name', 'name', { unique: false })
-      objectStore.createIndex('email', 'email', { unique: true })
-
-      // 用初始行集填充数据库
-      customerData.forEach(function (customer: any) {
-        objectStore.put(customer)
+    reqDB()
+      .then((database) => {
+        Message.add(_.DB_INIT)
+        this.db = database
       })
-      db.close()
-    }
+      .catch(() => {
+        Message.add(_.NO_DB)
+        this.db = void 0
+      })
+  }
+
+  public handleAdd(data: types.FormParams, storeName = STORE_NAME) {
+    Message.add(_.START)
+
+    return new Promise((resolve, reject) => {
+      if (this.db) {
+        add({
+          store: getStore({
+            db: this.db,
+            storeName,
+            mode: 'readwrite'
+          }),
+          data
+        })
+          .then(() => {
+            Message.add(_.ADD_SUCCESSFUL, _.END)
+            resolve(true)
+          })
+          .catch(() => {
+            Message.add(_.ADD_ERROR, _.END)
+            reject()
+          })
+      } else {
+        Message.add(_.ADD_ERROR, _.END)
+        reject()
+      }
+    })
+  }
+
+  public handleRemove(keyPathValue: IDBValidKey | IDBKeyRange, storeName = STORE_NAME) {
+    Message.add(_.START)
+
+    return new Promise((resolve, reject) => {
+      if (this.db) {
+        remove({
+          store: getStore({
+            db: this.db,
+            storeName,
+            mode: 'readwrite'
+          }),
+          keyPathValue
+        })
+          .then(() => {
+            Message.add(_.DELETE_SUCCESSFUL, _.END)
+            resolve(true)
+          })
+          .catch(() => {
+            Message.add(_.DELETE_ERROR, _.END)
+            reject()
+          })
+      } else {
+        Message.add(_.DELETE_ERROR, _.END)
+        reject()
+      }
+    })
+  }
+
+  public handlePut(data: types.FormParams, storeName = STORE_NAME) {
+    Message.add(_.START)
+
+    return new Promise((resolve, reject) => {
+      if (this.db) {
+        put({
+          store: getStore({
+            db: this.db,
+            storeName,
+            mode: 'readwrite'
+          }),
+          data
+        })
+          .then(() => {
+            Message.add(_.PUT_SUCCESSFUL, _.END)
+            resolve(true)
+          })
+          .catch(() => {
+            Message.add(_.PUT_ERROR, _.END)
+            reject()
+          })
+      } else {
+        Message.add(_.PUT_ERROR, _.END)
+        reject()
+      }
+    })
+  }
+
+  public handleGetAll(storeName = STORE_NAME) {
+    Message.add(_.START)
+
+    return new Promise((resolve, reject) => {
+      if (this.db) {
+        get({
+          store: getStore({
+            db: this.db,
+            storeName,
+            mode: 'readwrite'
+          })
+        })
+          .then((res) => {
+            Message.add(_.GET_SUCCESSFUL, _.END)
+            resolve(res)
+          })
+          .catch(() => {
+            Message.add(_.GET_ERROR, _.END)
+            reject()
+          })
+      } else {
+        Message.add(_.GET_ERROR, _.END)
+        reject()
+      }
+    })
   }
 }
 

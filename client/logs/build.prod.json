@@ -1,6 +1,16 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "应用增加 indexedDB...",
+    "author": "yushuisheng",
+    "branch": "dev",
+    "version": "1.2.6",
+    "environment": "production",
+    "prevVersion": "1.2.5",
+    "date": "2023-01-06 17:24:57"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "应用增加动态 CSS 变量",
     "author": "yushuisheng",
     "branch": "dev",
