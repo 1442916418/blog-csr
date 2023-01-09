@@ -47,7 +47,7 @@ import { Message } from '@/components/custom/message/message'
 import yButton from '@/components/custom/button/button.vue'
 import introduce from '@/components/introduce/index.vue'
 
-import { PROJECTS } from '@/utils/constant'
+import { PROJECTS } from '@/assets/constant'
 import { copyToClipboard } from '@/utils/common'
 
 /** Variable */

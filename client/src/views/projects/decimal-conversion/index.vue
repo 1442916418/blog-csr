@@ -24,7 +24,7 @@ import { computed, reactive } from 'vue'
 
 import introduce from '@/components/introduce/index.vue'
 
-import { PROJECTS } from '@/utils/constant'
+import { PROJECTS } from '@/assets/constant'
 
 /** Variable */
 let values = reactive<number[]>([1, 1, 1, 1, 1, 1, 1, 1])

@@ -31,7 +31,7 @@ import introduce from '@/components/introduce/index.vue'
 import yButton from '@/components/custom/button/button.vue'
 import timerComponent from './timer.vue'
 
-import { PROJECTS } from '@/utils/constant'
+import { PROJECTS } from '@/assets/constant'
 
 interface IParams {
   name: string

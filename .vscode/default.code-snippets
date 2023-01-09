@@ -66,13 +66,13 @@
 		"prefix": "b-project-code",
 		"body": [
 			"<template>",
-			"  <introduce v-bind=\"PROJECTS.$1\">$2</introduce>",
+			"  <introduce v-bind=\"${1|PROJECTS,CSS_PROJECTS|}$2\">$3</introduce>",
 			"</template>",
 			"",
 			"<script lang=\"ts\" setup>",
 			"import introduce from '@/components/introduce/index.vue'",
 			"",
-			"import { PROJECTS } from '@/utils/constant'",
+			"import { ${1|PROJECTS,CSS_PROJECTS|} } from '@/assets/constant'",
 			"</script>",
 			"",
 			"<style lang=\"postcss\" scoped></style>"

@@ -18,7 +18,7 @@
 import introduce from '@/components/introduce/index.vue'
 import flipContainer from './container.vue'
 
-import { PROJECTS } from '@/utils/constant'
+import { PROJECTS } from '@/assets/constant'
 
 /** Variable */
 const list = [

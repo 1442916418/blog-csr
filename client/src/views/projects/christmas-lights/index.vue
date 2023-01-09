@@ -29,7 +29,8 @@ import { computed, ref } from 'vue'
 import introduce from '@/components/introduce/index.vue'
 import yButton from '@/components/custom/button/button.vue'
 
-import { PROJECTS, PAUSED, RUNNING } from '@/utils/constant'
+import { PROJECTS } from '@/assets/constant'
+import { PAUSED, RUNNING } from '@/utils/constant'
 
 /** Variable */
 const colors = ['#A78BFA', '#818CF8', '#60A5FA', '#34D399', '#FBBF24', '#F87171']

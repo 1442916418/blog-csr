@@ -63,7 +63,7 @@ import { ref } from 'vue'
 import introduce from '@/components/introduce/index.vue'
 import yButton from '@/components/custom/button/button.vue'
 
-import { PROJECTS } from '@/utils/constant'
+import { PROJECTS } from '@/assets/constant'
 import { saveDataFile } from '@/utils/common'
 
 type types = 'csv' | 'json'

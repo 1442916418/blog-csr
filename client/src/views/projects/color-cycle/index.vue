@@ -41,7 +41,8 @@ import introduce from '@/components/introduce/index.vue'
 import yButton from '@/components/custom/button/button.vue'
 import colorsComponent from './color.vue'
 
-import { PROJECTS, PAUSED, RUNNING } from '@/utils/constant'
+import { PROJECTS } from '@/assets/constant'
+import { PAUSED, RUNNING } from '@/utils/constant'
 import { randomColor } from '@/utils/common'
 
 /** Variable */

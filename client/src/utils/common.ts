@@ -1,3 +1,5 @@
+import type { RouteRecordRaw } from 'vue-router'
+
 /**
  * 处理请求参数，去除假值字段
  * @param obj 请求参数
@@ -173,4 +175,32 @@ export const getBrowser = (): {
   }
 
   return sys
+}
+
+/**
+ * 处理子路由
+ */
+export const handleChildrenRoute = (files: Record<string, () => Promise<unknown>>, prefix?: string) => {
+  const result: RouteRecordRaw[] = []
+
+  if (!files) return result
+
+  const getPath = (name: string) => (prefix ? `${prefix}/${name}` : name)
+
+  for (const [key, value] of Object.entries(files)) {
+    const splitName = key.split('/')
+    const fileName = splitName.slice(-2, -1)[0]
+
+    result.push({
+      path: getPath(fileName),
+      name: fileName,
+      meta: {
+        title: fileName,
+        keepAlive: false
+      },
+      component: value
+    })
+  }
+
+  return result
 }

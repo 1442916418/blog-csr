@@ -52,7 +52,7 @@ import { reactive, ref, watch, onMounted } from 'vue'
 import introduce from '@/components/introduce/index.vue'
 import yButton from '@/components/custom/button/button.vue'
 
-import { PROJECTS } from '@/utils/constant'
+import { PROJECTS } from '@/assets/constant'
 import { RESULT } from './constant'
 import Message from './message'
 import Customer from './index'
