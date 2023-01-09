@@ -100,5 +100,10 @@ export const PROJECTS = Object.freeze({
     title: 'IndexedDB',
     url: Beginner('First-DB-App.md'),
     id: '_4d3d08f4cdcbf'
+  },
+  flip: {
+    title: '翻转',
+    url: Beginner('Flip-Image-App.md'),
+    id: '_88124cdf821e'
   }
 })
