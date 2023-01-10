@@ -63,6 +63,11 @@ export const PROJECTS = Object.freeze({
     title: '翻转',
     url: Beginner('Flip-Image-App.md'),
     id: '_88124cdf821e'
+  },
+  keyboard: {
+    title: '键盘',
+    url: Beginner('Key-Value-App.md'),
+    id: ''
   }
 })
 
