@@ -204,3 +204,75 @@ export const handleChildrenRoute = (files: Record<string, () => Promise<unknown>
 
   return result
 }
+
+/**
+ * CSV 转 JSON(单层转换)
+ * @param data CSV 数据
+ * @returns 数组 JSON 数据
+ */
+export const CSVToJSON = (data: string) => {
+  const result: { [x: string]: string }[] = []
+
+  if (!data) return result
+
+  try {
+    const rows = data.split('\n')
+    const replaceStr = (v: string) => v.replace(/"|\r/g, '')
+
+    let keys: string[] = []
+
+    rows.forEach((row, i) => {
+      const columns = replaceStr(row).split(',')
+
+      if (i) {
+        const item: { [x: string]: string } = {}
+
+        keys.forEach((key, j) => (item[key] = columns[j]))
+
+        result.push(item)
+      } else {
+        keys = columns
+      }
+    })
+  } catch (error) {
+    console.log('🚀 ~ file: common.ts:238 ~ CSVToJSON ~ error', error)
+  }
+
+  return result
+}
+
+/**
+ * JSON 转 CSV(单层转换)
+ * @param data JSON 数据
+ * @returns CSV 数据
+ */
+export const JSONToCSV = (data: string) => {
+  let result = ''
+
+  if (!data) return result
+
+  try {
+    const items = JSON.parse(data)
+
+    let rowItems = ''
+
+    const itemsIsArray = Array.isArray(items)
+    const header = Object.keys(itemsIsArray ? items[0] : items)
+    const headerString = header.join(',')
+    const replacer = (key: any, value: any) => value ?? ''
+
+    if (itemsIsArray) {
+      // @ts-ignore
+      rowItems = items.map((row) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','))
+    } else {
+      // @ts-ignore
+      rowItems = header.map((fieldName) => JSON.stringify(items[fieldName], replacer)).join(',')
+    }
+
+    result = (itemsIsArray ? [headerString, ...rowItems] : [headerString, rowItems]).join('\r\n')
+  } catch (error) {
+    console.log('🚀 ~ file: common.ts:269 ~ JSONToCSV ~ error', error)
+  }
+
+  return result
+}

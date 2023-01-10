@@ -8,7 +8,7 @@
           class="w-full mb-4"
           cols="30"
           rows="10"
-          placeholder="请选择 csv 文件"
+          placeholder="请选择/输入 CSV 数据"
           v-model="csvValue"
         ></textarea>
         <input
@@ -37,7 +37,7 @@
           class="w-full mb-4"
           cols="30"
           rows="10"
-          placeholder="请选择 json 文件"
+          placeholder="请选择/输入 JSON 数据"
           v-model="jsonValue"
         ></textarea>
         <input
@@ -64,7 +64,7 @@ import introduce from '@/components/introduce/index.vue'
 import yButton from '@/components/custom/button/button.vue'
 
 import { PROJECTS } from '@/assets/constant'
-import { saveDataFile } from '@/utils/common'
+import { saveDataFile, CSVToJSON, JSONToCSV } from '@/utils/common'
 
 type types = 'csv' | 'json'
 
@@ -93,68 +93,22 @@ const handleFocus = (id: string) => {
 const handleToJSON = () => {
   if (!csvValue.value) return
 
-  try {
-    const result: { [x: string]: string }[] = []
-    const rows = csvValue.value.split('\n')
-    const replaceStr = (v: string) => v.replace(/"|\r/g, '')
+  const result = CSVToJSON(csvValue.value)
 
-    let keys: string[] = []
+  jsonFile.value = result && result.length ? result : void 0
+  jsonValue.value = result && result.length ? JSON.stringify(result, null, 2) : ''
 
-    rows.forEach((row, i) => {
-      const columns = replaceStr(row).split(',')
-
-      if (i) {
-        columns.forEach((col, j) => {
-          if (j) {
-            const val: { [x: string]: string } = {}
-
-            keys.forEach((key) => {
-              val[key] = col
-            })
-
-            result.push(val)
-          }
-        })
-      } else {
-        keys = columns
-      }
-    })
-
-    jsonFile.value = result.length ? result : void 0
-    jsonValue.value = result.length ? JSON.stringify(result, null, 2) : ''
-  } catch (error) {
-    console.log('🚀 ~ file: index.vue:127 ~ handleToJSON ~ error', error)
-    handleResetJson()
-  }
+  !result && handleResetJson()
 }
 const handleToCSV = () => {
   if (!jsonValue.value) return
 
-  try {
-    const items = JSON.parse(jsonValue.value)
+  const result = JSONToCSV(jsonValue.value)
 
-    let rowItems = ''
-    const itemsIsArray = Array.isArray(items)
-    const header = Object.keys(itemsIsArray ? items[0] : items)
-    const headerString = header.join(',')
-    const replacer = (key: any, value: any) => value ?? ''
+  csvFile.value = result || void 0
+  csvValue.value = result || ''
 
-    if (itemsIsArray) {
-      // @ts-ignore
-      rowItems = items.map((row) => header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join(','))
-    } else {
-      // @ts-ignore
-      rowItems = header.map((fieldName) => JSON.stringify(items[fieldName], replacer)).join(',')
-    }
-
-    const result = (itemsIsArray ? [headerString, ...rowItems] : [headerString, rowItems]).join('\r\n')
-
-    csvFile.value = result || void 0
-    csvValue.value = result || ''
-  } catch (error) {
-    console.log('🚀 ~ file: index.vue:106 ~ handleToCSV ~ error', error)
-    handleResetCsv()
-  }
+  !result && handleResetCsv()
 }
 const changeFile = (e: Event, type: types) => {
   const files = (e.target as HTMLInputElement).files
