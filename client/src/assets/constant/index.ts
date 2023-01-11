@@ -80,5 +80,10 @@ export const CSS_PROJECTS = Object.freeze({
     title: '分层图标',
     url: _c('#id01'),
     id: '_9948fefc42587'
+  },
+  loading: {
+    title: 'Loading',
+    url: _c('#id02'),
+    id: '_c7498a06216aa'
   }
 })
