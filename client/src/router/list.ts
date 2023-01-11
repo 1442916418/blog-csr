@@ -4,7 +4,10 @@ import layout from '@/views/layout/index.vue'
 
 const projectsChildFile = import.meta.glob('../views/projects/*/index.vue')
 const cssProjectsChildFile = import.meta.glob('../views/projects/css/*/index.vue')
-const projectsChild = [...handleChildrenRoute(projectsChildFile), ...handleChildrenRoute(cssProjectsChildFile, 'css')]
+const projectsChild = [
+  ...handleChildrenRoute({ files: projectsChildFile, exclude: ['keyboard'] }),
+  ...handleChildrenRoute({ files: cssProjectsChildFile, prefix: 'css' })
+]
 
 export const routeList = [
   {
@@ -92,6 +95,15 @@ export const routeList = [
       keepAlive: false
     },
     component: () => import('@/views/list/index.vue')
+  },
+  {
+    path: '/keyboard',
+    name: 'keyboard',
+    meta: {
+      title: '应用 - 键盘',
+      keepAlive: false
+    },
+    component: () => import('@/views/projects/keyboard/index.vue')
   },
   {
     path: '/404',

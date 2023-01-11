@@ -180,26 +180,37 @@ export const getBrowser = (): {
 /**
  * 处理子路由
  */
-export const handleChildrenRoute = (files: Record<string, () => Promise<unknown>>, prefix?: string) => {
+export const handleChildrenRoute = ({
+  files,
+  exclude,
+  prefix
+}: {
+  files: Record<string, () => Promise<unknown>>
+  exclude?: string[]
+  prefix?: string
+}) => {
   const result: RouteRecordRaw[] = []
 
   if (!files) return result
 
+  const excludeList = exclude || []
   const getPath = (name: string) => (prefix ? `${prefix}/${name}` : name)
 
   for (const [key, value] of Object.entries(files)) {
     const splitName = key.split('/')
     const fileName = splitName.slice(-2, -1)[0]
 
-    result.push({
-      path: getPath(fileName),
-      name: fileName,
-      meta: {
-        title: fileName,
-        keepAlive: false
-      },
-      component: value
-    })
+    if (!excludeList.includes(fileName)) {
+      result.push({
+        path: getPath(fileName),
+        name: fileName,
+        meta: {
+          title: fileName,
+          keepAlive: false
+        },
+        component: value
+      })
+    }
   }
 
   return result

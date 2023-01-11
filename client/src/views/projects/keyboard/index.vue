@@ -1,7 +1,11 @@
 <template>
   <introduce v-bind="PROJECTS.keyboard">
-    <div class="keyboard-container grid grid-cols-3 gap-5">
-      <keyboard-item-component :list="keyboardObj.left" :actives="actives" />
+    <div class="keyboard-container">
+      <div class="space-y-4">
+        <keyboard-top-item-component :list="keyboardObj.top" :actives="actives" />
+
+        <keyboard-item-component :list="keyboardObj.left" :actives="actives" />
+      </div>
 
       <keyboard-item-component :list="keyboardObj.center" :actives="actives" />
 
@@ -14,7 +18,8 @@
 import { onMounted, reactive, computed, onUnmounted } from 'vue'
 
 import introduce from '@/components/introduce/index.vue'
-import keyboardItemComponent from './item.vue'
+import keyboardItemComponent from './components/item.vue'
+import keyboardTopItemComponent from './components/top-item.vue'
 
 import { PROJECTS } from '@/assets/constant'
 import { KEYBOARD_OBJ } from '@/assets/constant/keys'
@@ -37,28 +42,9 @@ const handleKeyUp = (e: KeyboardEvent) => {
 
   keyboardCodes.delete(e.code)
 }
-const handleTest = () => {
-  const _ = (v: any) => {
-    return v.map((c: any[]) => {
-      c.forEach((k: { [x: string]: any; key: any }) => {
-        k.value = k.value.reverse()
-      })
-      return c
-    })
-  }
-
-  let result = {
-    left: _(keyboardObj.left),
-    center: _(keyboardObj.center),
-    right: _(keyboardObj.right)
-  }
-
-  window.sessionStorage.setItem('json', JSON.stringify(result))
-}
 
 /** Lifecycle Hooks */
 onMounted(() => {
-  // handleTest()
   keyboardCodes.clear()
 
   document.addEventListener('keydown', handleKeydown)
@@ -77,7 +63,17 @@ onUnmounted(() => {
 
 @layer components {
   .keyboard-container {
-    @apply p-5 flex justify-between space-x-2 bg-gray-200;
+    @apply mx-auto p-5 bg-gray-200;
+    width: 1675px;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    column-gap: 40px;
+  }
+
+  .keyboard-operation {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: end;
   }
 }
 </style>

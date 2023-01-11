@@ -67,7 +67,7 @@ export const PROJECTS = Object.freeze({
   keyboard: {
     title: '键盘',
     url: Beginner('Key-Value-App.md'),
-    id: ''
+    id: '_83190f855269a'
   }
 })
 

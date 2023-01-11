@@ -1,9 +1,9 @@
 <template>
   <div class="keyboard-item" :style="itemStyles">
     <div v-for="(row, i) in list" :key="i" class="keyboard-row">
-      <div v-for="column in row" :key="column.code" :class="columnClass(column.code, column.classNames)">
-        <span v-show="column.value[0]" v-html="column.value[0]"></span>
-        <span v-show="column.value[1]" v-html="column.value[1]"></span>
+      <div v-for="(column, j) in row" :key="column.code + j" :class="columnClass(column.code, column.classNames)">
+        <value-component :item="column.value.first" />
+        <value-component :item="column.value.last" />
       </div>
     </div>
   </div>
@@ -12,12 +12,15 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 
-import type { KeysParams } from '@/assets/constant/keys'
+import type { KeysParams } from '../types'
+import valueComponent from '../val.vue'
+
+type listType = Array<KeysParams>[]
 
 const props = defineProps({
   list: {
-    type: Array as PropType<Array<KeysParams[]>>,
-    default: () => [] as KeysParams[],
+    type: Array as PropType<listType>,
+    default: () => [] as listType,
     required: true
   },
   actives: {
@@ -53,12 +56,13 @@ const itemStyles = computed(() => {
   .keyboard-row {
     display: grid;
     grid-template-columns: repeat(var(--columns), auto);
+    grid-template-rows: 3.5rem;
     justify-content: space-between;
     column-gap: 10px;
   }
 
   .keyboard-row .keyboard-column {
-    @apply h-14 flex text-gray-400 text-base;
+    @apply grid text-gray-400 text-base;
     padding: 2px 8px;
     border-radius: 4px;
     word-break: break-all;
