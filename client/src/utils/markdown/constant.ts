@@ -1,5 +1,5 @@
 export const defaultMarkdownOptions = {
-  requireSpaceBeforeHeadingText: false,
+  requireSpaceBeforeHeadingText: true,
   headerLevelStart: void 0,
   customizedHeaderId: false
 }

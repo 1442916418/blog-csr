@@ -23,6 +23,8 @@ class Markdown {
     // 标准化空格
     text = text.replace(/\u00A0/g, '&nbsp;')
 
+    text = '\n\n' + text + '\n\n'
+
     /**
      * 删除仅包含空格和制表符的任何行。
      * 这使得后续的正则表达式更容易编写，因为我们可以

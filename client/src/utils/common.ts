@@ -63,10 +63,12 @@ export const toMiddleDashNomenclature = (value: string) => {
   return value.replace(/[A-Z]/g, (v) => '-' + v.toLowerCase())
 }
 
+export const randomUUID = (start = 2, end = 8) => Math.random().toString(16).substring(start, end)
+
 /**
  * 随机生成十六进制颜色
  */
-export const randomColor = () => '#' + Math.random().toString(16).substring(2, 8)
+export const randomColor = () => '#' + randomUUID()
 
 /**
  * 秒数转日期
