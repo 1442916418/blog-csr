@@ -78,17 +78,22 @@ export const PROJECTS = Object.freeze({
 
 const CSS_30_DAY = 'https://github.com/MilenaCarecho/30diasDeCSS'
 
-const _c = (v: string) => CSS_30_DAY + v
+const _c = (v: string) => CSS_30_DAY + '#id' + v
 
 export const CSS_PROJECTS = Object.freeze({
   layeredIcon: {
     title: '分层图标',
-    url: _c('#id01'),
+    url: _c('01'),
     id: '_9948fefc42587'
   },
   loading: {
     title: 'Loading',
-    url: _c('#id02'),
+    url: _c('02'),
     id: '_c7498a06216aa'
+  },
+  textSliding: {
+    title: '文本滚动变换颜色',
+    url: _c('03'),
+    id: '_f712355445d57'
   }
 })
