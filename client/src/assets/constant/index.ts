@@ -68,6 +68,11 @@ export const PROJECTS = Object.freeze({
     title: '键盘',
     url: Beginner('Key-Value-App.md'),
     id: '_83190f855269a'
+  },
+  notes: {
+    title: '笔记',
+    url: Beginner('Notes-App.md'),
+    id: ''
   }
 })
 
