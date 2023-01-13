@@ -95,5 +95,10 @@ export const CSS_PROJECTS = Object.freeze({
     title: '文本滚动变换颜色',
     url: _c('03'),
     id: '_f712355445d57'
+  },
+  buttons: {
+    title: '按钮效果',
+    url: _c('04'),
+    id: '_3cb4bdd7d969f'
   }
 })
