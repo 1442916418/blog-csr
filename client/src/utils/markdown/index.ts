@@ -13,6 +13,11 @@ class Markdown {
     this.params = params
   }
 
+  /**
+   * 转换成 HTML
+   * @param text 文本
+   * @returns 转换后文本
+   */
   public makeHtml(text: string) {
     if (!text) return text
 
@@ -23,6 +28,7 @@ class Markdown {
     // 标准化空格
     text = text.replace(/\u00A0/g, '&nbsp;')
 
+    // 保证前后有换行
     text = '\n\n' + text + '\n\n'
 
     /**

@@ -1,13 +1,11 @@
 import type { MarkdownOptions } from '@/utils/markdown/types'
 
-import headers from './headers'
-import italicsBold from './italics-bold'
 import blockQuotes from './block-quotes'
+import headers from './headers'
 
 export default (text: string, options: MarkdownOptions) => {
-  text = headers(text, options)
-  text = italicsBold(text, options)
   text = blockQuotes(text, options)
+  text = headers(text, options)
 
   return text
 }
