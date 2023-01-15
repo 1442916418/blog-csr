@@ -75,8 +75,10 @@ export const randomColor = () => '#' + randomUUID()
  * @param value 毫秒数
  * @returns 日期
  */
-export const secondToDate = (value: number) => {
-  value = value / 1000
+export const secondToDate = (value: number, isMillisecond = true) => {
+  if (isMillisecond) {
+    value = value / 1000
+  }
 
   const days = Math.floor(value / 86400)
   const hours = Math.floor(value / 3600)
@@ -85,6 +87,8 @@ export const secondToDate = (value: number) => {
 
   return { days, hours, minutes, seconds }
 }
+
+export const translateNumbers = (value: number) => (value <= 9 ? '0' + value : value)
 
 /**
  * 保存文件

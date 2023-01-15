@@ -72,7 +72,12 @@ export const PROJECTS = Object.freeze({
   notes: {
     title: '笔记',
     url: Beginner('Notes-App.md'),
-    id: ''
+    id: '_5e24c8130afb2'
+  },
+  pomodoroClock: {
+    title: '番茄钟',
+    url: Beginner('Pomodoro-Clock.md'),
+    id: '_93e147492e669'
   }
 })
 
