@@ -105,5 +105,10 @@ export const CSS_PROJECTS = Object.freeze({
     title: '按钮效果',
     url: _c('04'),
     id: '_3cb4bdd7d969f'
+  },
+  pulse: {
+    title: '脉冲效果',
+    url: _c('05'),
+    id: '_e08f9145658c7'
   }
 })
