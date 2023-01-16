@@ -115,5 +115,10 @@ export const CSS_PROJECTS = Object.freeze({
     title: '脉冲效果',
     url: _c('05'),
     id: '_e08f9145658c7'
+  },
+  textFlashing: {
+    title: '文字闪烁效果',
+    url: _c('06'),
+    id: '_ed4e6a020364b'
   }
 })
