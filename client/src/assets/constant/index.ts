@@ -78,6 +78,11 @@ export const PROJECTS = Object.freeze({
     title: '番茄钟',
     url: Beginner('Pomodoro-Clock.md'),
     id: '_93e147492e669'
+  },
+  quizApp: {
+    title: '测验',
+    url: Beginner('Quiz-App.md'),
+    id: '_7ec6a08642553'
   }
 })
 
