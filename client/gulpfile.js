@@ -2,17 +2,18 @@ const gulp = require('gulp')
 const gulpFileInclude = require('gulp-file-include')
 const gulpHtmlMin = require('gulp-htmlmin')
 const gulpCleanCss = require('gulp-clean-css')
-const gulpUglify = require('gulp-uglify')
 const browserSync = require('browser-sync').create()
+const terser = require('gulp-terser')
 
 const paths = {
   enter: {
     base: './src/',
     index: './src/index.html',
     html: './src/views/*.html',
-    components: './src/components/**.html',
+    includes: './src/includes/**.html',
+    components: './src/components/**/*.js',
     css: './src/css/*.css',
-    js: './src/js/*.css',
+    js: './src/js/*.js',
     assets: './assets/**.*'
   },
   output: {
@@ -20,7 +21,8 @@ const paths = {
     html: './dist/html/',
     css: './dist/css/',
     js: './dist/js/',
-    assets: './dist/assets/'
+    assets: './dist/assets/',
+    components: './dist/components/'
   }
 }
 
@@ -30,7 +32,7 @@ gulp.task('index', function () {
     .pipe(
       gulpFileInclude({
         prefix: '@@',
-        basepath: './src/components/',
+        basepath: './src/includes/',
         context: {
           environment: 'development'
         }
@@ -47,7 +49,7 @@ gulp.task('html', function () {
     .pipe(
       gulpFileInclude({
         prefix: '@@',
-        basepath: './src/components/',
+        basepath: './src/includes/',
         context: {
           environment: 'development'
         }
@@ -63,7 +65,15 @@ gulp.task('css', function () {
 })
 
 gulp.task('js', function () {
-  return gulp.src([paths.enter.js]).pipe(gulpUglify()).pipe(gulp.dest(paths.output.js)).pipe(browserSync.stream())
+  return gulp.src([paths.enter.js]).pipe(terser()).pipe(gulp.dest(paths.output.js)).pipe(browserSync.stream())
+})
+
+gulp.task('components', function () {
+  return gulp
+    .src([paths.enter.components])
+    .pipe(terser())
+    .pipe(gulp.dest(paths.output.components))
+    .pipe(browserSync.stream())
 })
 
 gulp.task('assets', function () {
@@ -72,13 +82,18 @@ gulp.task('assets', function () {
 
 gulp.task(
   'serve',
-  gulp.series('css', 'html', 'index', 'assets', function () {
+  gulp.series('css', 'components', 'js', 'html', 'index', 'assets', function () {
     browserSync.init({
       server: paths.output.base
     })
 
     gulp.watch([paths.enter.css], gulp.series('css'))
-    gulp.watch([paths.enter.components, paths.enter.index, paths.enter.html], gulp.series('html', 'index'))
+    gulp.watch([paths.enter.components], gulp.series('components'))
+    gulp.watch([paths.enter.js], gulp.series('js'))
+    gulp.watch(
+      [paths.enter.includes, paths.enter.components, paths.enter.index, paths.enter.html],
+      gulp.series('html', 'index')
+    )
     gulp.watch([paths.enter.assets], gulp.series('assets'))
   })
 )
