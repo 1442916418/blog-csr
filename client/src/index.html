@@ -4,6 +4,10 @@
     @@include('./head.html', { "path": ".", "title": "牛牛四季" })
   </head>
   <body>
-    @@include('./navigation.html') @@include('./articles.html') @@include('./footer.html') @@include('./scripts.html')
+    @@include('./navigation.html')
+
+    <article class="container">@@include('./articles.html')</article>
+
+    @@include('./footer.html') @@include('./loading.html') @@include('./scripts.html')
   </body>
 </html>
