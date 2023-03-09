@@ -1,0 +1,7 @@
+.nav-unpinned {
+  transform: translateY(-100%);
+}
+
+.nav-pinned {
+  transform: translateY(0);
+}

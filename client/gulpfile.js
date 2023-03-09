@@ -4,6 +4,7 @@ const gulpHtmlMin = require('gulp-htmlmin')
 const gulpCleanCss = require('gulp-clean-css')
 const browserSync = require('browser-sync').create()
 const terser = require('gulp-terser')
+const del = require('del')
 
 const paths = {
   enter: {
@@ -12,17 +13,17 @@ const paths = {
     html: './src/views/*.html',
     includes: './src/includes/**.html',
     components: './src/components/**/*.js',
-    css: './src/css/*.css',
     js: './src/js/*.js',
-    assets: './assets/**.*'
+    assets: './assets/**.*',
+    css: './assets/css/*.css'
   },
   output: {
     base: './dist/',
-    html: './dist/html/',
-    css: './dist/css/',
-    js: './dist/js/',
     assets: './dist/assets/',
-    components: './dist/components/'
+    css: './dist/assets/css/',
+    js: './dist/assets/js/',
+    html: './dist/assets/views/',
+    components: './dist/assets/components/'
   }
 }
 
@@ -38,7 +39,7 @@ gulp.task('index', function () {
         }
       })
     )
-    .pipe(gulpHtmlMin({ collapseWhitespace: true }))
+    .pipe(gulpHtmlMin({ collapseWhitespace: true, removeComments: true }))
     .pipe(gulp.dest(paths.output.base))
     .pipe(browserSync.stream())
 })
@@ -55,7 +56,7 @@ gulp.task('html', function () {
         }
       })
     )
-    .pipe(gulpHtmlMin({ collapseWhitespace: true }))
+    .pipe(gulpHtmlMin({ collapseWhitespace: true, removeComments: true }))
     .pipe(gulp.dest(paths.output.html))
     .pipe(browserSync.stream())
 })
@@ -80,9 +81,13 @@ gulp.task('assets', function () {
   return gulp.src([paths.enter.assets]).pipe(gulp.dest(paths.output.assets)).pipe(browserSync.stream())
 })
 
+gulp.task('clean:dist', function () {
+  return del([paths.output.base])
+})
+
 gulp.task(
   'serve',
-  gulp.series('css', 'components', 'js', 'html', 'index', 'assets', function () {
+  gulp.series('clean:dist', 'css', 'components', 'js', 'html', 'index', 'assets', function () {
     browserSync.init({
       server: paths.output.base
     })

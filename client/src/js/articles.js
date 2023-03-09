@@ -25,7 +25,7 @@ var Articles = {
     Articles.queryArticlesList()
 
     setTimeout(() => {
-      window.addEventListener('scroll', Articles.debounce(Articles.handleScroll, 300))
+      $.addEvent(window, 'scroll', Articles.debounce(Articles.handleScroll, 300))
     }, 1000)
   },
   handleLoading: function (value) {
@@ -86,8 +86,9 @@ var Articles = {
   getArticleComponentElement: function (item) {
     var author = item.author
 
+    // '<y-img lazy src="' + author.image + '" class="mr-1" style="width: 40px"></y-img>' +
     var authorEle = '<div class="flex">' +
-                      '<y-img lazy src="' + author.image + '" class="mr-1" style="width: 40px"></y-img>' +
+                      '<iconpark-icon name="me" size="25" color="#b1bcce" class="mr-1"></iconpark-icon>' +
                       '<div class="flex flex-column justify-content-center align-items-start">' + 
                         '<b>' + author.username + '</b>' + 
                         '<span class="text-1">' + item.createdAt + '</span>' +
@@ -152,5 +153,3 @@ var Articles = {
     }
   }
 }
-
-window.onload = Articles.init

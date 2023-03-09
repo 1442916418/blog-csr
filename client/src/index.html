@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    @@include('./head.html', { "path": ".", "title": "牛牛四季" })
+    @@include('./head.html', { "path": "./assets/", "title": "牛牛四季" })
   </head>
   <body>
     @@include('./navigation.html')
 
     <article class="container">@@include('./articles.html')</article>
 
-    @@include('./footer.html') @@include('./loading.html') @@include('./scripts.html')
+    @@include('./footer.html') @@include('./loading.html') @@include('./scripts.html', {path: './assets/'})
   </body>
 </html>
