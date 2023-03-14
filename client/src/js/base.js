@@ -1,5 +1,5 @@
 const BASE = {
-  url: 'https://www.yss.world/api/'
+  url: '/* @echo BASE_URL */' || ''
 }
 
 /** Loading 类 */

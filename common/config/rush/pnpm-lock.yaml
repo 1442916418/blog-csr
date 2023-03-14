@@ -8,20 +8,28 @@ importers:
   ../../client:
     specifiers:
       browser-sync: ~2.28.1
+      cross-env: ^7.0.3
       del: 6.0.0
+      dotenv: ~16.0.3
       gulp: ~4.0.2
       gulp-clean-css: ~4.3.0
       gulp-file-include: ~2.3.0
       gulp-htmlmin: ~5.0.1
+      gulp-preprocess: ~4.0.2
       gulp-terser: ~2.1.0
+      yss-toolchain: ~0.1.6
     devDependencies:
       browser-sync: 2.28.1
+      cross-env: 7.0.3
       del: 6.0.0
+      dotenv: 16.0.3
       gulp: 4.0.2
       gulp-clean-css: 4.3.0
       gulp-file-include: 2.3.0
       gulp-htmlmin: 5.0.1
+      gulp-preprocess: 4.0.2
       gulp-terser: 2.1.0
+      yss-toolchain: 0.1.6
 
   ../../server:
     specifiers:
@@ -2565,7 +2573,6 @@ packages:
   /dotenv/16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
-    dev: false
 
   /duplexer3/0.1.4:
     resolution: {integrity: sha512-CEj8FwwNA4cVH2uFCoHUrmojhYh1vmCdOaneKJXwkeY1i9jnlslVo9dx+hQ5Hl9GnH/Bwy/IjxAyOePyPKYnzA==}
@@ -3334,6 +3341,15 @@ packages:
       html-minifier: 3.5.21
       plugin-error: 1.0.1
       through2: 2.0.5
+    dev: true
+
+  /gulp-preprocess/4.0.2:
+    resolution: {integrity: sha512-8mYaYMm+2HxdAQb1hsM3ZrLtKf1w57LmMWt+w+JBoCvh3EhpUa2vVW9rcEVc+JLcN2J7ZW/YYWLRX4TDKhchWg==}
+    engines: {node: '>= 14'}
+    dependencies:
+      lodash: 4.17.21
+      preprocess: 3.2.0
+      through2: 4.0.2
     dev: true
 
   /gulp-terser/2.1.0:
@@ -5561,6 +5577,13 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /preprocess/3.2.0:
+    resolution: {integrity: sha512-cO+Rf+Ose/eD+ze8Hxd9p9nS1xT8thYqv8owG/V8+IS/Remd7Z17SvaRK/oJxp08yaM8zb+QTckDKJUul2pk7g==}
+    engines: {node: '>= 0.10.0'}
+    dependencies:
+      xregexp: 3.1.0
+    dev: true
+
   /prettier/2.6.2:
     resolution: {integrity: sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==}
     engines: {node: '>=10.13.0'}
@@ -7258,6 +7281,10 @@ packages:
   /xmlhttprequest-ssl/2.0.0:
     resolution: {integrity: sha512-QKxVRxiRACQcVuQEYFsI1hhkrMlrXHPegbbd1yn9UHOmRxY+si12nQYzri3vbzt8VdTTRviqcKxcyllFas5z2A==}
     engines: {node: '>=0.4.0'}
+    dev: true
+
+  /xregexp/3.1.0:
+    resolution: {integrity: sha512-4Y1x6DyB8xRoxosooa6PlGWqmmSKatbzhrftZ7Purmm4B8R4qIEJG1A2hZsdz5DhmIqS0msC0I7KEq93GphEVg==}
     dev: true
 
   /xtend/4.0.2:

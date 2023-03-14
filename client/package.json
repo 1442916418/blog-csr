@@ -1,10 +1,14 @@
 {
   "name": "client",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "博客 2.0 拟物风格 + Web Components",
   "main": "index.js",
   "scripts": {
-    "serve": "gulp"
+    "serve": "gulp",
+    "build": "npm run log:prod && npm run build:gulp && npm run upload:prod",
+    "build:gulp": "gulp build",
+    "log:prod": "y-cli build-log -b dev-2.0 -e production -s prod",
+    "upload:prod": "cross-env UPLOAD_CONFIG_PATH=..\\uConfig\\upload.prod.json y-cli upload -e production"
   },
   "keywords": [
     "Blog",
@@ -20,6 +24,11 @@
     "gulp-clean-css": "~4.3.0",
     "browser-sync": "~2.28.1",
     "gulp-terser": "~2.1.0",
-    "del": "6.0.0"
-  }
+    "del": "6.0.0",
+    "cross-env": "^7.0.3",
+    "yss-toolchain": "~0.1.6",
+    "dotenv": "~16.0.3",
+    "gulp-preprocess": "~4.0.2"
+  },
+  "version_prod": "0.0.1"
 }

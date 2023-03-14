@@ -5,10 +5,13 @@ const gulpCleanCss = require('gulp-clean-css')
 const browserSync = require('browser-sync').create()
 const terser = require('gulp-terser')
 const del = require('del')
+const dotenv = require('dotenv')
+const preprocess = require('gulp-preprocess')
+
+dotenv.config()
 
 const paths = {
   enter: {
-    base: './src/',
     index: './src/index.html',
     html: './src/views/**.html',
     includes: './src/includes/**.html',
@@ -66,7 +69,12 @@ gulp.task('css', function () {
 })
 
 gulp.task('js', function () {
-  return gulp.src([paths.enter.js]).pipe(terser()).pipe(gulp.dest(paths.output.js)).pipe(browserSync.stream())
+  return gulp
+    .src([paths.enter.js])
+    .pipe(preprocess({ context: { BASE_URL: process.env.BASE_URL } }))
+    .pipe(terser())
+    .pipe(gulp.dest(paths.output.js))
+    .pipe(browserSync.stream())
 })
 
 gulp.task('components', function () {
@@ -104,3 +112,4 @@ gulp.task(
 )
 
 gulp.task('default', gulp.series('serve'))
+gulp.task('build', gulp.series('clean:dist', 'css', 'components', 'js', 'html', 'index', 'assets'))
