@@ -1,7 +1,7 @@
 /**
  * 文章类
  */
-var Articles = {
+const Articles = {
   /** 文章数据列表 */
   list: [],
   /** 文章总数 */
@@ -19,34 +19,36 @@ var Articles = {
   /** 是否加载 */
   loading: false,
   /** 初始化 */
-  init: function () {
-    if (!$) return
+  init() {
+    try {
+      Articles.queryArticlesList()
 
-    Articles.queryArticlesList()
-
-    setTimeout(() => {
-      $.addEvent(window, 'scroll', Articles.debounce(Articles.handleScroll, 300))
-    }, 1000)
+      setTimeout(() => {
+        window.addEventListener('scroll', Articles.debounce(Articles.handleScroll, 300))
+      }, 1000)
+    } catch (error) {
+      console.error(error)
+    }
   },
-  handleLoading: function (value) {
+  handleLoading(value) {
     Articles.loading = value
 
     if (value) {
-      Loading.open()
+      Loading && Loading.open()
     } else {
-      Loading.close()
+      Loading && Loading.close()
     }
   },
   /** 查询文章数据 */
-  queryArticlesList: function () {
-    if (!BASE_URL) return
+  queryArticlesList() {
+    if (!BASE.url) return
 
     Articles.handleLoading(true)
 
-    $.requests(BASE_URL + 'articles', 'get', Articles.queryParams)
-      .then(function (res) {
-        var articlesList = res.articles || []
-        var articlesCount = res.articlesCount || 0
+    $.requests(`${BASE.url}articles`, 'get', Articles.queryParams)
+      .then((res) => {
+        const articlesList = res.articles || []
+        const articlesCount = res.articlesCount || 0
 
         if (articlesList && articlesList.length) {
           Articles.list = Articles.queryParams.offset ? Articles.list.concat(articlesList) : articlesList
@@ -55,74 +57,67 @@ var Articles = {
         }
 
         Articles.count = articlesCount
-
         Articles.handleElements()
-
         Articles.handleLoading(false)
       })
-      .catch(function () {
+      .catch(() => {
         Articles.handleLoading(false)
       })
   },
   /** 处理元素 */
-  handleElements: function () {
+  handleElements() {
     if (!Articles.list.length) return
 
-    var ele = $.getElement('#articles')
+    const ele = document.querySelector('#articles')
 
     if (!ele) return
 
-    var html = ''
+    let html = ''
 
-    Articles.list.forEach(function (item) {
-      var element = Articles.getArticleComponentElement(item)
-      html += element
+    Articles.list.forEach((item) => {
+      html += Articles.getArticleComponentElement(item)
     })
 
-    ele.innerHTML = '<article-list>' + html + '</article-list>'
+    ele.innerHTML = `<article-list>${html}</article-list>`
   },
   /** 获取文章组件元素 */
   // prettier-ignore
-  getArticleComponentElement: function (item) {
-    var author = item.author
+  getArticleComponentElement (item) {
+    const author = item.author
 
-    // '<y-img lazy src="' + author.image + '" class="mr-1" style="width: 40px"></y-img>' +
-    var authorEle = '<div class="flex">' +
-                      '<iconpark-icon name="me" size="25" color="#b1bcce" class="mr-1"></iconpark-icon>' +
-                      '<div class="flex flex-column justify-content-center align-items-start">' + 
-                        '<b>' + author.username + '</b>' + 
-                        '<span class="text-1">' + item.createdAt + '</span>' +
-                      '</div>' +
-                    '</div>'
+    // <y-img lazy src="' + author.image + '" class="mr-1" style="width: 40px"></y-img>' +
+    const authorEle = `<div class="flex">
+                        <iconpark-icon name="me" size="25" color="#b1bcce" class="mr-1"></iconpark-icon>
+                        <div class="flex flex-column justify-content-center align-items-start">
+                          <b>${ author.username }</b> 
+                          <span class="text-1">${ item.createdAt }</span>
+                        </div>
+                      </div>`
 
-    var contentEle = '<div class="my-1 flex flex-column justify-content-center">' +
-                       '<b class="text-2 mb-1">' + item.title + '</b>' + 
-                       '<span class="text-1">' + item.description + '</span>' + 
-                     '</div>'
+    const contentEle = `<div class="my-1 flex flex-column justify-content-center">
+                          <b class="text-2 mb-1">${ item.title }</b> 
+                          <span class="text-1">${ item.description }</span> 
+                        </div>`
     
-    var tags = item.tagList.map(function(tag){
-                 return '<y-button size="small" class="ml-1">' + tag + '</y-button>'
-               }).join(' ')
-
-    var tagEle = '<div class="text-right">' + tags + '</div>'
+    const tags = item.tagList.map((tag) => `<y-button size="small" class="ml-1">${tag}</y-button>`).join(' ')
+    const tagEle = `<div class="text-right">${tags}</div>`
     
-
-    return '<article-item id="' + item.slug + '">' + 
-              '<div class="my-1 py-1 border-b-1 border-solid border-gray">' +
-                authorEle +
-                contentEle + 
-                tagEle +
-              '</div>' +
-            '</article-item>'
+    return `<article-item id="${ item.slug }"> 
+              <div class="my-1 py-1 border-b-1 border-solid border-gray">
+                ${authorEle}
+                ${contentEle} 
+                ${tagEle}
+              </div>
+            </article-item>`
   },
   /** 处理滚动 */
-  handleScroll: function () {
+  handleScroll() {
     // 获取网页的总高度
-    var scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+    const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
     // clientHeight 是网页在浏览器中的可视高度
-    var clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+    const clientHeight = document.documentElement.clientHeight || document.body.clientHeight
     // scrollTop 是浏览器滚动条的 top 位置
-    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 
     // 底部
     if (scrollTop + clientHeight >= scrollHeight - 50 && !Articles.loading) {
@@ -141,8 +136,8 @@ var Articles = {
     }
   },
   /** 防抖 */
-  debounce: function (fn, delay) {
-    var timeout = 0
+  debounce(fn, delay) {
+    let timeout = 0
 
     return function () {
       timeout && clearTimeout(timeout)

@@ -1,65 +1,65 @@
-var BASE_URL = 'https://www.yss.world/api/'
+const BASE = {
+  url: 'https://www.yss.world/api/'
+}
 
 /** Loading 类 */
-var Loading = {
+const Loading = {
   /** 状态 */
   status: false,
   /** 打开 */
   open: function () {
-    if (!$) return
-
-    var loadingEle = $.getElement('#loading')
+    const loadingEle = document.querySelector('#loading')
 
     if (!loadingEle) return
 
     Loading.status = true
 
-    if ($.hasClass(loadingEle, 'none')) {
-      $.removeClass(loadingEle, 'none')
-      $.addClass(loadingEle, 'block')
+    if (loadingEle.classList.contains('none')) {
+      loadingEle.classList.remove('none')
+      loadingEle.classList.add('block')
     }
   },
   /** 关闭 */
   close: function () {
-    if (!$) return
-
-    var loadingEle = $.getElement('#loading')
+    const loadingEle = document.querySelector('#loading')
 
     if (!loadingEle) return
 
     Loading.status = false
 
-    if ($.hasClass(loadingEle, 'block')) {
-      $.removeClass(loadingEle, 'block')
-      $.addClass(loadingEle, 'none')
+    if (loadingEle.classList.contains('block')) {
+      loadingEle.classList.remove('block')
+      loadingEle.classList.add('none')
     }
   }
 }
 
-var Navigation = {
+const Navigation = {
   init: function () {
-    if (!$) return
-
-    var navEle = $.getElement('nav')
+    const navEle = document.querySelector('nav')
 
     if (!navEle) return
 
-    var previousScroll = 0
+    let previousScroll = 0
 
-    $.addEvent(window, 'scroll', function () {
-      var currentScroll = window.pageYOffset || document.documentElement.scrollTop
+    const fixedClass = ['position-fixed', 'top-0', 'w-100', 'z-9']
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop
 
       if (currentScroll > previousScroll) {
         // Scrolled down
         if (currentScroll > 100) {
-          $.addClass(navEle, ' nav-unpinned box-shadow-soft ')
+          navEle.classList.remove('nav-pinned')
+          navEle.classList.add(...fixedClass, 'nav-unpinned', 'box-shadow-soft')
         }
       } else {
         // Scrolled up
         if (currentScroll === 0) {
-          $.removeClass(navEle, ' nav-unpinned nav-pinned box-shadow-soft ')
+          navEle.classList.remove(...fixedClass, 'nav-unpinned', 'nav-pinned', 'box-shadow-soft')
         } else {
-          $.addClass(navEle, ' nav-pinned box-shadow-soft ')
+          navEle.classList.remove('nav-unpinned')
+          navEle.classList.add('nav-pinned')
         }
       }
 
@@ -68,7 +68,7 @@ var Navigation = {
   }
 }
 
-window.onload = function () {
-  Articles.init()
+;(function () {
   Navigation.init()
-}
+  Articles.init()
+})()

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    @@include('./head.html', { "path": "..", "title": "牛牛四季" })
+    <link rel="stylesheet" href="../css/theme.css" />
+  </head>
+  <body>
+    @@include('./navigation.html')
+
+    <article class="container">@@include('./article-detail.html')</article>
+
+    @@include('./footer.html') @@include('./loading.html') @@include('./scripts.html', {path: '..'})
+
+    <script type="text/javascript" src="../js/detail.js"></script>
+  </body>
+</html>

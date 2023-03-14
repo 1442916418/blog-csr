@@ -10,7 +10,7 @@ const paths = {
   enter: {
     base: './src/',
     index: './src/index.html',
-    html: './src/views/*.html',
+    html: './src/views/**.html',
     includes: './src/includes/**.html',
     components: './src/components/**/*.js',
     js: './src/js/*.js',
