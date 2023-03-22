@@ -33,10 +33,12 @@ const Articles = {
   handleLoading(value) {
     Articles.loading = value
 
+    if (typeof Loading === 'undefined') return
+
     if (value) {
-      Loading && Loading.open()
+      Loading.open()
     } else {
-      Loading && Loading.close()
+      Loading.close()
     }
   },
   /** 查询文章数据 */

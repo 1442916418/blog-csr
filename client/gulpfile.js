@@ -7,6 +7,7 @@ const terser = require('gulp-terser')
 const del = require('del')
 const dotenv = require('dotenv')
 const preprocess = require('gulp-preprocess')
+const gzip = require('gulp-gzip')
 
 dotenv.config()
 
@@ -85,6 +86,34 @@ gulp.task('components', function () {
     .pipe(browserSync.stream())
 })
 
+gulp.task('build:css', function () {
+  return gulp
+    .src([paths.enter.css])
+    .pipe(gulpCleanCss())
+    .pipe(gzip())
+    .pipe(gulp.dest(paths.output.css))
+    .pipe(browserSync.stream())
+})
+
+gulp.task('build:js', function () {
+  return gulp
+    .src([paths.enter.js])
+    .pipe(preprocess({ context: { BASE_URL: process.env.BASE_URL } }))
+    .pipe(terser())
+    .pipe(gzip())
+    .pipe(gulp.dest(paths.output.js))
+    .pipe(browserSync.stream())
+})
+
+gulp.task('build:components', function () {
+  return gulp
+    .src([paths.enter.components])
+    .pipe(terser())
+    .pipe(gzip())
+    .pipe(gulp.dest(paths.output.components))
+    .pipe(browserSync.stream())
+})
+
 gulp.task('assets', function () {
   return gulp.src([paths.enter.assets]).pipe(gulp.dest(paths.output.assets)).pipe(browserSync.stream())
 })
@@ -112,4 +141,4 @@ gulp.task(
 )
 
 gulp.task('default', gulp.series('serve'))
-gulp.task('build', gulp.series('clean:dist', 'css', 'components', 'js', 'html', 'index', 'assets'))
+gulp.task('build', gulp.series('clean:dist', 'build:css', 'build:components', 'build:js', 'html', 'index', 'assets'))

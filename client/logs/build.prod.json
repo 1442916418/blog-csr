@@ -1,6 +1,36 @@
 [
   {
     "title": "正式环境更新",
+    "describe": "修复 bug",
+    "author": "yushuisheng",
+    "branch": "dev-2.0",
+    "version": "2.0.4",
+    "environment": "production",
+    "prevVersion": "2.0.3",
+    "date": "2023-03-22 10:49:17"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "修复 bug",
+    "author": "yushuisheng",
+    "branch": "dev-2.0",
+    "version": "2.0.3",
+    "environment": "production",
+    "prevVersion": "2.0.2",
+    "date": "2023-03-22 10:04:09"
+  },
+  {
+    "title": "正式环境更新",
+    "describe": "修复 bug",
+    "author": "yushuisheng",
+    "branch": "dev-2.0",
+    "version": "2.0.2",
+    "environment": "production",
+    "prevVersion": "2.0.1",
+    "date": "2023-03-22 10:02:25"
+  },
+  {
+    "title": "正式环境更新",
     "describe": "2.0 上线",
     "author": "yushuisheng",
     "branch": "dev-2.0",

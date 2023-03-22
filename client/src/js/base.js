@@ -70,5 +70,6 @@ const Navigation = {
 
 ;(function () {
   Navigation.init()
-  Articles.init()
+
+  typeof Articles !== 'undefined' && Articles.init()
 })()

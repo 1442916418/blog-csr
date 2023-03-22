@@ -22,7 +22,7 @@ export default class ArticleItem extends HTMLElement {
 
   handleShadowRootClickEvent() {
     if (this.id) {
-      window.location.href = `${location.origin}/assets/views/article-detail?id=${this.id}`
+      window.location.href = `${location.origin}/assets/views/article-detail.html?id=${this.id}`
     }
   }
 }
